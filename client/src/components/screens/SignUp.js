@@ -184,11 +184,23 @@ const PostData =()=>{
           value={phoneno}
           onChange={(e)=>setPhoneno(e.target.value)}
          />
+        
+        <div style={{ fontWeight: 'bold', fontSize: 13, margin:15 }}>
+        Bằng việc chọn vào nút Đăng ký, bạn đồng ý với Điều khoản và điều kiện sử dụng của chúng tôi.
+        </div>
+
+        <div>
         <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
         onClick={()=>PostData()}
         >Đăng kí
         </button>
-        <h5><Link to="/signin">Đã có tài khoản?</Link></h5>
+        </div>
+        <div  style={{ fontSize: 14, margin:15 }}>
+            Bạn đã có tài khoản?  
+            <Link  to="/signin">
+                <span style={{ color: 'blue' }}>  Đăng nhập</span>
+            </Link>
+        </div>
       </div>
     </div>
   )
