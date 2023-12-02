@@ -4,7 +4,7 @@ import {UserContext} from '../../App'
 import { Link} from 'react-router-dom'
 
 const Product = () => {
-    const [data,setData]=useState([])
+  const [data,setData]=useState([])
    const {state,dispatch}=useContext(UserContext)
    useEffect(()=>{
     fetch('/allpost',{
