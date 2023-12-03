@@ -16,22 +16,23 @@ import TextField from '@mui/material/TextField';
 import FilterAlt from '@mui/icons-material/FilterAlt'
 import CompareArrows from '@mui/icons-material/CompareArrows'
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import M from 'materialize-css'
 
 
 
 const Home=()=> {
    const [data,setData]=useState([])
-   const {state,dispatch}=useContext(UserContext)
    useEffect(()=>{
-    fetch('/allpost',{
+    fetch('/mypost',{
       headers:{
         "Authorization":"Bearer "+localStorage.getItem("jwt")
       }
     }).then(res=>res.json())
     .then(result=>{
       console.log(result)
-      setData(result.posts)
+      setData(result.mypost)
      })
    },[])
 
@@ -55,8 +56,8 @@ const Home=()=> {
               return item
           }
       })
-      setData(newData)
-      M.toast({html: "Add To Cart", classes:"#43a047 green darken-1"})
+      // setData(newData)
+      M.toast({html: "Like Post", classes:"#43a047 green darken-1"})
     }).catch(err=>{
         console.log(err)
     })
@@ -69,47 +70,40 @@ const unlikePost = (id)=>{
           "Authorization":"Bearer "+localStorage.getItem("jwt")
       },
       body:JSON.stringify({
-          postId:id
+        postId:id
       })
-  }).then(res=>res.json())
+    }).then(res=>res.json())
   .then(result=>{
-    const newData = data.map(item=>{
-        if(item._id==result._id){
+    const newData = data.map(data=>{
+        if(data._id==result._id){
             return result
         }else{
-            return item
+            return data
         }
     })
-    setData(newData)
+    // setData(newData)
+    M.toast({html: "UnLike Post", classes:"#43a047 green darken-1"})
   }).catch(err=>{
     console.log(err)
 })
 }
 const addToCart = (id)=>{
-//   fetch('/addCart',{
-//       method:"put",
-//       headers:{
-//           "Content-Type":"application/json",
-//           "Authorization":"Bearer "+localStorage.getItem('jwt')
-//       },
-//       body:JSON.stringify({
-//           CartId:id
-          
-//       })
-//   }).then(res=>res.json())
-//   .then(res=>res.json())
-//   .then(result=>{
-//     const newData = data.map(item=>{
-//         if(item._id==result._id){
-//             return result
-//         }else{
-//             return item
-//         }
-//     })
-//     setData(newData)
-//   }).catch(err=>{
-//     console.log(err)
-// })
+  fetch('/addToCart',{
+      method:"put",
+      headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+localStorage.getItem('jwt')
+      },
+      body:JSON.stringify({
+          postId:id,
+          amount:0
+      })
+  }).then(res=>res.json())
+  .then(result=>{
+    M.toast({html: result.message, classes:"#43a047 green darken-1"})
+  }).catch(err=>{
+    console.log(err)
+})
 }
 
 const [drawerState, setDrawerState] = React.useState({
@@ -128,7 +122,6 @@ const toggleDrawer = (anchor, open) => (event) => {
   setDrawerState({ ...drawerState, [anchor]: open });
 };
 
-
 const [store, setStore] = React.useState('');
 
 const handleStoreChange = (event) => {
@@ -141,10 +134,9 @@ const handleTypeChange = (event) => {
 };
 
 
-
 const list = (anchor) => (
   <Box
-    sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : "100" }}
+    sx={{ width: "100" }}
     //role="presentation"
     //onClick={toggleDrawer(anchor, false)}
     //onKeyDown={toggleDrawer(anchor, false)}
@@ -228,10 +220,33 @@ const filterData = (query, data) => {
   }
 };
 
-var tData = data
 const [searchQuery, setSearchQuery] = useState("");
 const dataFiltered = filterData(searchQuery, data);
 
+
+function ToggleFavorite({Fstate,id}) {
+  const [favoriteState, setFavoriteState] = useState(Fstate);
+  const toggleState = () => {
+    if (favoriteState === true){
+      unlikePost(id)
+    }
+    else{
+      likePost(id)
+    }
+    setFavoriteState(current => !current);
+  }
+  return(
+    <div
+     onClick={toggleState}
+      >
+      {favoriteState == true ? 
+      (<Favorite style={{marginLeft:"22px" , fontSize: "30px",color: 'red'}}/>)
+      : 
+      (<FavoriteBorder style={{marginLeft:"22px" , fontSize: "30px",color: 'red'}}/>)
+      }
+    </div>
+  )
+}
 
 
 //make a delete post
@@ -246,23 +261,21 @@ const dataFiltered = filterData(searchQuery, data);
               justifyContent: 'space-between',
             }}>
           <div>
-          {[
-            <span style={{fontSize: "20px",color: "black"}}>
-              Lọc sản phẩm
-            </span>   
-          ].map((anchor) => (
-            <React.Fragment key={anchor}>
-              <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+       
+              <Button onClick={toggleDrawer('left', true)}>
+                <span style={{fontSize: "20px",color: "black"}}>
+                  Lọc sản phẩm
+                </span>  </Button>
               <SwipeableDrawer
                 anchor={'left'}
-                open={drawerState[anchor]}
-                onClose={toggleDrawer(anchor, false)}
-                onOpen={toggleDrawer(anchor, true)}
+                open={drawerState['left']}
+                onClose={toggleDrawer('left', false)}
+                onOpen={toggleDrawer('left', true)}
               >
-                {list(anchor)}
+                {list('left')}
               </SwipeableDrawer>
-            </React.Fragment>
-          ))}
+
+        
           </div>
             <div
                   style={{
@@ -313,40 +326,47 @@ const dataFiltered = filterData(searchQuery, data);
                     /> 
                     <div className="card-body"><center>
                       <h6 className="card-title">{item.title}</h6>
-                      <h6 className="">{item.body}đ</h6>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexWrap: 'wrap',
+                        justifyContent: 'space-between',
+
+                      }}>
+                         <ToggleFavorite Fstate = {true} id = {item._id}/>
+                        <h6  style={{marginRight:"20px", fontSize: "24px"}}>{item.body}đ</h6>
                       
+                      </div>
                       </center>
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
                         flexWrap: 'wrap',
                         justifyContent: 'space-between',
+                        marginBottom: "20px",
 
                     }}>
                         <Link to={ "/productdescription/"+item._id} >
-                    <button className="btn waves-effect #e65100 lightblue darken-4 btn-medium" type="submit" name="action">More Details
-                      </button>
-                    </Link>
-                      <button className="btn  " type="submit" name="addToCart"
+                        <button className="btn waves-effect #e65100 lightblue darken-4 btn-medium" type="submit" name="action">More Details
+                          </button>
+                        </Link>
+                      <button className="btn" name="addCart"
+                        onClick={() => addToCart(item._id)}
                         >
                       <ShoppingCart style={{fontSize: "30px", margin:"0px"}}/>
                       </button>
                     </div>
-
-
                     </div>
                   </div>
                 </div>
-                          )
+              )
           })
         }
         </div>
 
         </div>
         : <h2>Loading....!</h2>
-
           }
-
       </div>
     </>
   )
