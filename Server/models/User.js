@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     },
     followers:[{type:ObjectId,ref:"User"}],
     following:[{type:ObjectId,ref:"User"}],
-    addCart:[{type:ObjectId,ref:"Post"}],
+    addCart:[{type:ObjectId,ref:"Cart"}],
     address:{
         type:String,
         required:true

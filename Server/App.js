@@ -19,6 +19,8 @@ mongoose.connection.on('error',(err)=>{
 
 require('./models/User')
 require('./models/Post')
+require('./models/Cart')
+require('./models/CartItem')
 
 
 app.use(express.json())
