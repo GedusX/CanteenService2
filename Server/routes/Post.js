@@ -9,13 +9,18 @@ router.get("/allpost",requireLogin,(req,res)=>{
     .populate("postedBy","_id name")
     .populate("comments.postedBy","_id name")
     .then(posts=>{
-        res.json({posts})
+        const postsWithIsLike = posts.map(post => {
+            const postObject = post.toObject(); // Convert to plain JavaScript object
+            postObject.isLike = post.likes.includes(req.user._id); // Add isLike field
+            return postObject;
+        });
+        console.log(postsWithIsLike)
+        res.json({ posts: postsWithIsLike });
     })
     .catch(err=>{
         console.log(err)
     })
 })
-
 
 router.get("/getsubpost",requireLogin,(req,res)=>{
     Post.find({postedBy:{$in:req.user.following}})
@@ -53,7 +58,7 @@ router.get("/mypost",requireLogin,(req,res)=>{
     Post.find({likes:req.user._id})
     .populate("postedBy","_id name")
     .populate("comments.postedBy","_id name")
- 
+    
     .then(mypost=>{
         res.json({mypost})
         console.log({mypost})
