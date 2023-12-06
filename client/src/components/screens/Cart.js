@@ -162,11 +162,13 @@ const Cart = () => {
             </div>
         </div>
 
-        <div class="cart_right">
+        <div class="cart_right_forcart">
             <a href = "./Payment">
                 <button class="cart_buttonCheckout">Thanh toán bằng thẻ ngân hàng</button>
             </a>
+
             <div class="cart_return">
+            <h1>Hoặc</h1>
                 <div class="cart_row">
                     <div>Tổng tiền</div>
                     <div class="cart_totalPrice">110000 VND</div>
