@@ -4,6 +4,7 @@ import M from 'materialize-css'
 import './Cart.css'
 import Popup from './Popup.js';
 const Payment = () => {
+
     const [data,setData]=useState([])
     // const {state,dispatch}=useContext(UserContext)
     // const [cardno,setCardno] = useState("")
@@ -11,14 +12,14 @@ const Payment = () => {
     // const [cv,setCv] = useState("")
     const [buttonPopup, setButtonPopup] = useState(false);
     useEffect(()=>{
-      fetch('/mypost',{
+      fetch('/mycart',{
           headers:{
               "Authorization":"Bearer "+localStorage.getItem("jwt")
           }
       }).then(res=>res.json())
       .then(result=>{
           console.log(result)
-          setData(result.mypost)
+          setData(result.result)
       })
    },[])
 
@@ -50,6 +51,7 @@ const Payment = () => {
         console.log(err)
     })
   }
+  const sum = data.map((order)=>order.amount*order.itemPost.body).reduce((prev, curr) => prev +  curr, 0)
   return (
     <div class="cart_container">
 
@@ -63,13 +65,13 @@ const Payment = () => {
                       data.map(item=>{
                           return(
                           <div class="cart_item">
-                              <img src={item.photo} alt = "" />
+                              <img src={item.itemPost.photo} alt = "" />
                               <div class="cart_info">
-                                  <div class="cart_name">{item.title}</div>
-                                  <div class="cart_price">{item.body}</div>
+                                  <div class="cart_name">{item.itemPost.title}</div>
+                                  <div class="cart_price">{item.itemPost.body}</div>
                               </div>
-                              <div class="cart_quantity">5</div>
-                              <div class="cart_returnPrice">$433.3</div>
+                              <div class="cart_quantity">{item.amount}</div>
+                              <div class="cart_returnPrice">{item.itemPost.body*item.amount}</div>
                           </div>
                       )
                   })
@@ -114,7 +116,7 @@ const Payment = () => {
               <div class="cart_return">
                   <div class="cart_row">
                       <div>Tổng tiền</div>
-                      <div class="cart_totalPrice">110000 VND</div>
+                      <div class="cart_totalPrice">{sum} VND</div>
                   </div>
                   <div class="cart_row">
                       <div>Phí vận chuyển</div>
@@ -122,7 +124,7 @@ const Payment = () => {
                   </div>
                   <div class="cart_row">
                       <div>Tổng cộng</div>
-                      <div class="cart_totalPrice">110000 VND</div>
+                      <div class="cart_totalPrice">{sum} VND</div>
                   </div>
               </div>
               <button class="cart_buttonCheckout" onClick={() => setButtonPopup(true)}>Thanh toán</button>
