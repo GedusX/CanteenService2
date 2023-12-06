@@ -4,10 +4,9 @@ const mongoose = require('mongoose')
 const requireLogin  = require('../middleware/requireLogin')
 // const cart  = require('../middleware/cart')
 // const { default: Cart } = require('../../client/src/components/screens/Cart')
+const bcrypt=require("bcryptjs")
 const Post =  mongoose.model("Post")
 const User = mongoose.model("User")
-const Cart = mongoose.model("Cart")
-const CartItem = mongoose.model("CartItem")
 
 
 
@@ -96,87 +95,7 @@ router.put('/updatepic',requireLogin,(req,res)=>{
 
 // })
 
-router.put('/addToCart',requireLogin,(req,res)=>{
- 
-    var cart_id = req.user.addCart   
-    if (cart_id.length === 0){
-        const newCart = new Cart({
-            inUse:true,
-        });
-        newCart.save((err, savedCart) => {
-            if (err) {
-              return res.status(500).json({ error: err });
-            }
-            User.findByIdAndUpdate(
-            req.user._id,
-            {
-                $push: { addCart: savedCart._id },
-            },
-            {
-                new: true
-            },
-            (err, updatedUser) => {
-                if (err) {
-                return res.status(500).json({ error: err });
-                }
-                cart_id = savedCart._id;
-            }
-            );
-        });
-    }
-    CartItem.countDocuments({ itemPost: req.body.postId, cartBy: cart_id[0]})
-    .then(count => {
-        if (count > 0) {
-          // Item already exists in the cart
-          return CartItem.findOne({ itemPost: req.body.postId, cartBy: cart_id[0] });
-        } else {
-          // Item doesn't exist, create a new CartItem
-          if (req.body.amount!=0){
-            const newItem = new CartItem({
-                itemPost: req.body.postId,
-                amount: req.body.amount ? req.body.amount : 1,
-                cartBy: cart_id[0],
-            });
-            return newItem.save()
-                .then(savedItem => {
-                // Update the Cart with the new item
-                return Cart.findByIdAndUpdate(
-                    cart_id[0],
-                    {
-                    $push: { itemPost: savedItem._id },
-                    },
-                    {
-                    new: true,
-                    }
-                ).exec();
-                });
-          }
-        }
-      })
-      .then(result => {
-        if (result && result.amount) {
-            if (req.body.amount == 0){
-                Cart.findByIdAndUpdate(result.cartBy,{
-                    $pull:{itemPost: result._id}
-                }).exec();
-                CartItem.findByIdAndDelete(result._id).exec();
-                res.status(200).json({ message: 'Item remove'});
-            }else if (result.amount != req.body.amount){
-                CartItem.findByIdAndUpdate(result._id,{
-                    $set:{amount : req.body.amount}
-                }).exec();
-                res.status(200).json({ message: 'Item amount change' });
-            } else{
-                res.status(200).json({ message: 'This item is already exist'});
-            }
-        } else if (req.body.amount == 0) {
-            res.status(200).json({ message: 'The amount can not be 0'}); 
-        } else {
-        console.log(result);
-        res.status(200).json({ message: 'Item added to cart successfully' });
-        }
-      })
-});
+
 //     User.findByIdAndUpdate(req.body.userId,{
 //     },{
 //         new:true
@@ -189,21 +108,90 @@ router.put('/addToCart',requireLogin,(req,res)=>{
 //         }
 //     })
 //   })
-router.put('/removeCart',requireLogin,(req,res)=>{
-    User.findByIdAndUpdate(req.body.userId,{
-        $pull:{addCart:req.post._id}
-    },{
-        new:true
-    }).exec((err,result)=>{
-        if(err){
-            return res.status(422).json({error:err})
-        }else{
-            //  
-            console.log(result)
+router.put('/forgetpass',(req,res) => {
+    const { email, password } = req.body;
+    // Hash the new password before updating
+    bcrypt.hash(password, 12, (hashErr, hash) => {
+        if (hashErr) {
+            console.log(hashErr);
+            return res.status(500).json({ error: 'Password hashing failed' });
         }
-    })
-  })
+        User.findOneAndUpdate(
+            { email: email },
+            { $set: { password: hash } },
+            { new: true } // to return the updated document
+        )
+        .then(updatedUser => {
+            if (!updatedUser) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            console.log(`Password updated for ${email}`);
+            res.status(204).json({ message: 'Resource updated successfully' });
+        })
+        .catch(updateErr => {
+            console.log(updateErr);
+            res.status(500).json({ error: 'Update failed' });
+        });
+    });
+});
 
+
+router.put('/changepass',requireLogin,(req,res) => {
+    const {password} = req.body;
+    // Hash the new password before updating
+    bcrypt.hash(password, 12, (hashErr, hash) => {
+        if (hashErr) {
+            console.log(hashErr);
+            return res.status(500).json({ error: 'Password hashing failed' });
+        }
+        User.findByIdAndUpdate (req.user._id,
+            { $set: { password: hash } },
+            { new: true } // to return the updated document
+        )
+        .then(updatedUser => {
+            if (!updatedUser) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            console.log(`Password updated for user ${req.user._id}`);
+            res.status(204).json({ message: 'Resource updated successfully' });
+        })
+        .catch(updateErr => {
+            console.log(updateErr);
+            res.status(500).json({ error: 'Update failed' });
+        });
+    });
+});
+
+
+
+router.put('/changeinfo',requireLogin,(req,res) => {
+    const {email, name,phoneno} = req.body;
+    const updateObject = {};
+    if (email !== null) {
+        updateObject.email = email;
+    }
+    if (name !== null) {
+        updateObject.name = name;
+    }
+    if (phoneno !== null) {
+        updateObject.phoneno = phoneno;
+    }
+    User.findByIdAndUpdate(req.user._id,
+        { $set: updateObject},
+        { new: true } // to return the updated document
+    )
+    .then(updatedUser => {
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        console.log(`Change infomation for ${req.user._id}`);
+        res.status(204).json({ message: 'Resource updated successfully' });
+    })
+    .catch(updateErr => {
+        console.log(updateErr);
+        res.status(500).json({ error: 'Update failed' });
+    });
+});
 
 
 module.exports = router
