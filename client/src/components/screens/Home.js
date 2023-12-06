@@ -96,7 +96,7 @@ const addToCart = (id)=>{
       },
       body:JSON.stringify({
           postId:id,
-          amount:0
+          amount:1
       })
   }).then(res=>res.json())
   .then(result=>{

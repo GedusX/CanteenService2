@@ -23,7 +23,24 @@ const Cart = () => {
             setData(result.result)
         })
      },[])
-
+     const addToCart = (id,amt)=>{
+        fetch('/addToCart',{
+            method:"put",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem('jwt')
+            },
+            body:JSON.stringify({
+                postId:id,
+                amount:amt
+            })
+        }).then(res=>res.json())
+        .then(result=>{
+          M.toast({html: result.message, classes:"#43a047 green darken-1"})
+        }).catch(err=>{
+          console.log(err)
+      })
+      }
      const unlikePost = (id)=>{
         fetch('/unlike',{
             method:"put",
@@ -53,7 +70,8 @@ const Cart = () => {
       })
   }
   const [buttonPopup, setButtonPopup] = useState(false);
-     
+  const [total, settotal] = useState(0);
+  const sum = data.map((order)=>order.amount*order.itemPost.body).reduce((prev, curr) => prev +  curr, 0)
 
   return (
 //     <>
@@ -144,7 +162,7 @@ const Cart = () => {
             <h1>Giỏ hàng</h1>
             <div class="cart_list">
                 {
-                     data.map(item=>{
+                    data.map(item=>{
                         return(
                         <div class="cart_item">
                             <img src={item.itemPost.photo} alt = "" />
@@ -153,24 +171,35 @@ const Cart = () => {
                                 <div class="cart_name">{item.itemPost.title}</div>
                                 <div class="cart_price">{item.itemPost.body}</div>
                             </div>
-                            <div class="cart_quantity">{item.amount}</div>
-                            <div class="cart_returnPrice">$433.3</div>
+                            
+                            <input class="cart_quantity" placeholder={item.amount}
+                                type="number"
+                                onBlur={(e)=>addToCart(item.itemPost._id,e.target.value)}
+                            >
+
+                            </input>
+                            
+                            
+                            <div class="cart_returnPrice">{item.amount*item.itemPost.body}</div>
                         </div>
                     )
-                })
+                    })
+
                } 
 
             </div>
         </div>
 
-        <div class="cart_right">
+        <div class="cart_right_forcart">
             <a href = "./Payment">
                 <button class="cart_buttonCheckout">Thanh toán bằng thẻ ngân hàng</button>
             </a>
+
             <div class="cart_return">
+            <h1>Hoặc</h1>
                 <div class="cart_row">
                     <div>Tổng tiền</div>
-                    <div class="cart_totalPrice">110000 VND</div>
+                    <div class="cart_totalPrice">{sum} VND</div>
                 </div>
                 <div class="cart_row">
                     <div>Phí vận chuyển</div>
@@ -178,7 +207,7 @@ const Cart = () => {
                 </div>
                 <div class="cart_row">
                     <div>Tổng cộng</div>
-                    <div class="cart_totalPrice">110000 VND</div>
+                    <div class="cart_totalPrice">{sum} VND</div>
                 </div>
             </div>
             <button class="cart_buttonCheckout" onClick={() => setButtonPopup(true)}>Thanh toán bằng tiền mặt</button>
