@@ -36,7 +36,7 @@ const Home=()=> {
      })
    },[])
 
-   const likePost = (id)=>{
+  const likePost = (id)=>{
     fetch('/like',{
         method:"put",
         headers:{
