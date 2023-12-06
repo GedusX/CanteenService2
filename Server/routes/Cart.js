@@ -4,104 +4,80 @@ const mongoose = require('mongoose')
 const requireLogin  = require('../middleware/requireLogin')
 const Cart = mongoose.model("Cart")
 const CartItem = mongoose.model("CartItem")
+const User = mongoose.model("User")
 
-function getInUseCartId(req){
+async function getInUseCartId(req) {
+  try {
+    const result = await User.findById(req.user._id).populate("addCart");
+    const cartList = result.addCart;
+    const isUseCart = cartList.find((cart) => cart.inUse === true);
 
-
-}
-function getAllCartId(req){
-
-
-}
- 
-
-router.get('/mycart',requireLogin,(req,res)=>{
-  var cart_id = req.user.addCart  
-  console.log(10) 
-  if (cart_id.length === 0){
+    if (isUseCart === undefined) {
       const newCart = new Cart({
-          inUse:true,
+        inUse: true,
       });
-      newCart.save((err, savedCart) => {
-          if (err) {
-            return res.status(500).json({ error: err });
-          }
-          User.findByIdAndUpdate(
-          req.user._id,
-          {
-              $push: { addCart: savedCart._id },
-          },
-          {
-              new: true
-          },
-          (err, updatedUser) => {
-              if (err) {
-              return res.status(500).json({ error: err });
-              }
-              cart_id = savedCart._id;
-          }
-          );
-      });
+
+      await newCart.save();
+
+      await User.findByIdAndUpdate(
+        req.user._id,
+        {
+          $push: { addCart: newCart._id },
+        },
+        {
+          new: true,
+        }
+      ).exec();
+
+      console.log("New cart created");
+      return newCart._id;
+    } else {
+      console.log("No cart created");
+      return isUseCart._id;
+    }
+  } catch (error) {
+    console.error(error);
+    // Handle error appropriately
   }
+}
 
-  CartItem.find({cartBy:cart_id[0]})
-  .populate('itemPost')
-  .then(result=>{
-    console.log(result)
-    res.json({result})
-  })
-  .catch(err=>{
-    console.log(err)
-  })
+router.get('/mycart', requireLogin, async (req, res) => {
+  try {
+    const cart_id = await getInUseCartId(req);
+    console.log(cart_id);
 
-})
+    const result = await CartItem.find({ cartBy: cart_id }).populate('itemPost');
+    
+    // console.log(result)
+    return res.json({ result: result });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 
 
 router.put('/addToCart',requireLogin,(req,res)=>{
-  var cart_id = req.user.addCart   
-  if (cart_id.length === 0){
-      const newCart = new Cart({
-          inUse:true,
-      });
-      newCart.save((err, savedCart) => {
-          if (err) {
-            return res.status(500).json({ error: err });
-          }
-          User.findByIdAndUpdate(
-          req.user._id,
-          {
-              $push: { addCart: savedCart._id },
-          },
-          {
-              new: true
-          },
-          (err, updatedUser) => {
-              if (err) {
-              return res.status(500).json({ error: err });
-              }
-              cart_id = savedCart._id;
-          }
-          );
-      });
-  }
-  CartItem.countDocuments({ itemPost: req.body.postId, cartBy: cart_id[0]})
+  var cart_id = getInUseCartId(req)  
+  
+  CartItem.countDocuments({ itemPost: req.body.postId, cartBy: cart_id})
   .then(count => {
       if (count > 0) {
         // Item already exists in the cart
-        return CartItem.findOne({ itemPost: req.body.postId, cartBy: cart_id[0] });
+        return CartItem.findOne({ itemPost: req.body.postId, cartBy: cart_id});
       } else {
         // Item doesn't exist, create a new CartItem
         if (req.body.amount!=0){
           const newItem = new CartItem({
               itemPost: req.body.postId,
               amount: req.body.amount ? req.body.amount : 1,
-              cartBy: cart_id[0],
+              cartBy: cart_id,
           });
           return newItem.save()
               .then(savedItem => {
               // Update the Cart with the new item
               return Cart.findByIdAndUpdate(
-                  cart_id[0],
+                  cart_id,
                   {
                   $push: { itemPost: savedItem._id },
                   },
@@ -138,10 +114,6 @@ router.put('/addToCart',requireLogin,(req,res)=>{
     })
 });
 
-  
-
-
-
 
 router.post("/shipping",requireLogin,(req,res)=>{
 
@@ -166,26 +138,6 @@ router.post("/shipping",requireLogin,(req,res)=>{
   })
 })
 
-
-// router.post('/createpost',requireLogin,(req,res)=>{
-//     const {title,body,pic} = req.body 
-//     if(!title || !body || !pic){
-//       return  res.status(422).json({error:"Plase add all the fields"})
-//     }
-//     req.user.password = undefined
-//     const post = new Post({
-//         title,
-//         body,
-//         photo:pic,
-//         postedBy:req.user
-//     })
-//     post.save().then(result=>{
-//         res.json({post:result})
-//     })
-//     .catch(err=>{
-//         console.log(err)
-//     })
-// })
 
 router.post('/shippinginfo',(req,res)=>{
   const {address,sector,city,phoneno  }=req.body
