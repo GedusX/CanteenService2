@@ -81,7 +81,7 @@ const Navbar=()=> {
     <>
     <nav>
     <div className="nav-wrapper white " >
-      <Link to={state?"/":"signin"} className="brand-logo left">Goodness</Link>
+      <Link to={state?"/":"signin"} className="brand-logo left">Nothing</Link>
       <ul id="nav-mobile" className="right">
 
        {renderList()}

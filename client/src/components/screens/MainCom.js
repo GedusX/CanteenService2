@@ -11,14 +11,14 @@ const MainCom = () => {
             <div className="col-1">
               <center>
                 {" "}
-                <h1> Goodness </h1>
-                <h2> Get the Goodness of Food in all over Haryana</h2>
+                <h1> Nothing </h1>
+                <h2> Welcome for using our product</h2>
               </center>
             </div>
             <div className="col-1">
-              <form action="">
+              {/* <form action="">
                 <input type="email" placeholder="Email Address" />
-              </form>
+              </form> */}
               <center>
                 <a href="" className="btn">
                   Get Started 

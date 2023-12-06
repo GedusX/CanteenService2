@@ -13,7 +13,7 @@ import  Cart from "./components/screens/Cart";
 import Footer from "./components/screens/Footer";
 import ProductDescription from "./components/screens/ProductDescription";
 // import ShippingInfo from "./components/screens/ShippingInfo";
-// import Payment from "./components/screens/Payment";
+import Payment from "./components/screens/Payment";
 
 import MainCom from "./components/screens/MainCom";
 import UserProfile from "./components/screens/UserProfile";
@@ -61,8 +61,9 @@ function App() {
             <Route path="offer" element={<><Offer /></>} />
             <Route path="Footer" element={<><Footer /></>} />
             <Route path="Cart" element={<><Cart /></>} />
-            {/* <Route path="shippinginfo" element={<><ShippingInfo/></>} />
-            <Route path="payment" element={<><Payment/></>} /> */}
+
+             {/* <Route path="shippinginfo" element={<><ShippingInfo/></>} /> */}
+            {<Route path="payment" element={<><Payment/></>} /> }
 
             <Route path="profile/:userid" element={<><UserProfile /></>} />
 
