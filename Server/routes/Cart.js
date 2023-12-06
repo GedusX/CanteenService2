@@ -3,8 +3,47 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const requireLogin  = require('../middleware/requireLogin')
 const Cart = mongoose.model("Cart")
+const CartItem = mongoose.model("CartItem")
 
  
+
+router.post('/mycart',requireLogin,(req,res)=>{
+  var cart_id = req.user.addCart   
+  if (cart_id.length === 0){
+      const newCart = new Cart({
+          inUse:true,
+      });
+      newCart.save((err, savedCart) => {
+          if (err) {
+            return res.status(500).json({ error: err });
+          }
+          User.findByIdAndUpdate(
+          req.user._id,
+          {
+              $push: { addCart: savedCart._id },
+          },
+          {
+              new: true
+          },
+          (err, updatedUser) => {
+              if (err) {
+              return res.status(500).json({ error: err });
+              }
+              cart_id = savedCart._id;
+          }
+          );
+      });
+  }
+
+  CartItem.find({cartBy:cart_id[0]})
+  .populate(itemPost)
+  .then(result=>{
+    
+
+
+
+  })
+})
 
 
 
@@ -74,10 +113,6 @@ router.post('/shippinginfo',(req,res)=>{
        .catch(err=>{
            console.log(err)
        })
-   
-  
-
-  
 })
 
 
