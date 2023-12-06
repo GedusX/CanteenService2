@@ -12,14 +12,15 @@ const Cart = () => {
      const [data,setData]=useState([])
      const {state,dispatch}=useContext(UserContext)
      useEffect(()=>{
-        fetch('/mypost',{
+        fetch('/mycart',{
             headers:{
                 "Authorization":"Bearer "+localStorage.getItem("jwt")
             }
-        }).then(res=>res.json())
+        })
+        .then(res=>res.json())
         .then(result=>{
             console.log(result)
-            setData(result.mypost)
+            setData(result.result)
         })
      },[])
 
@@ -138,7 +139,6 @@ const Cart = () => {
 //     </>
     <div class="cart_container">
     <div class="cart_checkoutLayout">
-        
         <div class="cart_returnCart">
             <a href="/" > Tiếp tục mua sắm</a>
             <h1>Giỏ hàng</h1>
@@ -147,12 +147,13 @@ const Cart = () => {
                      data.map(item=>{
                         return(
                         <div class="cart_item">
-                            <img src={item.photo} alt = "" />
+                            <img src={item.itemPost.photo} alt = "" />
+                            
                             <div class="cart_info">
-                                <div class="cart_name">{item.title}</div>
-                                <div class="cart_price">{item.body}</div>
+                                <div class="cart_name">{item.itemPost.title}</div>
+                                <div class="cart_price">{item.itemPost.body}</div>
                             </div>
-                            <div class="cart_quantity">5</div>
+                            <div class="cart_quantity">{item.amount}</div>
                             <div class="cart_returnPrice">$433.3</div>
                         </div>
                     )

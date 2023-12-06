@@ -36,7 +36,7 @@ const Home=()=> {
      })
    },[])
 
-   const likePost = (id)=>{
+  const likePost = (id)=>{
     fetch('/like',{
         method:"put",
         headers:{
@@ -96,7 +96,7 @@ const addToCart = (id)=>{
       },
       body:JSON.stringify({
           postId:id,
-          amount:1
+          amount:0
       })
   }).then(res=>res.json())
   .then(result=>{

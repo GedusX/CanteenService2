@@ -7,8 +7,9 @@ const CartItem = mongoose.model("CartItem")
 
  
 
-router.post('/mycart',requireLogin,(req,res)=>{
-  var cart_id = req.user.addCart   
+router.get('/mycart',requireLogin,(req,res)=>{
+  var cart_id = req.user.addCart  
+  console.log(10) 
   if (cart_id.length === 0){
       const newCart = new Cart({
           inUse:true,
@@ -36,13 +37,15 @@ router.post('/mycart',requireLogin,(req,res)=>{
   }
 
   CartItem.find({cartBy:cart_id[0]})
-  .populate(itemPost)
+  .populate('itemPost')
   .then(result=>{
-    
-
-
-
+    console.log(result)
+    res.json({result})
   })
+  .catch(err=>{
+    console.log(err)
+  })
+
 })
 
 

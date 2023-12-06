@@ -97,6 +97,7 @@ router.put('/updatepic',requireLogin,(req,res)=>{
 // })
 
 router.put('/addToCart',requireLogin,(req,res)=>{
+ 
     var cart_id = req.user.addCart   
     if (cart_id.length === 0){
         const newCart = new Cart({
