@@ -9,7 +9,7 @@
   
   .cart_checkoutLayout{
     display: grid;
-    align-items: center;
+    /* align-items: center; */
     grid-template-columns: 2fr 2fr;
     gap: 50px;
     padding: 20px;
@@ -41,10 +41,10 @@
     }
   .cart_checkoutLayout .cart_right_forcart .cart_return h1{
     color: #ededed;
-    font-size: medium;
+    font-size: large;
     border-bottom: 2px solid #cac8c8;
     padding-bottom: 20px;
-
+    text-align: center;
 
   }
   
