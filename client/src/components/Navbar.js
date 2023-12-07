@@ -10,10 +10,10 @@ const Navbar=()=> {
     const [userDetails,setUserDetails] = useState([])
      const {state,dispatch} = useContext(UserContext)
     const navigate=useNavigate();
-    const [userprofile,setuserprofile] = useState(null)
+
     useEffect(()=>{
       M.Modal.init(searchModal.current)
-      setuserprofile(JSON.parse(localStorage.getItem('user')))
+
       
   },[])
   const renderList=()=>{
@@ -27,7 +27,7 @@ const Navbar=()=> {
       <li key='3'><Link to="/cart"><i className="material-icons blue-text text-darken-2 modal-trigger">shopping_cart</i></Link></li>,
       <li key='8'><Link to="/product">All Products</Link></li>,
       <li key='2'><Link to="/profile"><i className="material-icons blue-text text-darken-2 modal-trigger">person</i></Link></li>,
-      <li key='2' className='text'>Xin chao, {userprofile.name}</li>,
+      <li key='9' className='text'>Xin chao, {localStorage.getItem('jwt')===null?"Guest":JSON.parse(localStorage.getItem('user')).name}</li>,
       <li key='4'>
           <button className="btn #c62828 red darken-3 layout"
          onClick={()=>{
@@ -90,7 +90,7 @@ const Navbar=()=> {
     {localStorage.getItem("jwt")!==null?(
     <nav>
     <div className="nav-wrapper white " >
-      <Link to={state?"/":"signin"} className="brand-logo left">BKCS</Link>
+      <Link to={state?"/home":"signin"} className="brand-logo left"><img className = 'logo' src='https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg'></img></Link>
       <ul id="nav-mobile" className="right">
       
        {renderList()}

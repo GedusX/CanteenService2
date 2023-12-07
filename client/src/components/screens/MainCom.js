@@ -19,11 +19,6 @@ const MainCom = () => {
               {/* <form action="">
                 <input type="email" placeholder="Email Address" />
               </form> */}
-              <center>
-                <a href="" className="btn">
-                  Get Started 
-                </a>
-              </center>
             </div>
           </div>
                 </div>
