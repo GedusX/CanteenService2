@@ -29,27 +29,26 @@ async function getInUseCartId(req) {
         }
       ).exec();
 
-      console.log("New cart created");
+      // console.log("New cart created");
       return newCart._id;
     } else {
-      console.log("No cart created");
+      // console.log("No cart created");
       return isUseCart._id;
     }
   } catch (error) {
     console.error(error);
-    // Handle error appropriately
   }
 }
 
 router.get('/mycart', requireLogin, async (req, res) => {
   try {
     const cart_id = await getInUseCartId(req);
-    console.log(cart_id);
-
-    const result = await CartItem.find({ cartBy: cart_id }).populate('itemPost');
-    
-    // console.log(result)
-    return res.json({ result: result });
+    CartItem.find({ cartBy: cart_id })
+    .populate('itemPost')
+    .then(result=>{
+      console.log(result)
+      return res.json({result});
+    })
   } catch (err) {
     console.log(err);
   }
@@ -57,9 +56,8 @@ router.get('/mycart', requireLogin, async (req, res) => {
 
 
 
-router.put('/addToCart',requireLogin,(req,res)=>{
-  var cart_id = getInUseCartId(req)  
-  
+router.put('/addToCart',requireLogin, async (req,res)=>{
+  var cart_id = await getInUseCartId(req)  
   CartItem.countDocuments({ itemPost: req.body.postId, cartBy: cart_id})
   .then(count => {
       if (count > 0) {
@@ -113,6 +111,19 @@ router.put('/addToCart',requireLogin,(req,res)=>{
       }
     })
 });
+
+
+router.post("/submitcart",requireLogin,(req,res)=>{
+  var cartId = req.body.cartId
+  Cart.findByIdAndUpdate(cartId,{
+    set:{inUse:false}
+  },{new:true}
+  )
+  .catch(err=>{
+    console.log(err)
+  })
+  res.status(200).json({ message: 'Cart Submited' });
+})
 
 
 router.post("/shipping",requireLogin,(req,res)=>{

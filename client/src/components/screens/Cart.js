@@ -165,10 +165,10 @@ const Cart = () => {
                     data.map(item=>{
                         return(
                         <div class="cart_item">
-                            <img src={item.photo} alt = "" />
+                            <img src={item.itemPost.photo} alt = "" />
                             <div class="cart_info">
-                                <div class="cart_name">{item.title}</div>
-                                <div class="cart_price">{item.body}</div>
+                                <div class="cart_name">{item.itemPost.title}</div>
+                                <div class="cart_price">{item.itemPost.body}</div>
                             </div>
                             
                             <input class="cart_quantity" placeholder={item.amount}
