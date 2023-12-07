@@ -10,8 +10,8 @@ import ap from "../Image/apimg.png";
               <div className="container">
                       <div className="row">
                               <div className="footer-col-1">
-                                      <h3>Download our App</h3>
-                                       <p>Download App for Android and IOS Mobile Phone.</p>
+                                      <h3>Tải ứng dụng</h3>
+                                       <p>Tải ứng dụng cho Android và IOS Mobile Phone.</p>
                                        <div className={logo}>
                                         <img src={gp} alt="" style={{width:"150px"}}/>
                                         <img src={ap} alt=""  style={{width:"150px"}}/>
@@ -19,7 +19,7 @@ import ap from "../Image/apimg.png";
                               </div>
                  
                 <div className="footer-col-3">
-                                <h3>Useful Links</h3>
+                                <h3>Các liên kết</h3>
                                 <ul>
                                         <li>Coupons</li>
                                         <li>Blog Post</li>
@@ -28,7 +28,7 @@ import ap from "../Image/apimg.png";
                                 </ul>
                         </div>
                 <div className="footer-col-4">
-                                        <h3>Follow us</h3>
+                                        <h3>Về chúng tôi</h3>
                                         <ul>
                                                 <li>Facebook</li>
                                                 <li>Twitter</li>
@@ -40,7 +40,7 @@ import ap from "../Image/apimg.png";
                      
               </div>
               <hr/>
-              <p className="copyright">&#169; Copyright 2022- Vidushi Gandhi</p>
+              <p className="copyright">&#169; Copyright 2023- Nothing group</p>
       </div>
       </div>
     </>
