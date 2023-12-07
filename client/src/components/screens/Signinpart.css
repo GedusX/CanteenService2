@@ -1,0 +1,195 @@
+.card_container{
+    width: 1200px;
+    margin: auto;
+    max-width: 90%;
+    transition: transform 1s;
+  }
+  
+  
+  .card_checkoutLayout{
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+    gap: 50px;
+    padding: 20px;
+  }
+  
+  
+  .card_right{
+
+    border-radius: 20px;
+    padding: 40px;
+
+  }
+  .card_right h1{
+    font-size: 40px;
+    font-weight: 500;
+  }
+
+  .card_form{
+      display: grid;
+      gap: 20px;
+
+  }
+  .card_form .sign_up{
+    font-size: 18px;
+    margin: 15px;
+  }
+  .card_form h1{
+    font-size: 3em;
+  }
+  .card_forgotpass{
+    display: row;
+    font-size: 1em;
+    padding: 10px;
+
+  }
+
+  .card_forgotpass h5{
+    font-size: 1em;
+    float: right;
+  }
+
+  .card_forgotpass input[type="checkbox"]:checked + label:after {
+    opacity: 1;
+  }
+
+  
+
+  .card_group label{
+    font-weight: 400;
+    color:#262626;
+    font-size: 1em
+  }
+  .card_button{
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #181818;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .card_checkoutLayout .card_form input, 
+  .card_checkoutLayout .card_form select
+  {
+      width: 100%;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      border-radius: 20px;
+      margin-top: 10px;
+      border:none;
+      background-color: #f4f4f4;
+      color: #fff;
+  }
+  
+  
+  .cart_popup {
+    width: 400px;
+    background: #ededed;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #333;
+  
+  }
+  .cart_popup img{
+    width: 100px;
+    margin-top: -50px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  .cart_popup h2{
+    font-size: 38px;
+    font-weight: 500;
+    margin: 30px 0 10px;
+  }
+  .cart_popup button{
+    width: 100%;
+    margin-top: 50px;
+    padding: 10px 0;
+    background:  #6fd649;
+    color: #fff;
+    border: 0;
+    outline: none;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+
+  
+  .card_returncard img{
+    width: 100%;
+
+  }
+
+  .forgotpass_container{
+    width: 1200px;
+    margin: auto;
+    max-width: 90%;
+    transition: transform 1s;
+    display: flex;
+    justify-content: center;
+
+  }
+  
+  
+  .forgotpass_checkoutLayout{
+    width: 500px;
+    gap: 50px;
+    padding: 20px;
+  }
+
+  
+  .forgotpass_right{
+
+    border-radius: 20px;
+    padding: 40px;
+
+  }
+  .forgotpass_right h1{
+    font-size: 40px;
+    font-weight: 500;
+
+  }
+
+  .forgotpass_form{
+      display: grid;
+      gap: 20px;
+
+  }
+  .forgotpass_group label{
+    font-weight: 400;
+    color:#262626;
+    font-size: 1em
+  }
+  .forgotpass_checkoutLayout .forgotpass_form input, 
+  .forgotpass_checkoutLayout .forgotpass_form select
+  {
+      width: 100%;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      border-radius: 20px;
+      margin-top: 10px;
+      border:none;
+      background-color: #f4f4f4;
+      color: #fff;
+  }
+  .forgotpass_button{
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #181818;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #fff;
+  }
+  

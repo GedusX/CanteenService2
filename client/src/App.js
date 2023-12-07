@@ -19,6 +19,8 @@ import MainCom from "./components/screens/MainCom";
 import UserProfile from "./components/screens/UserProfile";
 import {useNavigate} from 'react-router-dom'
 import {reducer,initialState} from './reducers/userReducer'
+import Forgotpass from "./components/screens/Forgotpass";
+
 
 export const UserContext =createContext()
 
@@ -61,9 +63,16 @@ function App() {
             <Route path="offer" element={<><Offer /></>} />
             <Route path="Footer" element={<><Footer /></>} />
             <Route path="Cart" element={<><Cart /></>} />
-
+            <Route path="forgotpass" element={<><Forgotpass/></>} />
+            
              {/* <Route path="shippinginfo" element={<><ShippingInfo/></>} /> */}
-            {<Route path="payment" element={<><Payment/></>} /> }
+            {
+              <Route path="payment" element={<><Payment/></>} />
+            }
+            
+
+            
+
 
             <Route path="profile/:userid" element={<><UserProfile /></>} />
 

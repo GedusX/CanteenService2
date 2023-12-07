@@ -1,6 +1,6 @@
 import React,{useEffect,useState,useContext} from 'react'
 import {UserContext} from '../../App'
-import './Profile.css'
+import './profile.css'
 import { Outlet, Link,useNavigate } from "react-router-dom";
 import M from 'materialize-css'
 
