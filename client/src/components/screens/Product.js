@@ -328,7 +328,10 @@ const addToCart = (id)=>{
                   style={{height:"150px", width:"200px"}}
                     /> 
                     <div className="card-body"><center>
-                      <h6 className="card-title">{item.title}</h6>
+                    <Link to={ "/productdescription/"+item._id} >
+                        <h6 className="card-title blue-text text-darken-2">{item.title}</h6>
+                    </Link>
+                    <h6  style={{fontSize: "20px"}}>{item.body}đ</h6>
                       <div style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -336,8 +339,7 @@ const addToCart = (id)=>{
                         justifyContent: 'space-between',
 
                       }}>
-                         <ToggleFavorite Fstate = {item.isLike} id = {item._id}/>
-                        <h6  style={{marginRight:"20px", fontSize: "24px"}}>{item.body}đ</h6>
+                        
                       
                       </div>
                       </center>
@@ -349,10 +351,7 @@ const addToCart = (id)=>{
                         marginBottom: "20px",
 
                     }}>
-                        <Link to={ "/productdescription/"+item._id} >
-                        <button className="btn waves-effect #e65100 lightblue darken-4 btn-medium" type="submit" name="action">More Details
-                          </button>
-                        </Link>
+                       <ToggleFavorite Fstate = {item.isLike} id = {item._id}/>
                       <button className="btn" name="addCart"
                         onClick={() => addToCart(item._id)}
                         >
