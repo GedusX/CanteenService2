@@ -16,8 +16,7 @@ const Cart = () => {
             headers:{
                 "Authorization":"Bearer "+localStorage.getItem("jwt")
             }
-        })
-        .then(res=>res.json())
+        }).then(res=>res.json())
         .then(result=>{
             console.log(result)
             setData(result.result)
@@ -157,6 +156,7 @@ const Cart = () => {
 //     </>
     <div class="cart_container">
     <div class="cart_checkoutLayout">
+        
         <div class="cart_returnCart">
             <a href="/" > Tiếp tục mua sắm</a>
             <h1>Giỏ hàng</h1>
@@ -166,7 +166,6 @@ const Cart = () => {
                         return(
                         <div class="cart_item">
                             <img src={item.itemPost.photo} alt = "" />
-                            
                             <div class="cart_info">
                                 <div class="cart_name">{item.itemPost.title}</div>
                                 <div class="cart_price">{item.itemPost.body}</div>

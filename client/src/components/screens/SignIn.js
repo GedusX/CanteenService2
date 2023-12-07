@@ -32,7 +32,6 @@ const PostData =()=>{
    if(data.error){
     M.toast({html: data.error, classes:"#d32f2f red darken-2"})
     }else{
-
       localStorage.setItem("jwt",data.token)
       localStorage.setItem("user",JSON.stringify(data.user))
       dispatch({type:"USER",payload:data.user})
@@ -42,7 +41,6 @@ const PostData =()=>{
   }).catch(err=>{
     console.log(err) 
   })
-
 }
 
   return (
