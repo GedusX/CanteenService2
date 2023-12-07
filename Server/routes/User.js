@@ -165,7 +165,8 @@ router.put('/changepass',requireLogin,(req,res) => {
 
 
 router.put('/changeinfo',requireLogin,(req,res) => {
-    const {email, name,phoneno} = req.body;
+    console.log(req.body)
+    const {name,email,phoneno} = req.body;
     const updateObject = {};
     if (email !== null) {
         updateObject.email = email;
@@ -185,7 +186,9 @@ router.put('/changeinfo',requireLogin,(req,res) => {
             return res.status(404).json({ error: 'User not found' });
         }
         console.log(`Change infomation for ${req.user._id}`);
-        res.status(204).json({ message: 'Resource updated successfully' });
+        console.log(updatedUser)
+        const {_id,name,email,followers,following,pic,phoneno} = updatedUser
+        res.json({user:{_id,name,email,followers,following,pic,phoneno}})
     })
     .catch(updateErr => {
         console.log(updateErr);

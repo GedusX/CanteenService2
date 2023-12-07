@@ -114,15 +114,20 @@ router.put('/addToCart',requireLogin, async (req,res)=>{
 
 
 router.post("/submitcart",requireLogin,(req,res)=>{
+  
   var cartId = req.body.cartId
-  Cart.findByIdAndUpdate(cartId,{
-    set:{inUse:false}
-  },{new:true}
-  )
-  .catch(err=>{
-    console.log(err)
-  })
-  res.status(200).json({ message: 'Cart Submited' });
+  if (req.user.cart.includes(cartId)){
+    Cart.findByIdAndUpdate(cartId,{
+      set:{inUse:false}
+    },{new:true}
+    )
+    .catch(err=>{
+      console.log(err)
+    })
+    res.status(200).json({ message: 'Cart Submited' });
+  } else {
+    res.status(404).json({ err: 'Cart not found' });
+  }
 })
 
 
