@@ -30,7 +30,7 @@ const Routing=()=>{
     const {state,dispatch}=useContext(UserContext)
     // eslint-disable-next-line
  useEffect(()=>{
-  const user =JSON.parse(localStorage.getItem("user")) 
+const user =JSON.parse(localStorage.getItem("user")) 
  console.log(user)
   if(user){
     dispatch({type:"USER",payload:user})
