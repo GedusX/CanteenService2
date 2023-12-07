@@ -1,14 +1,30 @@
 import React,{useEffect,useState,useContext} from 'react'
 import {UserContext} from '../../App'
+import './Profile.css'
 import { Outlet, Link,useNavigate } from "react-router-dom";
 
 const Profile  = ()=>{
+
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleEditClick = () => {
+      setIsEditing(true);
+    };
+  
+    const handleCancelClick = () => {
+      setIsEditing(false);
+    };
+  
+    const handleSaveClick = () => {
+      setIsEditing(false);
+    };
+
     const [mypics,setPics] = useState([])
     const {state,dispatch} = useContext(UserContext)
     console.log(state)
     const [image,setImage] = useState("")
     useEffect(()=>{
-       fetch('/mypost',{
+       fetch('/changeinfo',{
            headers:{
                "Authorization":"Bearer "+localStorage.getItem("jwt")
            }
@@ -20,69 +36,61 @@ const Profile  = ()=>{
     },[])
 
   return (
-    <div style={{maxWidth:"550px", margin:"0px auto" }}>
-    <div style={{
-      display:"flex",
-      justifyContent:"space-around",
-      margin:"18px 0px",
-      borderBottom:"1px solid grey"
-
-    }}>
-      <div>
-        <img  alt="" style={{width:"200px",height:'200px',borderRadius:"100px"}}
-        src="https://images.unsplash.com/photo-1520302723644-46526f5a7c2a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=836&q=80" />
-      </div>
-      <div>
-        <h4>{state?state.name:"loading"}</h4>
-        <h5>{state?state.email:"loading"}</h5>
-        <div style={{display:"flex", justifyContent:"space-between" ,width:"108%"}}>
-          <h5>{mypics.length} items Added to Cart</h5>
-                 </div>
-      </div>
+<>
+    <h4 class="yourInfo">
+        Thông tin người dùng
+    </h4>
+    <div class="form-container">
+        <form>
+            <div>
+                <div class="font-weight: bold">Họ và tên</div>
+                <input type="text" id="name" name="name" Value={state ? state.name : "loading" } disabled={!isEditing} />
+            </div>
+            <div>
+                <div class="font-weight: bold">Số điện thoại</div>
+                <input type="number" id="phoneno" name="phoneno" Value={state ? state.phoneno : "loading"}  disabled={!isEditing}/>
+            </div>
+            <div>
+                <div class="font-weight: bold">Email</div>
+                <input type="email" id="email" name="email" Value={state ? state.email : "loading"}  disabled={!isEditing}/>
+            </div>
+        </form>
     </div>
-    <div>
-        <h4>{state?state.name:"loading"}</h4>
-        <h5>{state?state.email:"loading"}</h5>
-        <div style={{display:"flex", justifyContent:"space-between" ,width:"108%"}}>
-          <h5>{mypics.length} items Added to Cart</h5>
-                 </div>
-      </div>
-
-            
-    
-    <div className='gallery'>
-      <h3>Items Added to Cart</h3>
-      {
-        mypics.map(item=>{
-          return(
-            <>
-<div className="row">
-    <div className="col s12">
-      <div className="card medium" key={ item._id}>
-        <div className="card-image">
-        <img key={ item._id}className='item' src={item.photo} alt={item.title} />
+    <div class="changepasswordblock">
+        <a  href  = "./changepassword">
+            <div class="changePassword">Thay đổi mật khẩu</div>
+        </a>
+    </div>    
+    <div class="Info">
+    {isEditing ? (
+        <div className="">
+        <button
+            type="button"
+            class="cancelInfo"
+            onClick={handleCancelClick}
+        >
+            Huỷ
+        </button>
+        <button
+            type="button"
+            class="saveInfo"
+            onClick={handleSaveClick}
+        >
+            Lưu
+        </button>
         </div>
-        <div className="card-title">
-          <h4>{item.title}</h4>
-          <h5>Price:&#8377;{item.body}</h5>
-          <Link to={ "/productdescription/"+item._id} >
-          <button className="btn waves-effect #e65100 orange darken-4 btn-medium" type="submit" name="action">More Details
-             </button>
-          </Link>
-          
-        </div>
+    ) : (
+        <button
+        type="button"
+        class="changeInfo"
+        onClick={handleEditClick}
+        >
+        Thay đổi thông tin
+        </button>
         
-      </div>
+    )}
     </div>
-  </div>
-  </>
-          )
-          
-        })
-      }
-   
-    </div>
-    </div>
+</>
   )
 }
 export default Profile
