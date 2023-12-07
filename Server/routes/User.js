@@ -109,11 +109,13 @@ router.put('/updatepic',requireLogin,(req,res)=>{
 //     })
 //   })
 router.put('/forgetpass',(req,res) => {
+    
     const { email, password } = req.body;
     // Hash the new password before updating
     bcrypt.hash(password, 12, (hashErr, hash) => {
         if (hashErr) {
             console.log(hashErr);
+            console.log(req.body);
             return res.status(500).json({ error: 'Password hashing failed' });
         }
         User.findOneAndUpdate(
@@ -126,7 +128,7 @@ router.put('/forgetpass',(req,res) => {
                 return res.status(404).json({ error: 'User not found' });
             }
             console.log(`Password updated for ${email}`);
-            res.status(204).json({ message: 'Resource updated successfully' });
+            return res.status(200).json({ message: 'Password updated successfully' });
         })
         .catch(updateErr => {
             console.log(updateErr);
