@@ -11,8 +11,8 @@ const MainCom = () => {
             <div className="col-1">
               <center>
                 {" "}
-                <h1> Nothing </h1>
-                <h2> Welcome for using our product</h2>
+                <h1> HCMUT Canteen </h1>
+                <h2> Kính chào quý khách</h2>
               </center>
             </div>
             <div className="col-1">

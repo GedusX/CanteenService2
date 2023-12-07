@@ -2,32 +2,40 @@ import React,{useContext,useRef,useEffect,useState} from 'react'
 import { Outlet, Link,useNavigate } from "react-router-dom";
 import { UserContext} from '../App'
 import M from 'materialize-css'
+import { Button } from '@mui/material';
+import './Navbar.css'
 const Navbar=()=> {
   const  searchModal = useRef(null)
     const [search,setSearch] = useState('')
     const [userDetails,setUserDetails] = useState([])
      const {state,dispatch} = useContext(UserContext)
     const navigate=useNavigate();
-
+    const [userprofile,setuserprofile] = useState(null)
     useEffect(()=>{
       M.Modal.init(searchModal.current)
+      setuserprofile(JSON.parse(localStorage.getItem('user')))
+      
   },[])
   const renderList=()=>{
     if(state){
     return[
+      
       <li key='1'>
          <i data-target="modal1" className="material-icons blue-text text-darken-2 modal-trigger">search</i>
-    </li>,<li key='2'><Link to="/profile"><i className="material-icons blue-text text-darken-2 modal-trigger">person</i></Link></li>,
+      </li>,
+      
       <li key='3'><Link to="/cart"><i className="material-icons blue-text text-darken-2 modal-trigger">shopping_cart</i></Link></li>,
       <li key='8'><Link to="/product">All Products</Link></li>,
+      <li key='2'><Link to="/profile"><i className="material-icons blue-text text-darken-2 modal-trigger">person</i></Link></li>,
+      <li key='2' className='text'>Xin chao, {userprofile.name}</li>,
       <li key='4'>
-          <button className="btn #c62828 red darken-3"
+          <button className="btn #c62828 red darken-3 layout"
          onClick={()=>{
            localStorage.clear()
            dispatch({type:"CLEAR"})
            navigate('/signin')
          }}
-         >Logout
+         >ĐĂNG XUẤT
          </button>
        </li>
 
@@ -79,11 +87,12 @@ const Navbar=()=> {
  }     
   return (
     <>
+    {localStorage.getItem("jwt")!==null?(
     <nav>
     <div className="nav-wrapper white " >
-      <Link to={state?"/":"signin"} className="brand-logo left">Nothing</Link>
+      <Link to={state?"/":"signin"} className="brand-logo left">BKCS</Link>
       <ul id="nav-mobile" className="right">
-
+      
        {renderList()}
       </ul>
     </div>
@@ -110,7 +119,7 @@ const Navbar=()=> {
       <button    className="modal-close waves-effect waves-green btn-flat" onClick={()=>setSearch('')}>Close</button>
     </div>
   </div>
-  </nav>
+  </nav>):undefined}
   <Outlet />
     </>
   )

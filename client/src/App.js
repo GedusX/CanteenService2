@@ -27,6 +27,12 @@ export const UserContext =createContext()
 const Routing=()=>{
   const navigate = useNavigate();
   const location=useLocation();
+  if (localStorage.getItem('jwt')===null){
+    navigate('/login')
+  }
+  else{
+    navigate('/home')
+  }
     const {state,dispatch}=useContext(UserContext)
     // eslint-disable-next-line
  useEffect(()=>{
@@ -53,9 +59,9 @@ function App() {
         <Routes>
           <Route path="/" element={<><Navbar /><Routing/></>}>
             <Route index element={<><MainCom/><Home  /><Offer /><Footer /></>} />
-            <Route path="home" element={<><MainCom/><Home  /><Offer /><Footer /></>} />
-            <Route path="signin" element={<><MainCom/><SignIn   /></>} />
-            <Route path="signup" element={<><MainCom/><SignUp /></>} />
+            <Route path="home" element={<><MainCom/><Home  /><Product /><Footer /></>} />
+            <Route path="signin" element={<><SignIn   /></>} />
+            <Route path="signup" element={<><SignUp /></>} />
             <Route exact path="profile" element={<><Profile /></>} />
             <Route path="productdescription/:postid" element={<><ProductDescription /></>} />
             <Route path="createpost" element={<><CreatePost /></>} />

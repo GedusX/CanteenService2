@@ -1,0 +1,23 @@
+.text{
+
+    font-size: medium;
+    display: inline;
+    color: black;
+    margin-left: 10px;
+    margin-right: 10px;
+
+}
+
+.icon{
+    display: inline flex;
+    height: auto;
+}
+
+.layout{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.list{
+    display: inline flex;
+}
