@@ -17,6 +17,7 @@ const ProductDescription  = ()=>{
           }
       }).then(res=>res.json())
       .then(result=>{
+          console.log(result.foodinfo)
           setPostDesc(result.foodinfo)
       })
   },[])
@@ -173,7 +174,7 @@ const ProductDescription  = ()=>{
           <div class = "amount_like">
             <p >Số lượt yêu thích: {PostDesc.likes?.length}</p>
             {/* Not take the name of postdesc */}
-            <p>Gian hàng: {PostDesc.belongTo}</p>
+            {/* <p>Gian hàng: {PostDesc.belongTo.name}</p> */}
           </div>
           <div class = "amount_and_addcart">
             <input class = "amout_food" type = "number" placeholder = "1"/>
@@ -211,8 +212,8 @@ const ProductDescription  = ()=>{
                 // </div>
                 <div class='each_comment' key={index}>
                   <div class='left'>
-                    <img src = "https://cdn-icons-png.flaticon.com/512/666/666201.png" alt = ""/>
-                    {/* not take the name user */}
+                    <img src = {comment.pic} alt = ""/>
+                    
                     <p>
                     <strong>{comment.postedBy.name}</strong>
                     </p>

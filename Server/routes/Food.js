@@ -135,13 +135,7 @@ router.post('/search-foods',(req,res)=>{
 router.get('/products/:id',requireLogin,(req,res)=>{
     Food.findOne({_id:req.params.id})
     .populate("belongTo","_id name")
-    .populate({
-        path: "comments.postBy",
-        populate:{
-            path: "postBy",
-            model: "name"
-        } 
-    }).exec()
+    .populate("comments.postedBy","name pic")
     .then(foodinfo=>{
         console.log(foodinfo)
         res.json({foodinfo})
@@ -150,7 +144,6 @@ router.get('/products/:id',requireLogin,(req,res)=>{
         return res.status(404).json({error:"User not found"})
     })
 })
-
 
 
 
