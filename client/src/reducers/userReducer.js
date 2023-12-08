@@ -10,8 +10,6 @@ export const reducer=(state,action)=>{
    if(action.type==="UPDATE"){
      return {
       ...state,
-      followers:action.payload.followers,
-      following:action.payload.following,
       name:action.payload.name,
       email:action.payload.email,
       phoneno:action.payload.phoneno,

@@ -43,6 +43,7 @@ async function getInUseCartId(req) {
 router.get('/mycart', requireLogin, async (req, res) => {
   try {
     const cart_id = await getInUseCartId(req);
+   
     CartItem.find({ cartBy: cart_id })
     .populate('itemPost')
     .then(result=>{
@@ -50,24 +51,25 @@ router.get('/mycart', requireLogin, async (req, res) => {
       return res.json({result});
     })
   } catch (err) {
-    console.log(err);
+      console.log(err);
+      return res.status(400).json({ err: 'Error' });
   }
 });
 
-
-
 router.put('/addToCart',requireLogin, async (req,res)=>{
   var cart_id = await getInUseCartId(req)  
-  CartItem.countDocuments({ itemPost: req.body.postId, cartBy: cart_id})
+  console.log(req.body.foodId)
+  CartItem.countDocuments({ itemPost: req.body.foodId, cartBy: cart_id})
   .then(count => {
+       console.log(count)
       if (count > 0) {
         // Item already exists in the cart
-        return CartItem.findOne({ itemPost: req.body.postId, cartBy: cart_id});
+        return CartItem.findOne({ itemPost: req.body.foodId, cartBy: cart_id});
       } else {
         // Item doesn't exist, create a new CartItem
         if (req.body.amount!=0){
           const newItem = new CartItem({
-              itemPost: req.body.postId,
+              itemPost: req.body.foodId,
               amount: req.body.amount ? req.body.amount : 1,
               cartBy: cart_id,
           });
@@ -113,20 +115,25 @@ router.put('/addToCart',requireLogin, async (req,res)=>{
 });
 
 
-router.post("/submitcart",requireLogin,(req,res)=>{
-  
-  var cartId = req.body.cartId
-  if (req.user.cart.includes(cartId)){
-    Cart.findByIdAndUpdate(cartId,{
-      set:{inUse:false}
-    },{new:true}
-    )
-    .catch(err=>{
-      console.log(err)
-    })
-    res.status(200).json({ message: 'Cart Submited' });
-  } else {
-    res.status(404).json({ err: 'Cart not found' });
+router.post("/submitcart",requireLogin, async (req,res)=>{
+  const cartId = await getInUseCartId(req)
+  if (req.user.addCart.includes(cartId)){
+    const cart = await Cart.findById(cartId);
+
+    if (!cart) {
+      return res.status(404).json({ err: 'Cart not found' });
+    }
+
+    console.log(cart);
+
+    if (cart.itemPost === undefined || cart.itemPost.length === 0) {
+      console.log(1);
+      return res.status(400).json({ err: 'There is no item in this cart' });
+    } else {
+      cart.inUse = false;
+      await cart.save(); // Save the changes to the cart
+      return res.status(200).json({ message: 'Cart Submitted' });
+    }
   }
 })
 

@@ -82,7 +82,7 @@ router.put('/like',requireLogin,(req,res)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
-            return res.json(result)
+            res.json(result)
         }
     })
 })
@@ -95,7 +95,7 @@ router.put('/unlike',requireLogin,(req,res)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
-            return res.json(result)
+            res.json(result)
         }
     })
 })
@@ -134,18 +134,13 @@ router.post('/search-foods',(req,res)=>{
 
 router.get('/products/:id',requireLogin,(req,res)=>{
     Food.findOne({_id:req.params.id})
-
+    .populate("belongTo","_id name")
+    .populate("comments","name photo")
     .then(foodinfo=>{
-         Food.find({belongTo:req.params.id})
-         .populate("belongTo","_id name")
-         .exec((err,foods)=>{
-             if(err){
-                 return res.status(422).json({error:err})
-             }
-             res.json({foodinfo,foods})
-         })
-
-    }).catch(err=>{
+        console.log(foodinfo)
+        res.json({foodinfo})
+    })
+    .catch(err=>{
         return res.status(404).json({error:"User not found"})
     })
 })
