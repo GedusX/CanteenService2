@@ -139,29 +139,37 @@ router.put('/forgetpass',(req,res) => {
 
 
 router.put('/changepass',requireLogin,(req,res) => {
-    const {password} = req.body;
-    // Hash the new password before updating
-    bcrypt.hash(password, 12, (hashErr, hash) => {
-        if (hashErr) {
-            console.log(hashErr);
-            return res.status(500).json({ error: 'Password hashing failed' });
+    const {oldpassword,newpassword} = req.body;
+    //Check if match the old password
+    bcrypt.compare(oldpassword,req.user.password)
+    .then(doMatch=>{
+        if (doMatch){
+            // Hash the new password before updating
+            bcrypt.hash(newpassword, 12, (hashErr, hash) => {
+                if (hashErr) {
+                    console.log(hashErr);
+                    return res.status(500).json({ error: 'Password hashing failed' });
+                }
+                User.findByIdAndUpdate (req.user._id,
+                    { $set: { newpassword: hash } },
+                    { new: true } // to return the updated document
+                )
+                .then(updatedUser => {
+                    if (!updatedUser) {
+                        return res.status(404).json({ error: 'User not found' });
+                    }
+                    console.log(`Password updated for user ${req.user._id}`);
+                    res.status(204).json({ message: 'Resource updated successfully' });
+                })
+                .catch(updateErr => {
+                    console.log(updateErr);
+                    res.status(500).json({ error: 'Update failed' });
+                });
+            });
+        } else {
+            res.status(400).json({ error: 'Incorrect old password' });
         }
-        User.findByIdAndUpdate (req.user._id,
-            { $set: { password: hash } },
-            { new: true } // to return the updated document
-        )
-        .then(updatedUser => {
-            if (!updatedUser) {
-                return res.status(404).json({ error: 'User not found' });
-            }
-            console.log(`Password updated for user ${req.user._id}`);
-            res.status(204).json({ message: 'Resource updated successfully' });
-        })
-        .catch(updateErr => {
-            console.log(updateErr);
-            res.status(500).json({ error: 'Update failed' });
-        });
-    });
+    })
 });
 
 
