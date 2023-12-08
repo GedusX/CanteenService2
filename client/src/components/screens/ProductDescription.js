@@ -71,6 +71,7 @@ const handleButtonRelease = () => {
           </button>
         </div>
       </div>
+    
       <div className='Description' style = {{marginLeft: '60px'}}>
       <h3>Mô tả</h3>
       <p>{PostDesc.desc}</p>
@@ -90,8 +91,13 @@ const handleButtonRelease = () => {
         <p>Chưa có bình luận</p>
       )}
       </div>
-    </div>  
+    </div>
+
+  
  :  <h2>Loading...!</h2> }
+  
+  
+   
     </>
   )
 }
