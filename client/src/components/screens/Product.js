@@ -319,6 +319,7 @@ const addToCart = (id)=>{
           }}>
           {
           dataFiltered.map(item=>{
+              
               return(
                   <div className="col s12 m4" key={item._id}>
                   <div className="card" style={{ margin: "30px" }} 

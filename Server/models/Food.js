@@ -5,7 +5,7 @@ const foodSchema =new mongoose.Schema({
         type:String,
         required:true
     },
-    desc:{
+    type:{
         type:String,
         required:true
     },

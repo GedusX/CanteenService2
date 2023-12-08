@@ -82,7 +82,7 @@ router.put('/like',requireLogin,(req,res)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
-            res.json(result)
+            return res.json(result)
         }
     })
 })
@@ -95,7 +95,7 @@ router.put('/unlike',requireLogin,(req,res)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
-            res.json(result)
+            return res.json(result)
         }
     })
 })
