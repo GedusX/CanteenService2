@@ -1,5 +1,5 @@
 
-import './changePassword.css'
+import './ChangePassword.css'
 import React,{useState,useContext} from 'react'
 
 import M from 'materialize-css'
