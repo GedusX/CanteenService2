@@ -1,12 +1,13 @@
 import React,{useEffect,useState,useContext} from 'react'
 import {UserContext} from '../../App'
 import {useParams} from 'react-router-dom'
+import './ProductDescription.css'
 import M from 'materialize-css'
+
 const ProductDescription  = ()=>{
     const [PostDesc,setPostDesc] = useState([])
     const {state,dispatch} = useContext(UserContext)
     const {postid}=useParams()
-     console.log(postid)
     useEffect(()=>{
        fetch(`/products/${postid}`,{
            headers:{
@@ -20,106 +21,77 @@ const ProductDescription  = ()=>{
        })
     },[])
 
-    const likePost = (id)=>{
-      fetch('/like',{
-          method:"put",
-          headers:{
-              "Content-Type":"application/json",
-              "Authorization":"Bearer "+localStorage.getItem("jwt")
-          },
-          body:JSON.stringify({
-              postId:id
-          })
-      }).then(res=>res.json())
-      .then(result=>{
-                 console.log(result)
-                 const newData = (PostDesc=>{
-            if(PostDesc._id==result._id){
-                return result
-            }else{
-                return PostDesc
-            }
-        })
-        setPostDesc(newData)
-        M.toast({html: "Add To Cart", classes:"#43a047 green darken-1"})
+const [isPressed, setIsPressed] = useState(false);
+const buttonStyle = {
+  width: '195px',
+    height: '65px',
+    flexShrink: 0,
+    borderRadius: '10px',
+    background: '#F4764E',
+    transition: 'box-shadow 0.3s ease',
+    cursor: 'pointer',
+    boxShadow: isPressed ? '0px 4px 8px rgba(0, 0, 0, 0.4)' : 'none',
+    border: 'none',
+    outline: 'none',
+    fontFamily: 'Montserrat, sans-serif',
+    fontSize: '18px',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: 'normal',
+    color: '#FFF',
+};
+const handleButtonPress = () => {
+  setIsPressed(true);
+};
+const handleButtonRelease = () => {
+  setIsPressed(false);
+};
 
-      }).catch(err=>{
-          console.log(err)
-      })
-}
-const unlikePost = (id)=>{
-      fetch('/unlike',{
-          method:"put",
-          headers:{
-              "Content-Type":"application/json",
-              "Authorization":"Bearer "+localStorage.getItem("jwt")
-          },
-          body:JSON.stringify({
-              postId:id
-          })
-      }).then(res=>res.json())
-      .then(result=>{
-        //   console.log(result)
-        const newData = (PostDesc=>{
-            if(PostDesc._id==result._id){
-                return result
-            }else{
-                return PostDesc
-                
-            }
-        })
-        setPostDesc(newData)
-        M.toast({html: "Return from Cart", classes:"#43a047 green darken-1"})
-      }).catch(err=>{
-        console.log(err)
-    })
-}
-    
   return (
     <>
-   
-     {PostDesc?   
-    //  <h2>Happy</h2>
-    <div className="productDescription">
-    <div className="card desc-card">
-        <center>
-      <div className="card-image">
-        <img src={PostDesc.photo} alt="" style={{height:"300px", width:"500px"}}/>
-      </div></center>
-       <div className="card-content">
-       <i className="material-icons" style={{color:'red'}}>favorite</i>
-        <h2>{PostDesc.title}</h2>
-        <h3> &#8377; {PostDesc.body}</h3>
-       
-        {/* PostDesc.likes.includes(state._id) */}
-    {PostDesc.likes
-                            ? <>
-                            <button className="btn waves-effect #e65100 orange darken-4 btn-large" type="submit" name="action" 
-                            onClick={()=>{unlikePost(PostDesc._id)}}>Remove from Cart
-                               <i className="material-icons right">remove_shopping_cart</i>
-                            </button>    
-                            <button className="btn waves-effect #e65100 orange darken-4 btn-large" type="submit" name="action" 
-                            onClick={()=>{likePost(PostDesc._id)}}>Add to Cart
-                                <i className="material-icons right">add_shopping_cart</i>
-                             </button>    </>              
-                            : 
-                            <button className="btn waves-effect #e65100 orange darken-4 btn-large" type="submit" name="action" 
-                            onClick={()=>{likePost(PostDesc._id)}}>Add to Cart
-                                <i className="material-icons right">add_shopping_cart</i>
-                             </button> 
-                            }
-                            
+    {PostDesc?   
+    <div className="productDescription" >
+      <div className="box">
+        <div className="card-image" >
+          <img src={PostDesc.photo} alt="" style={{height:"365px", width:"450px", marginTop: '100px'}}/>
+        </div>
 
-                            {/* <h4>Orders Placed:{PostDesc.likes.length}</h4> */}
-        <input type="text" placeholder='add a comment' />
-       </div>
+        <div className="card-content" >
+          <h2 style={{ fontFamily: 'Montserrat, sans-serif' }}>{PostDesc.title}</h2>
+          <h3 style={{ color: '#FF4004', fontFamily: 'Montserrat, sans-serif'}}>{PostDesc.body} đ</h3>
+          <i className="material-icons" style={{color:'red', marginRight : '40px' }}>favorite</i>
+          <p>{PostDesc.likes?.length}</p>
+          <button
+            style={buttonStyle}
+            onMouseDown={handleButtonPress}
+            onMouseUp={handleButtonRelease}
+            onMouseLeave={handleButtonRelease}
+          >
+            Thêm vào giỏ hàng
+          </button>
+        </div>
       </div>
-    </div>
-    
+      <div className='Description' style = {{marginLeft: '60px'}}>
+      <h3>Mô tả</h3>
+      <p>{PostDesc.desc}</p>
+      </div>
+      <div className='Comments' style = {{marginLeft: '60px'}}>
+      <h3>Bình luận</h3>
+      {PostDesc.comments && PostDesc.comments.length > 0 ? (
+        PostDesc.comments.map((comment, index) => (
+          <div key={index}>
+            <p>
+              <strong>{comment.postedBy.name}: </strong>
+              {comment.text}
+            </p>
+          </div>
+        ))
+      ) : (
+        <p>Chưa có bình luận</p>
+      )}
+      </div>
+    </div>  
  :  <h2>Loading...!</h2> }
-  
-  
-   
     </>
   )
 }
