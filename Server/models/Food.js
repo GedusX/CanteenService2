@@ -13,6 +13,10 @@ const foodSchema =new mongoose.Schema({
         type:String,
         required:true
     },
+    price:{
+        type: Number,
+        required:true
+    },
     likes:[{type:ObjectId,ref:"User"}],
     tag:[{
         type:String
