@@ -25,20 +25,20 @@ import "./Product.css"
 import { Pagination } from "@mui/material";
 const Product = () => {
   const [data,setData]=useState([])
-   const {state,dispatch}=useContext(UserContext)
-   useEffect(()=>{
+  useEffect(()=>{
     fetch('/allfood',{
       headers:{
         "Authorization":"Bearer "+localStorage.getItem("jwt")
       }
     }).then(res=>res.json())
     .then(result=>{
-      console.log(result)
+      
       setData(result.foods)
-     })
-   },[])
-   const likeFood = (id)=>{
-    fetch('/like',{
+    })
+    
+    },[])
+    const likeFood = (id)=>{
+      fetch('/like',{
         method:"put",
         headers:{
             "Content-Type":"application/json",
@@ -49,19 +49,12 @@ const Product = () => {
         })
     }).then(res=>res.json())
     .then(result=>{
-               console.log(result)
-      const newData = data.map(item=>{
-          if(item._id==result._id){
-              return result
-          }else{
-              return item
-          }
-      })
-      // setData(newData)
+        console.log(result)
       M.toast({html: "Like Food", classes:"#43a047 green darken-1"})
     }).catch(err=>{
         console.log(err)
     })
+    
 }
 const unlikeFood = (id)=>{
   fetch('/unlike',{
@@ -75,14 +68,6 @@ const unlikeFood = (id)=>{
       })
     }).then(res=>res.json())
   .then(result=>{
-    const newData = data.map(data=>{
-        if(data._id==result._id){
-            return result
-        }else{
-            return data
-        }
-    })
-    // setData(newData)
     M.toast({html: "UnLike Food", classes:"#43a047 green darken-1"})
   }).catch(err=>{
     console.log(err)
@@ -141,30 +126,36 @@ const addToCart = (id)=>{
     setUseFilter(foodFilter)
  }
  const handleResetFilter = () => {
+  setFoodFilter({
+    court:"",
+    type:"",
+    minval:null,
+    maxval:null}
+  )
   setUseFilter({
     court:"",
     type:"",
     minval:null,
     maxval:null
  })
+  
 }
   const applyFilter = (data) => {
     var r = data
     if (useFilter.court) {
-      r = r.filter((d) => d.belongTo.name.toLowerCase().includes(useFilter.court));
+      r = r.filter((d) => d.belongTo.name.toLowerCase().includes(useFilter.court.toLowerCase()));
     }
-    if (useFilter.type && useFilter.type != "") {
-      var r = r.filter((d) => d.tag.includes(useFilter.type));
+    if (useFilter.type && useFilter.type !== "") {
+      r = r.filter((d) => d.tag.includes(useFilter.type));
     }
     if (useFilter.minval) {
-      var r = r.filter((d) => d.price>=useFilter.minval);
+      r = r.filter((d) => d.price>=useFilter.minval);
     }
     if (useFilter.maxval) {
-      var r = r.filter((d) => d.price<=useFilter.maxval);
+      r = r.filter((d) => d.price<=useFilter.maxval);
     }
     return r
   }
-
   const filterData = (query, data) => {
     query = query.toLowerCase()
     if (!query) {
@@ -173,10 +164,9 @@ const addToCart = (id)=>{
       return data.filter((d) => d.title.toLowerCase().includes(query));
     }
   };
-  
   const [searchQuery, setSearchQuery] = useState("");
   const dataFiltered = filterData(searchQuery,applyFilter(data));
-
+  const courtList = [...new Set(Object.values(data).map(item => item.belongTo.name))];
   const list = () => (
     <Box
       sx={{ width: "100" }}
@@ -185,19 +175,28 @@ const addToCart = (id)=>{
       <div style={{margin: "20px"}}> <FilterAlt fontSize="large" /> <span> Lọc sản phẩm </span> </div>
         <div style={{margin: "15px"}} >
           <form>
-            <TextField 
-              InputProps={{ disableUnderline: true }} 
-              id="standard-basic" 
-              label="Gian hàng" 
-              name="court"
-              variant="standard" 
-              style={{width: '250px'}}
+          <Box >
+            <FormControl variant="standard" sx={{ minWidth: 250 }}>
+            <InputLabel variant="standard" > Gian hàng </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={foodFilter.court?foodFilter.court:""}
+              label="type"
               onChange={(e) =>
                 setFoodFilter({
                   ...foodFilter,
                   court: e.target.value
               })}
-            />   
+            >
+             {courtList.map(court => (
+                <MenuItem key={court} value={court}>
+                  {court}
+                </MenuItem>
+              ))}
+            </Select>
+            </FormControl>
+          </Box>  
           <Box >
             <FormControl variant="standard" sx={{ minWidth: 250 }}>
             <InputLabel variant="standard" > Loại </InputLabel>
@@ -286,7 +285,7 @@ const addToCart = (id)=>{
       <div
        onClick={toggleState}
         >
-        {favoriteState == true ? 
+        {favoriteState === true ? 
         (<Favorite style={{marginLeft:"22px" , fontSize: "30px",color: 'red'}}/>)
         : 
         (<FavoriteBorder style={{marginLeft:"22px" , fontSize: "30px",color: 'red'}}/>)
