@@ -7,6 +7,7 @@ import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
 const ProductDescription  = ()=>{
+  
   const [PostDesc,setPostDesc] = useState([])
   const {state,dispatch} = useContext(UserContext)
   const {postid}=useParams()
@@ -141,7 +142,7 @@ const ProductDescription  = ()=>{
   })
   }
 
-
+  console.log(PostDesc)
   return (
     <>
     {PostDesc?   
@@ -172,8 +173,8 @@ const ProductDescription  = ()=>{
 
           <div class = "amount_like">
             <p >Số lượt yêu thích: {PostDesc.likes?.length}</p>
-            {/* Not take the name of postdesc */}
-            <p>Gian hàng: {PostDesc.belongTo}</p>
+            <p>Gian hàng: {PostDesc.belongTo?.name}</p>
+
           </div>
           <div class = "amount_and_addcart">
             <input class = "amout_food" type = "number" placeholder = "1"/>
@@ -214,7 +215,7 @@ const ProductDescription  = ()=>{
                     <img src = "https://cdn-icons-png.flaticon.com/512/666/666201.png" alt = ""/>
                     {/* not take the name user */}
                     <p>
-                    <strong>{comment.postedBy.name}</strong>
+                    {comment.postedBy}
                     </p>
                   </div>
                   <div class='right'>
