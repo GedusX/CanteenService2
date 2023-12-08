@@ -1,16 +1,158 @@
 .productDescription{
-    width: 1366px;
-    height: 1000px;
+    /* width: 1200px;
     background-color: #F8F3F3;
-    margin-left: 260px;
+    margin-left: 260px; */
+    width: 100%;
+    margin: auto;
+    /* max-width: 90%; */
+    transition: transform 1s;
+    background-color: rgb(241, 237, 232);
+
+
 }
 
-.box{
-    display: flex;
-    align-items: center;
-    margin-left: 60px;
-}
- 
-.card-content{
-    margin-left: 128px;
-}
+    .box{
+        /* display: flex;
+        align-items: center;
+        margin-left: 60px; */
+        margin-left: 60px;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 50px;
+        padding: 20px;
+        
+    }
+    .card_image{
+        margin: left;
+    }
+    .img_frame img{
+        background-color: rgb(251, 251, 251);
+        width: 450px;
+
+    }
+    .Description{
+        background-color: rgb(255, 255, 255);
+        width: 450px;
+        align-items: center;
+        
+    }
+    .Info{
+        width: 350px;
+        text-align: left;
+    }
+    .Info h3{
+        font-size: 30px;
+        font-weight: 500;
+        
+    }
+    .Info p{
+        font-size: 20px;
+    }
+
+    .card-content{
+        margin-left: 60px;
+    }
+    .Select_size{
+        display: flex;
+    }
+    .block{
+        display: block;
+        width: 50px;
+        border: none;
+        background-color: #bbbbbb;
+        border-radius: 5px;
+        font-size: 30px;
+        cursor: pointer;
+
+    }
+    .block1{
+        display: block;
+        width: 50px;
+        border: none;
+        background-color: #bbbbbb;
+        border-radius: 5px;
+        font-size: 30px;
+        cursor: pointer;
+        margin-left: 60px;
+    }
+
+    .card-content .amount_like p{
+        font-size: 20px;
+        
+    }
+    .card-content .amount_and_addcart{
+        display: flex;
+        width: 300px;
+    }
+    .amount_and_addcart .amount_food{
+        width: 20px;
+        border: none;
+        background-color: rgb(108, 110, 112);
+        color:rgb(125, 127, 128);
+    }
+
+
+    .card-content h2{
+        font-size: 40px;
+        font-weight: 350;
+        font-family: 'Montserrat', sans-serif;
+    }
+    .card-content h3{
+        font-size: 40px;
+        font-weight: 350;
+        font-family: 'Montserrat', sans-serif;
+        color:rgb(255, 75, 75);
+    }
+    .Add_favorite{
+        display: flex;
+        margin-top: 20px;
+        align-items: center;
+    }
+    .Add_favorite p{
+        margin-left: 20px;
+        font-size: 20px;
+        color: rgb(34, 34, 34);
+    }
+    .Comments{
+        margin-left: 60px;
+
+    }
+    .Comments h3{
+        font-size: 30px;
+        font-weight: 500;
+        margin-left: 30px;
+    }
+    .box_comment{
+        background-color:rgb(163, 163, 163);
+        width: 1200px;
+        display: flex;
+    }
+    .frame_comment{
+        display: row;
+    }
+    .each_comment{
+        display: grid;
+        grid-template-columns: 100px 800px;
+        gap: 50px;
+        padding-left: 100px;
+        padding-top: 40px;
+        align-items: center;
+
+    }
+
+
+    .each_comment .left img{
+        width: 80px;
+    }
+    .each_comment .right{
+        /* width: 800px; */
+        border: 1px solid #202020;
+        align-items: center;
+        
+    }
+
+
+
+    
+
+  
