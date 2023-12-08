@@ -141,6 +141,7 @@ router.put('/forgetpass',(req,res) => {
 router.put('/changepass',requireLogin,(req,res) => {
     const {oldPassword,newPassword} = req.body;
     //Check if match the old password
+    
     bcrypt.compare(oldPassword,req.user.password)
     .then(doMatch=>{
         if (doMatch){
@@ -151,7 +152,7 @@ router.put('/changepass',requireLogin,(req,res) => {
                     return res.status(500).json({ error: 'Password hashing failed' });
                 }
                 User.findByIdAndUpdate (req.user._id,
-                    { $set: { newPassword: hash } },
+                    { $set: { password: hash } },
                     { new: true } // to return the updated document
                 )
                 .then(updatedUser => {
@@ -159,7 +160,7 @@ router.put('/changepass',requireLogin,(req,res) => {
                         return res.status(404).json({ error: 'User not found' });
                     }
                     console.log(`Password updated for user ${req.user._id}`);
-                    res.status(204).json({ message: 'Resource updated successfully' });
+                    res.status(200).json({ message: 'Resource updated successfully' });
                 })
                 .catch(updateErr => {
                     console.log(updateErr);
