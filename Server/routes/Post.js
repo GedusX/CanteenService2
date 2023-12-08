@@ -39,7 +39,7 @@ router.post('/createpost',requireLogin,(req,res)=>{
     if(!title || !body || !pic){
       return  res.status(422).json({error:"Plase add all the fields"})
     }
-    req.user.password = undefined
+    
     const post = new Post({
         title,
         body,
@@ -132,13 +132,15 @@ router.post('/search-posts',(req,res)=>{
 router.get('/products/:id',requireLogin,(req,res)=>{
     Post.findOne({_id:req.params.id})
     .then(posting=>{
-         Post.find({postedBy:req.params.id})
-         .populate("postedBy","_id name")
+         Post.find({belongTo:req.params.id})
+         .populate("belongTo","_id name")
          .exec((err,posts)=>{
              if(err){
                  return res.status(422).json({error:err})
              }
              res.json({posting,posts})
+             console.log(posting)
+             console.log(posts)
          })
     }).catch(err=>{
         return res.status(404).json({error:"User not found"})
