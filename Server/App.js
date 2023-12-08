@@ -18,14 +18,14 @@ mongoose.connection.on('error',(err)=>{
 })
 
 require('./models/User')
-require('./models/Post')
+require('./models/Food')
 require('./models/Cart')
 require('./models/CartItem')
 
 
 app.use(express.json())
 app.use(require('./routes/Auth'))
-app.use(require('./routes/Post'))
+app.use(require('./routes/Food'))
 app.use(require('./routes/User'))
 app.use(require('./routes/Cart'))
 
