@@ -25,17 +25,17 @@ const Product = () => {
   const [data,setData]=useState([])
    const {state,dispatch}=useContext(UserContext)
    useEffect(()=>{
-    fetch('/allpost',{
+    fetch('/allfood',{
       headers:{
         "Authorization":"Bearer "+localStorage.getItem("jwt")
       }
     }).then(res=>res.json())
     .then(result=>{
       console.log(result)
-      setData(result.posts)
+      setData(result.foods)
      })
    },[])
-   const likePost = (id)=>{
+   const likeFood = (id)=>{
     fetch('/like',{
         method:"put",
         headers:{
@@ -43,7 +43,7 @@ const Product = () => {
             "Authorization":"Bearer "+localStorage.getItem("jwt")
         },
         body:JSON.stringify({
-            postId:id
+            foodId:id
         })
     }).then(res=>res.json())
     .then(result=>{
@@ -56,12 +56,12 @@ const Product = () => {
           }
       })
       // setData(newData)
-      M.toast({html: "Like Post", classes:"#43a047 green darken-1"})
+      M.toast({html: "Like Food", classes:"#43a047 green darken-1"})
     }).catch(err=>{
         console.log(err)
     })
 }
-const unlikePost = (id)=>{
+const unlikeFood = (id)=>{
   fetch('/unlike',{
       method:"put",
       headers:{
@@ -69,7 +69,7 @@ const unlikePost = (id)=>{
           "Authorization":"Bearer "+localStorage.getItem("jwt")
       },
       body:JSON.stringify({
-        postId:id
+        foodId:id
       })
     }).then(res=>res.json())
   .then(result=>{
@@ -81,7 +81,7 @@ const unlikePost = (id)=>{
         }
     })
     // setData(newData)
-    M.toast({html: "UnLike Post", classes:"#43a047 green darken-1"})
+    M.toast({html: "UnLike Food", classes:"#43a047 green darken-1"})
   }).catch(err=>{
     console.log(err)
 })
@@ -94,7 +94,7 @@ const addToCart = (id)=>{
           "Authorization":"Bearer "+localStorage.getItem('jwt')
       },
       body:JSON.stringify({
-          postId:id,
+          foodId:id,
           amount:1
       })
   }).then(res=>res.json())
@@ -229,10 +229,10 @@ const addToCart = (id)=>{
     const [favoriteState, setFavoriteState] = useState(Fstate);
     const toggleState = () => {
       if (favoriteState === true){
-        unlikePost(id)
+        unlikeFood(id)
       }
       else{
-        likePost(id)
+        likeFood(id)
       }
       setFavoriteState(current => !current);
     }

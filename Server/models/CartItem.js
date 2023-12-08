@@ -3,7 +3,7 @@ const {ObjectId}=mongoose.Schema.Types
 const cartItemSchema =new mongoose.Schema({
     itemPost:{
         type:ObjectId,
-        ref:"Post"
+        ref:"Food"
     },
     amount:{
         type:Number,
