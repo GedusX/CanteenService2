@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
 const {ObjectId}=mongoose.Schema.Types
-const CourtSchema =new mongoose.Schema({
+const postSchema =new mongoose.Schema({
     title:{
         type:String,
         required:true
@@ -30,4 +30,4 @@ const CourtSchema =new mongoose.Schema({
 
 })
 
-mongoose.model("Court",CourtSchema)
+mongoose.model("Post",postSchema)
