@@ -24,20 +24,12 @@ import Forgotpass from "./components/screens/Forgotpass";
 
 export const UserContext =createContext()
 
-const CheckLogin=()=>{
-  const navigate = useNavigate();
-  const location=useLocation();
-  if (localStorage.getItem('jwt')===null){
-    navigate('/signin')
-  }
-  else{
-    navigate('/home')
-  }
-}
+
 
 const Routing=()=>{
   const navigate = useNavigate();
   const location=useLocation();
+
     const {state,dispatch}=useContext(UserContext)
     // eslint-disable-next-line
  useEffect(()=>{
@@ -55,6 +47,16 @@ const Routing=()=>{
   
 }
 
+const CheckLogin=()=>{
+  const navigate = useNavigate();
+  const location=useLocation();
+  if (localStorage.getItem('jwt')===null){
+    navigate('/signin')
+  }
+  else{
+    navigate('/home')
+  }
+}
 
 function App() {
   const[state,dispatch]=useReducer(reducer,initialState)
@@ -63,6 +65,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<><Navbar /><Routing/></>}>
+            <Route index element={<><MainCom/><Product /><Footer /></>} />
             <Route index element={<><MainCom/><Product /><Footer /></>} />
             <Route path="home" element={<><MainCom/><Product /><Footer /></>} />
             <Route path="signin" element={<><SignIn   /></>} />
