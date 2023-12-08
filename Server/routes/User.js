@@ -5,7 +5,7 @@ const requireLogin  = require('../middleware/requireLogin')
 // const cart  = require('../middleware/cart')
 // const { default: Cart } = require('../../client/src/components/screens/Cart')
 const bcrypt=require("bcryptjs")
-const Post =  mongoose.model("Post")
+const Food =  mongoose.model("Food")
 const User = mongoose.model("User")
 
 
@@ -14,13 +14,13 @@ router.get('/user/:id',requireLogin,(req,res)=>{
     User.findOne({_id:req.params.id})
     .select("-password")
     .then(user=>{
-         Post.find({postedBy:req.params.id})
-         .populate("postedBy","_id name")
-         .exec((err,posts)=>{
+         Food.find({postedBy:req.params.id})
+         .populate("belongTo","_id name")
+         .exec((err,foods)=>{
              if(err){
                  return res.status(422).json({error:err})
              }
-             res.json({user,posts})
+             res.json({user,foods})
          })
     }).catch(err=>{
         return res.status(404).json({error:"User not found"})

@@ -1,11 +1,11 @@
 const mongoose=require('mongoose')
 const {ObjectId}=mongoose.Schema.Types
-const CourtSchema =new mongoose.Schema({
+const foodSchema =new mongoose.Schema({
     title:{
         type:String,
         required:true
     },
-    body:{
+    type:{
         type:String,
         required:true
     },
@@ -13,7 +13,14 @@ const CourtSchema =new mongoose.Schema({
         type:String,
         required:true
     },
+    price:{
+        type: Number,
+        required:true
+    },
     likes:[{type:ObjectId,ref:"User"}],
+    tag:[{
+        type:String
+    }],
     toCart:[{type:ObjectId,ref:"User"}],
     comments:[{
         text:String,
@@ -27,7 +34,6 @@ const CourtSchema =new mongoose.Schema({
         type:ObjectId,
         ref:"Court"
     }
-
 })
 
-mongoose.model("Court",CourtSchema)
+mongoose.model("Food",foodSchema)
