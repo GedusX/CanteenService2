@@ -105,8 +105,6 @@ const addToCart = (id)=>{
 })
 }
 
-
-
    const [drawerState, setDrawerState] = React.useState({
     left: false,
   });
@@ -123,97 +121,50 @@ const addToCart = (id)=>{
     setDrawerState({ ...drawerState, [anchor]: open });
   };
   
-  const [store, setStore] = React.useState('');
-  
-  const handleStoreChange = (event) => {
-    setStore(event.target.value);
-  };
-  const [type, setType] = React.useState('');
-  
-  const handleTypeChange = (event) => {
-    setType(event.target.value);
-  };
-  
-  
-  const list = (anchor) => (
-    <Box
-      sx={{ width: "100" }}
-      //role="presentation"
-      //onClick={toggleDrawer(anchor, false)}
-      //onKeyDown={toggleDrawer(anchor, false)}
-    > 
-    <div style={{fontSize: "24px"}}>
-      <div style={{margin: "20px"}}> <FilterAlt fontSize="large" /> <span> Lọc sản phẩm </span> </div>
-        <div style={{margin: "15px"}} >
-          <Box 
-            sx={{ minWidth: 150 }}>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
-              <InputLabel variant="standard" > Gian hàng </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={store}
-                label="store"
-                onChange={handleStoreChange}
-              >
-                <MenuItem value={"MiniStop"}>MiniStop</MenuItem>
-                <MenuItem value={"Hồng Trà Ngô Gia"}>Hồng Trà Ngô Gia </MenuItem>
-                <MenuItem value={"Ngô Quyền"}>Ngô Quyền</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
-        <div style={{margin: "15px"}} >
-          <Box 
-            sx={{ minWidth: 150 }}>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
-              <InputLabel variant="standard" > Loại </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={type}
-                label="type"
-                onChange={handleTypeChange}
-              >
-                <MenuItem value={"Đồ ăn"}>Đồ ăn</MenuItem>
-                <MenuItem value={"Thức Uống"}>Thức Uống </MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
-      <Divider />
-      <div  style={{margin: "15px"}} >
-        <span> Khoảng giá </span>
-        <div className="row">
-        <TextField 
-          InputProps={{ disableUnderline: true }} 
-          id="standard-basic" 
-          label="Tối thiểu" 
-          variant="standard" 
-          style={{width: '100px'}}
-        />
-        <CompareArrows style={{ margin: "20"}}/>
-        <TextField 
-          InputProps={{ disableUnderline: true }} 
-          id="standard-basic" 
-          label="Tối đa" 
-          variant="standard" 
-          style={{width: '100px'}}
-        />
-          </div>
-          <div className="row center">
-            <Button variant="contained">Áp dụng</Button>
-            <Button variant="contained">Đặt lại</Button>
-          </div>
-        </div>
-    </div>
-    </Box>
-    
-  );
-  
-  
-  
+  const [foodFilter, setFoodFilter] = React.useState({
+    court:"",
+    type:"",
+    minval:null,
+    maxval:null
+  });
+
+  const [useFilter, setUseFilter] = 
+  React.useState({
+    court:"",
+    type:"",
+    minval:null,
+    maxval:null
+  });
+ const handleApllyFilter = () => {
+    setUseFilter(foodFilter)
+ }
+ const handleResetFilter = () => {
+  setUseFilter({
+    court:"",
+    type:"",
+    minval:null,
+    maxval:null
+ })
+}
+  const applyFilter = (data) => {
+    var r = data
+    if (useFilter.court) {
+      r = r.filter((d) => d.belongTo.name.toLowerCase().includes(useFilter.court));
+    }
+    if (useFilter.type && useFilter.type != "") {
+      var r = r.filter((d) => d.tag.includes(useFilter.type));
+    }
+    if (useFilter.minval) {
+      var r = r.filter((d) => d.price>=useFilter.minval);
+    }
+    if (useFilter.maxval) {
+      var r = r.filter((d) => d.price<=useFilter.maxval);
+    }
+    return r
+  }
+
   const filterData = (query, data) => {
+    query = query.toLowerCase()
     if (!query) {
       return data;
     } else {
@@ -222,8 +173,88 @@ const addToCart = (id)=>{
   };
   
   const [searchQuery, setSearchQuery] = useState("");
-  const dataFiltered = filterData(searchQuery, data);
-  
+  const dataFiltered = filterData(searchQuery,applyFilter(data));
+
+  const list = () => (
+    <Box
+      sx={{ width: "100" }}
+    > 
+    <div style={{fontSize: "24px"}}>
+      <div style={{margin: "20px"}}> <FilterAlt fontSize="large" /> <span> Lọc sản phẩm </span> </div>
+        <div style={{margin: "15px"}} >
+          <form>
+            <TextField 
+              InputProps={{ disableUnderline: true }} 
+              id="standard-basic" 
+              label="Gian hàng" 
+              name="court"
+              variant="standard" 
+              style={{width: '250px'}}
+              onChange={(e) =>
+                setFoodFilter({
+                  ...foodFilter,
+                  court: e.target.value
+              })}
+            />   
+          <Box >
+            <FormControl variant="standard" sx={{ minWidth: 250 }}>
+            <InputLabel variant="standard" > Loại </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={foodFilter.type?foodFilter.type:""}
+              label="type"
+              onChange={(e) =>
+                setFoodFilter({
+                  ...foodFilter,
+                  type: e.target.value
+              })}
+            >
+              <MenuItem value={"Đồ ăn"}>Đồ ăn</MenuItem>
+              <MenuItem value={"Thức uống"}>Thức uống </MenuItem>
+            </Select>
+            </FormControl>
+          </Box>
+        <Divider style={{marginTop:"20px"}}/>
+        <div style={{marginTop:"10px"}}> Khoảng giá </div>
+        <div className="row">
+        <TextField 
+          InputProps={{ disableUnderline: true }} 
+          id="standard-basic" 
+          label="Tối thiểu" 
+          name = "minval"
+          variant="standard" 
+          style={{width: '100px'}}
+          onChange={(e) => setFoodFilter({
+            ...foodFilter,
+            minval: e.target.value
+          })}
+        />
+        <CompareArrows style={{ margin: "20"}}/>
+        <TextField 
+          InputProps={{ disableUnderline: true }} 
+          id="standard-basic" 
+          label="Tối đa" 
+          name = "maxval"
+          variant="standard" 
+          style={{width: '100px'}}
+          onChange={(e) =>setFoodFilter({
+            ...foodFilter,
+            maxval: e.target.value
+          })}
+        />
+          </div>
+          <div className="row center">
+            <Button variant="contained" onClick={handleApllyFilter}> Áp dụng </Button>
+            <Button variant="contained" onClick={handleResetFilter}> Đặt lại </Button>
+          </div>
+        </form>
+        </div>
+      </div>
+
+    </Box>
+    
+  );
   
   function ToggleFavorite({Fstate,id}) {
     const [favoriteState, setFavoriteState] = useState(Fstate);
@@ -248,9 +279,6 @@ const addToCart = (id)=>{
       </div>
     )
   }
-
-
-
 
 
   return (
@@ -332,7 +360,7 @@ const addToCart = (id)=>{
                     <Link to={ "/productdescription/"+item._id} >
                         <h6 className="card-title blue-text text-darken-2">{item.title}</h6>
                     </Link>
-                    <h6  style={{fontSize: "20px"}}>{item.body}đ</h6>
+                    <h6  style={{fontSize: "20px"}}>{item.price}đ</h6>
                       <div style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -340,8 +368,6 @@ const addToCart = (id)=>{
                         justifyContent: 'space-between',
 
                       }}>
-                        
-                      
                       </div>
                       </center>
                     <div style={{
