@@ -24,9 +24,24 @@ import Forgotpass from "./components/screens/Forgotpass";
 
 export const UserContext =createContext()
 
+const CheckLogin=()=>{
+  const navigate = useNavigate();
+  const location=useLocation();
+  if (localStorage.getItem('jwt')===null){
+    navigate('/signin')
+  }
+  else{
+    navigate('/home')
+  }
+}
+
 const Routing=()=>{
   const navigate = useNavigate();
   const location=useLocation();
+  if (localStorage.getItem('jwt')===null){
+    navigate('/signin')
+  }
+
     const {state,dispatch}=useContext(UserContext)
     // eslint-disable-next-line
  useEffect(()=>{
@@ -52,17 +67,17 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<><Navbar /><Routing/></>}>
-            <Route index element={<><MainCom/><Home  /><Offer /><Footer /></>} />
-            <Route path="home" element={<><MainCom/><Home  /><Offer /><Footer /></>} />
-            <Route path="signin" element={<><MainCom/><SignIn   /></>} />
-            <Route path="signup" element={<><MainCom/><SignUp /></>} />
+            <Route index element={<><CheckLogin/></>} />
+            <Route path="home" element={<><MainCom/><Product /><Footer /></>} />
+            <Route path="signin" element={<><SignIn   /></>} />
+            <Route path="signup" element={<><SignUp /></>} />
             <Route exact path="profile" element={<><Profile /></>} />
             <Route path="productdescription/:postid" element={<><ProductDescription /></>} />
             <Route path="createpost" element={<><CreatePost /></>} />
             <Route path="product" element={<><Product /><Footer /></>} />
             <Route path="offer" element={<><Offer /></>} />
             <Route path="Footer" element={<><Footer /></>} />
-            <Route path="Cart" element={<><Cart /></>} />
+            <Route path="cart" element={<><Cart /></>} />
             <Route path="forgotpass" element={<><Forgotpass/></>} />
             
              {/* <Route path="shippinginfo" element={<><ShippingInfo/></>} /> */}

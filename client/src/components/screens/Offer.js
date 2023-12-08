@@ -6,7 +6,7 @@ const Offer = () => {
     <> <div className="offer">
     <div className="small-container">
             <div className="row">
-               <center> <h1>Special Offer</h1></center>
+               <center> <h1>KHUYẾN MÃI ĐẶC</h1></center>
                     <div className="col-2">
                              <center><img src={i3} alt="" className="offer-img" style={{width:"60%" }}/></center>
                     </div>

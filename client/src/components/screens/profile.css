@@ -3,18 +3,29 @@ input[disabled] {
     background-color:#444;
     /* Add any other desired styles here */
   }
+
+input-normal:disabled {
+    color: black; /* or any color you prefer */
+    opacity: 1; /* ensures the text is not faded */
+}
   
   .yourInfo {
+      font-family: Verdana;
       margin: auto;
       text-align: center;
       padding-top: 50px;
   }
+
+  .input-normal {
+    color: black; /* Or any color you prefer */
+    opacity: 1; /* Ensures the text is not faded */
+    /* Add other styling as needed */
+}
   
   .form-container {
       width: 500px;
       margin: auto;
       margin-top: 50px;
-      
     }
     
     .form-container form {
@@ -31,9 +42,10 @@ input[disabled] {
       padding: 5px;
       border-radius: 5px;
       border: 1px solid #ccc;
-      font-family: "Times New Roman";
-      font-weight: 900;
+      
+      font-weight: 500;
     }
+
   
     .changepasswordblock{
       width: 150px;

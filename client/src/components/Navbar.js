@@ -2,6 +2,8 @@ import React,{useContext,useRef,useEffect,useState} from 'react'
 import { Outlet, Link,useNavigate } from "react-router-dom";
 import { UserContext} from '../App'
 import M from 'materialize-css'
+import { Button } from '@mui/material';
+import './Navbar.css'
 const Navbar=()=> {
   const  searchModal = useRef(null)
     const [search,setSearch] = useState('')
@@ -11,21 +13,27 @@ const Navbar=()=> {
 
     useEffect(()=>{
       M.Modal.init(searchModal.current)
+
+      
   },[])
   const renderList=()=>{
     if(state){
     return[
-      <li key='2'><Link to="/profile"><i className="material-icons blue-text text-darken-2 modal-trigger">person</i></Link></li>,
+      <li key='1'>
+         <i data-target="modal1" className="material-icons blue-text text-darken-2 modal-trigger">search</i>
+    </li>,<li key='2'><Link to="/profile"><i className="material-icons blue-text text-darken-2 modal-trigger">person</i></Link></li>,
       <li key='3'><Link to="/cart"><i className="material-icons blue-text text-darken-2 modal-trigger">shopping_cart</i></Link></li>,
       <li key='8'><Link to="/product">All Products</Link></li>,
+      <li key='2'><Link to="/profile"><i className="material-icons blue-text text-darken-2 modal-trigger">person</i></Link></li>,
+      <li key='9' className='text'>Xin chao, {localStorage.getItem('jwt')===null?"Guest":JSON.parse(localStorage.getItem('user')).name}</li>,
       <li key='4'>
-          <button className="btn #c62828 red darken-3"
+          <button className="btn #c62828 red darken-3 layout"
          onClick={()=>{
            localStorage.clear()
            dispatch({type:"CLEAR"})
            navigate('/signin')
          }}
-         >Logout
+         >ĐĂNG XUẤT
          </button>
        </li>
 
@@ -77,11 +85,12 @@ const Navbar=()=> {
  }     
   return (
     <>
+    {localStorage.getItem("jwt")!==null?(
     <nav>
     <div className="nav-wrapper white " >
-      <Link to={state?"/":"signin"} className="brand-logo left">Nothing</Link>
+      <Link to={state?"/home":"signin"} className="brand-logo left"><img className = 'logo' src='https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg'></img></Link>
       <ul id="nav-mobile" className="right">
-
+      
        {renderList()}
       </ul>
     </div>
@@ -108,7 +117,7 @@ const Navbar=()=> {
       <button    className="modal-close waves-effect waves-green btn-flat" onClick={()=>setSearch('')}>Close</button>
     </div>
   </div>
-  </nav>
+  </nav>):undefined}
   <Outlet />
     </>
   )

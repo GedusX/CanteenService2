@@ -10,7 +10,7 @@ import ap from "../Image/apimg.png";
               <div className="container">
                       <div className="row">
                               <div className="footer-col-1">
-                                      <h3>Tải ứng dụng</h3>
+                                      <h3>Tải ứng dụng (Coming Soon)</h3>
                                        <p>Tải ứng dụng cho Android và IOS Mobile Phone.</p>
                                        <div className={logo}>
                                         <img src={gp} alt="" style={{width:"150px"}}/>
@@ -18,22 +18,13 @@ import ap from "../Image/apimg.png";
                                 </div>      
                               </div>
                  
-                <div className="footer-col-3">
-                                <h3>Các liên kết</h3>
-                                <ul>
-                                        <li>Coupons</li>
-                                        <li>Blog Post</li>
-                                        <li>Return Policy</li>
-                                        <li>Join Affiliates</li>
-                                </ul>
-                        </div>
                 <div className="footer-col-4">
                                         <h3>Về chúng tôi</h3>
                                         <ul>
                                                 <li>Facebook</li>
-                                                <li>Twitter</li>
-                                                <li>Instagram</li>
-                                                <li>YouTube</li>
+                                                
+                                                <li>Tel: 19004532</li>
+                                                <li>Address: Căng tin Bách Khoa Cơ Sở Lý Thường Kiệt</li>
                                         </ul>
                         
                                 </div>            

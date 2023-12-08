@@ -19,9 +19,9 @@ const postSchema =new mongoose.Schema({
         text:String,
         postedBy:{type:ObjectId,ref:"User"}
     }],
-    postedBy:{
+    belongTo:{
         type:ObjectId,
-        ref:"User"
+        ref:"Court"
     }
 
 })
