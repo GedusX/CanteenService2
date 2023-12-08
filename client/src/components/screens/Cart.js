@@ -48,7 +48,7 @@ const Cart = () => {
                 "Authorization":"Bearer "+localStorage.getItem("jwt")
             },
             body:JSON.stringify({
-                postId:id
+                foodId:id
             })
         }).then(res=>res.json())
         .then(result=>{
@@ -67,6 +67,22 @@ const Cart = () => {
         }).catch(err=>{
           console.log(err)
       })
+  }
+  const submitCart = () => {
+        fetch('/submitcart',{
+            method:"post",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            },
+        }).then(res=>res.json())
+        .then(result=>{
+        console.log(result)
+            M.toast({html: result.message, classes:"#43a047 green darken-1"})
+        }).catch(err=>{
+            console.log(err)
+            M.toast({html: err, className:"#43a047 green darken-1"})
+    })
   }
   const [buttonPopup, setButtonPopup] = useState(false);
   const [total, settotal] = useState(0);
@@ -209,7 +225,7 @@ const Cart = () => {
                     <div class="cart_totalPrice">{sum} VND</div>
                 </div>
             </div>
-            <button class="cart_buttonCheckout" onClick={() => setButtonPopup(true)}>Thanh toán bằng tiền mặt</button>
+            <button class="cart_buttonCheckout" onClick={() => submitCart()}>Thanh toán bằng tiền mặt</button>
             <Popforcart trigger={buttonPopup} setTrigger={setButtonPopup}/>
 
 
