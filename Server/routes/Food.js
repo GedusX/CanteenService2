@@ -135,7 +135,13 @@ router.post('/search-foods',(req,res)=>{
 router.get('/products/:id',requireLogin,(req,res)=>{
     Food.findOne({_id:req.params.id})
     .populate("belongTo","_id name")
-    .populate("comments","name photo")
+    .populate({
+        path: "comments.postBy",
+        populate:{
+            path: "postBy",
+            model: "name"
+        } 
+    }).exec()
     .then(foodinfo=>{
         console.log(foodinfo)
         res.json({foodinfo})
