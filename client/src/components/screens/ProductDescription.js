@@ -71,27 +71,29 @@ const handleButtonRelease = () => {
           </button>
         </div>
       </div>
+    
+      <div className='Description' style = {{marginLeft: '60px'}}>
+      <h3>Mô tả</h3>
+      <p>{PostDesc.desc}</p>
+      </div>
+      <div className='Comments' style = {{marginLeft: '60px'}}>
+      <h3>Bình luận</h3>
+      {PostDesc.comments && PostDesc.comments.length > 0 ? (
+        PostDesc.comments.map((comment, index) => (
+          <div key={index}>
+            <p>
+              <strong>{comment.postedBy.name}: </strong>
+              {comment.text}
+            </p>
+          </div>
+        ))
+      ) : (
+        <p>Chưa có bình luận</p>
+      )}
+      </div>
     </div>
-    <div className='Description' style = {{marginLeft: '60px'}}>
-    <h3>Mô tả</h3>
-    <p>{PostDesc.desc}</p>
-    </div>
-    <div className='Comments' style = {{marginLeft: '60px'}}>
-    <h3>Bình luận</h3>
-    {PostDesc.comments && PostDesc.comments.length > 0 ? (
-      PostDesc.comments.map((comment, index) => (
-        <div key={index}>
-          <p>
-            <strong>{comment.postedBy.name}: </strong>
-            {comment.text}
-          </p>
-        </div>
-      ))
-    ) : (
-      <p>Chưa có bình luận</p>
-    )}
-    </div>
-  </div>
+
+  
  :  <h2>Loading...!</h2> }
   
   

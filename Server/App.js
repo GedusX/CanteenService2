@@ -21,6 +21,7 @@ require('./models/User')
 require('./models/Post')
 require('./models/Cart')
 require('./models/CartItem')
+require('./models/Court')
 
 
 app.use(express.json())
@@ -28,6 +29,7 @@ app.use(require('./routes/Auth'))
 app.use(require('./routes/Post'))
 app.use(require('./routes/User'))
 app.use(require('./routes/Cart'))
+
 
 
 if(process.env.Node_ENV=='production'){
