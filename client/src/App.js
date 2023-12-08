@@ -20,6 +20,7 @@ import UserProfile from "./components/screens/UserProfile";
 import {useNavigate} from 'react-router-dom'
 import {reducer,initialState} from './reducers/userReducer'
 import Forgotpass from "./components/screens/Forgotpass";
+import ChangePassword from "./components/screens/ChangePassword";
 
 
 export const UserContext =createContext()
@@ -78,6 +79,7 @@ function App() {
             <Route path="Footer" element={<><Footer /></>} />
             <Route path="cart" element={<><Cart /></>} />
             <Route path="forgotpass" element={<><Forgotpass/></>} />
+            <Route path="ChangePassword" element={<><ChangePassword/></>} />
             
              {/* <Route path="shippinginfo" element={<><ShippingInfo/></>} /> */}
             {
