@@ -19,6 +19,10 @@ const postSchema =new mongoose.Schema({
         text:String,
         postedBy:{type:ObjectId,ref:"User"}
     }],
+    desc:{
+        type:String,
+        required:true
+    },
     postedBy:{
         type:ObjectId,
         ref:"User"

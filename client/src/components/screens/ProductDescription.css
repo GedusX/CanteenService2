@@ -1,0 +1,16 @@
+.productDescription{
+    width: 1366px;
+    height: 1000px;
+    background-color: #F8F3F3;
+    margin-left: 260px;
+}
+
+.box{
+    display: flex;
+    align-items: center;
+    margin-left: 60px;
+}
+ 
+.card-content{
+    margin-left: 128px;
+}
