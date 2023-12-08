@@ -15,9 +15,7 @@ const ProductDescription  = ()=>{
            }
        }).then(res=>res.json())
        .then(result=>{
-           console.log(result.posting)
-           setPostDesc(result.posting)
-           console.log(PostDesc);
+           setPostDesc(result.foodinfo)
        })
     },[])
 

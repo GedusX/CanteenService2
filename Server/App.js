@@ -21,6 +21,7 @@ require('./models/User')
 require('./models/Food')
 require('./models/Cart')
 require('./models/CartItem')
+require('./models/Court')
 
 
 app.use(express.json())
