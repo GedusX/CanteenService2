@@ -148,6 +148,7 @@ router.get('/products/:id',requireLogin,(req,res)=>{
 
 
 
+
 //Court Owner
 router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
     Post.findOne({_id:req.params.postId})

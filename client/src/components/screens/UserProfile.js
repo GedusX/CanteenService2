@@ -89,9 +89,7 @@ const Profile  = ()=>{
                borderBottom:"1px solid grey"
            }}>
                <div>
-                   <img style={{width:"160px",height:"160px",borderRadius:"80px"}}
-                   src={userProfile.user.pic}
-                   />
+                   <img style={{width:"160px",height:"160px",borderRadius:"80px"}} src={userProfile.user.pic}/>
                </div>
                <div>
                    <h4>{userProfile.user.name}</h4>
