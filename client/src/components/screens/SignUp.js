@@ -180,7 +180,7 @@ const PostData =()=>{
         <Input
           disableUnderline
           style={{ width: '100%' }} 
-          type="number" placeholder="Số điện thoại"
+          placeholder="Số điện thoại"
           value={phoneno}
           onChange={(e)=>setPhoneno(e.target.value)}
          />

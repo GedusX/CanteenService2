@@ -116,7 +116,8 @@ const unlikePost = (id)=>{
       </div>
     </div>
     
- :  <h2>Loading...!</h2> }
+    :  <h2>Loading...!</h2> 
+    }
   
   
    
