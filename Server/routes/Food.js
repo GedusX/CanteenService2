@@ -2,26 +2,27 @@ const express =require('express')
 const router =express.Router()
 const mongoose=require('mongoose')
 const requireLogin=require("../middleware/requireLogin")
-const Post =mongoose.model("Post")
+const Food = mongoose.model("Food")
 
-router.get("/allpost",requireLogin,(req,res)=>{
-    Post.find()
-    .populate("postedBy","_id name")
-    .populate("comments.postedBy","_id name")
-    .then(posts=>{
-        const postsWithIsLike = posts.map(post => {
-            const postObject = post.toObject(); // Convert to plain JavaScript object
-            postObject.isLike = post.likes.includes(req.user._id); // Add isLike field
-            return postObject;
+router.get("/allfood",requireLogin,(req,res)=>{
+    Food.find()
+    .populate("belongTo","_id name")
+    //.populate("comments.postedBy","_id name")
+    .then(foods=>{
+        const foodsWithIsLike = foods.map(food => {
+            const foodObject = food.toObject(); // Convert to plain JavaScript object
+            foodObject.isLike = food.likes.includes(req.user._id); // Add isLike field
+            return foodObject;
         });
-        console.log(postsWithIsLike)
-        res.json({ posts: postsWithIsLike });
+        //console.log(postsWithIsLike)
+        res.json({ foods: foodsWithIsLike });
     })
     .catch(err=>{
         console.log(err)
     })
 })
 
+//CourtOwner
 router.get("/getsubpost",requireLogin,(req,res)=>{
     Post.find({postedBy:{$in:req.user.following}})
     .populate("postedBy","_id name")
@@ -34,6 +35,7 @@ router.get("/getsubpost",requireLogin,(req,res)=>{
     })
 })
 
+//CourtOwner
 router.post('/createpost',requireLogin,(req,res)=>{
     const {title,body,pic} = req.body 
     if(!title || !body || !pic){
@@ -54,6 +56,7 @@ router.post('/createpost',requireLogin,(req,res)=>{
     })
 })
 
+//CourtOwner
 router.get("/mypost",requireLogin,(req,res)=>{
     Post.find({likes:req.user._id})
     .populate("postedBy","_id name")
@@ -71,7 +74,7 @@ router.get("/mypost",requireLogin,(req,res)=>{
 
 
 router.put('/like',requireLogin,(req,res)=>{
-    Post.findByIdAndUpdate(req.body.postId,{
+    Food.findByIdAndUpdate(req.body.foodId,{
         $push:{likes:req.user._id}
     },{
         new:true
@@ -79,12 +82,12 @@ router.put('/like',requireLogin,(req,res)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
-            res.json(result)
+            return res.json(result)
         }
     })
 })
 router.put('/unlike',requireLogin,(req,res)=>{
-    Post.findByIdAndUpdate(req.body.postId,{
+    Food.findByIdAndUpdate(req.body.foodId,{
         $pull:{likes:req.user._id}
     },{
         new:true
@@ -92,7 +95,7 @@ router.put('/unlike',requireLogin,(req,res)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
-            res.json(result)
+            return res.json(result)
         }
     })
 })
@@ -101,13 +104,13 @@ router.put('/comment',requireLogin,(req,res)=>{
         text:req.body.text,
         postedBy:req.user._id
     }
-    Post.findByIdAndUpdate(req.body.postId,{
+    Food.findByIdAndUpdate(req.body.foodId,{
         $push:{comments:comment}
     },{
         new:true
     })
     .populate("comments.postedBy","_id name")
-    .populate("postedBy","_id name")
+    .populate("belongTo","_id name")
     .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
@@ -117,9 +120,9 @@ router.put('/comment',requireLogin,(req,res)=>{
     })
 })
 
-router.post('/search-posts',(req,res)=>{
+router.post('/search-foods',(req,res)=>{
     let userPattern = new RegExp("^"+req.body.query)
-    Post.find({title:{$regex:userPattern}})
+    Food.find({title:{$regex:userPattern}})
     .select("_id title body photo comments")
     .then(user=>{
         res.json({user})
@@ -130,15 +133,15 @@ router.post('/search-posts',(req,res)=>{
 })
 
 router.get('/products/:id',requireLogin,(req,res)=>{
-    Post.findOne({_id:req.params.id})
-    .then(posting=>{
-         Post.find({postedBy:req.params.id})
-         .populate("postedBy","_id name")
-         .exec((err,posts)=>{
+    Food.findOne({_id:req.params.id})
+    .then(foodinfo=>{
+         Food.find({belongTo:req.params.id})
+         .populate("belongTo","_id name")
+         .exec((err,foods)=>{
              if(err){
                  return res.status(422).json({error:err})
              }
-             res.json({posting,posts})
+             res.json({foodinfo,foods})
          })
     }).catch(err=>{
         return res.status(404).json({error:"User not found"})
@@ -148,7 +151,7 @@ router.get('/products/:id',requireLogin,(req,res)=>{
 
 
 
-
+//Court Owner
 router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
     Post.findOne({_id:req.params.postId})
     .populate("postedBy","_id")
