@@ -124,8 +124,10 @@ const addToCart = (id)=>{
   });
  const handleApllyFilter = () => {
     setUseFilter(foodFilter)
+    setPagepos(1)
  }
  const handleResetFilter = () => {
+  setPagepos(1)
   setFoodFilter({
     court:"",
     type:"",
@@ -261,6 +263,7 @@ const addToCart = (id)=>{
   const Pagebar = () => {
     //setdisplayPage(dataFiltered.slice(0,9))
     //console.log(displayPage)
+    //setPagepos(1)
     function handlePage(event,page){
       //setdisplayPage(dataFiltered.slice(page*12,(page+1)*12))
       //console.log(page)
@@ -337,6 +340,7 @@ const addToCart = (id)=>{
                     id="standard-basic" 
                     onInput={(e) => {
                       setSearchQuery(e.target.value);
+                      setPagepos(1)
                     }}
                     label="Search..."
                     variant="outlined"
