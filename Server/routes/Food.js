@@ -134,6 +134,7 @@ router.post('/search-foods',(req,res)=>{
 
 router.get('/products/:id',requireLogin,(req,res)=>{
     Food.findOne({_id:req.params.id})
+
     .then(foodinfo=>{
          Food.find({belongTo:req.params.id})
          .populate("belongTo","_id name")
@@ -143,10 +144,12 @@ router.get('/products/:id',requireLogin,(req,res)=>{
              }
              res.json({foodinfo,foods})
          })
+
     }).catch(err=>{
         return res.status(404).json({error:"User not found"})
     })
 })
+
 
 
 
