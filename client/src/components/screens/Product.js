@@ -7,6 +7,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
+import ReactPaginate from 'react-paginate';
 // import ListItemButton from '@material-ui/core/ListItemButton';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,8 +20,9 @@ import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import M from 'materialize-css'
-
-
+import ProductDescription from "./ProductDescription";
+import "./Product.css"
+import { Pagination } from "@mui/material";
 const Product = () => {
   const [data,setData]=useState([])
    const {state,dispatch}=useContext(UserContext)
@@ -135,6 +137,9 @@ const addToCart = (id)=>{
   };
   
   
+
+
+
   const list = (anchor) => (
     <Box
       sx={{ width: "100" }}
@@ -224,7 +229,45 @@ const addToCart = (id)=>{
   const [searchQuery, setSearchQuery] = useState("");
   const dataFiltered = filterData(searchQuery, data);
   
+  function PaginatedItems() {
+    // Here we use item offsets; we could also use page offsets
+    // following the API or data you're working with.
+    const [itemOffset, setItemOffset] = useState(0);
   
+    // Simulate fetching items from another resources.
+    // (This could be items from props; or items loaded in a local state
+    // from an API endpoint with useEffect and useState)
+    const endOffset = itemOffset + 12;
+    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    const currentItems = dataFiltered.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(dataFiltered.length / 12);
+  
+    // Invoke when user click to request another page.
+    const handlePageClick = (event) => {
+      const newOffset = (event.selected * 12) % dataFiltered.length;
+      console.log(
+        `User requested page number ${event.selected}, which is offset ${newOffset}`
+      );
+      setItemOffset(newOffset);
+    };
+  
+    return (
+      <>
+        
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+          className="pagnating"
+        />
+      </>
+    );
+  }
+
   function ToggleFavorite({Fstate,id}) {
     const [favoriteState, setFavoriteState] = useState(Fstate);
     const toggleState = () => {
@@ -369,7 +412,13 @@ const addToCart = (id)=>{
         </div>
         : <h2>Loading....!</h2>
           }
+      <center>
+          <Pagination count={Math.ceil(dataFiltered.length/12)} variant="outlined" shape="rounded" className="pagnating"/>
+          
+      </center>
       </div>
+
+      
     </>
   );
 };
