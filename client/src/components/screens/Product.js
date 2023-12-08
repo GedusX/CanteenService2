@@ -257,41 +257,20 @@ const addToCart = (id)=>{
     </Box>
     
   );
-  
-    // Simulate fetching items from another resources.
-    // (This could be items from props; or items loaded in a local state
-    // from an API endpoint with useEffect and useState)
-    const endOffset = itemOffset + 12;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    const currentItems = dataFiltered.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(dataFiltered.length / 12);
-  
-    // Invoke when user click to request another page.
-    const handlePageClick = (event) => {
-      const newOffset = (event.selected * 12) % dataFiltered.length;
-      console.log(
-        `User requested page number ${event.selected}, which is offset ${newOffset}`
-      );
-      setItemOffset(newOffset);
-    };
-  
-    return (
-      <>
-        
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={pageCount}
-          previousLabel="< previous"
-          renderOnZeroPageCount={null}
-          className="pagnating"
-        />
-      </>
-    );
-  }
 
+  const [pagepos,setPagepos] = useState(1)
+  const Pagebar = () => {
+    //setdisplayPage(dataFiltered.slice(0,9))
+    //console.log(displayPage)
+    function handlePage(event,page){
+      //setdisplayPage(dataFiltered.slice(page*12,(page+1)*12))
+      //console.log(page)
+      setPagepos(page)
+    }
+    return (<Pagination count={Math.ceil(dataFiltered.length/9)} variant="outlined" shape="rounded" className="pagnating" onChange={handlePage}/>
+    )
+  }
+  
   function ToggleFavorite({Fstate,id}) {
     const [favoriteState, setFavoriteState] = useState(Fstate);
     const toggleState = () => {
@@ -327,6 +306,7 @@ const addToCart = (id)=>{
               flexWrap: 'wrap',
               justifyContent: 'space-between',
             }}>
+
           <div>
        
               <Button onClick={toggleDrawer('left', true)}>
@@ -382,7 +362,7 @@ const addToCart = (id)=>{
                     justifyContent: 'space-between',
           }}>
           {
-          dataFiltered.map(item=>{
+          dataFiltered.slice((pagepos-1)*9,pagepos*9).map(item=>{
               
               return(
                   <div className="col s12 m4" key={item._id}>
@@ -427,19 +407,21 @@ const addToCart = (id)=>{
               )
           })
         }
+               
         </div>
+        <center>
+                <Pagebar/>
+              </center>
         </div>
+      
         : <h2>Loading....!</h2>
           }
-      <center>
-          <Pagination count={Math.ceil(dataFiltered.length/12)} variant="outlined" shape="rounded" className="pagnating"/>
-          
-      </center>
+      
       </div>
 
       
     </>
   );
-
-
+        
+}
 export default Product;
