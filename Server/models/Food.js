@@ -14,7 +14,9 @@ const foodSchema =new mongoose.Schema({
         required:true
     },
     likes:[{type:ObjectId,ref:"User"}],
-    //comments: []
+    tag:[{
+        type:String
+    }],
     toCart:[{type:ObjectId,ref:"User"}],
     comments:[{
         text:String,
@@ -28,7 +30,6 @@ const foodSchema =new mongoose.Schema({
         type:ObjectId,
         ref:"Court"
     }
-
 })
 
 mongoose.model("Food",foodSchema)
