@@ -38,21 +38,17 @@ const CheckLogin=()=>{
 const Routing=()=>{
   const navigate = useNavigate();
   const location=useLocation();
-  if (localStorage.getItem('jwt')===null){
-    navigate('/signin')
-  }
-
     const {state,dispatch}=useContext(UserContext)
     // eslint-disable-next-line
  useEffect(()=>{
-const user =JSON.parse(localStorage.getItem("user")) 
+  const user =JSON.parse(localStorage.getItem("user")) 
  console.log(user)
   if(user){
     dispatch({type:"USER",payload:user})
       }
       else{
         if(!location.pathname.startsWith('/reset'))
-        navigate("/signin")
+          navigate("/signin")
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
  },[])
@@ -67,7 +63,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<><Navbar /><Routing/></>}>
-            <Route index element={<><CheckLogin/></>} />
+            <Route index element={<><MainCom/><Product /><Footer /></>} />
             <Route path="home" element={<><MainCom/><Product /><Footer /></>} />
             <Route path="signin" element={<><SignIn   /></>} />
             <Route path="signup" element={<><SignUp /></>} />

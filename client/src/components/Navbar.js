@@ -8,7 +8,7 @@ const Navbar=()=> {
   const  searchModal = useRef(null)
     const [search,setSearch] = useState('')
     const [userDetails,setUserDetails] = useState([])
-     const {state,dispatch} = useContext(UserContext)
+    const {state,dispatch} = useContext(UserContext)
     const navigate=useNavigate();
 
     useEffect(()=>{
@@ -29,10 +29,10 @@ const Navbar=()=> {
       <li key='2'><Link to="/profile"><i className="material-icons blue-text text-darken-2 modal-trigger">person</i></Link></li>,
       <li key='9' className='text'>Xin chao, {localStorage.getItem('jwt')===null?"Guest":JSON.parse(localStorage.getItem('user')).name}</li>,
       <li key='4'>
-          <button className="btn #c62828 red darken-3 layout"
+        <button className="btn #c62828 red darken-3 layout"
          onClick={()=>{
            localStorage.clear()
-           dispatch({type:"CLEAR"})
+            dispatch({type:"CLEAR"})
            navigate('/signin')
          }}
          >ĐĂNG XUẤT
