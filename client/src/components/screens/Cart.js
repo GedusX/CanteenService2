@@ -68,22 +68,22 @@ const Cart = () => {
           console.log(err)
       })
   }
-  const submitCart = () => {
-        fetch('/submitcart',{
-            method:"post",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+localStorage.getItem("jwt")
-            },
-        }).then(res=>res.json())
-        .then(result=>{
-        console.log(result)
-            M.toast({html: result.message, classes:"#43a047 green darken-1"})
-        }).catch(err=>{
-            console.log(err)
-            M.toast({html: err, className:"#43a047 green darken-1"})
-    })
-  }
+    const submitCart = () => {
+            fetch('/submitcart',{
+                method:"post",
+                headers:{
+                    "Content-Type":"application/json",
+                    "Authorization":"Bearer "+localStorage.getItem("jwt")
+                },
+            }).then(res=>res.json())
+            .then(result=>{
+            console.log(result)
+                M.toast({html: result.message, classes:"#43a047 green darken-1"})
+            }).catch(err=>{
+                console.log(err)
+                M.toast({html: err, className:"#43a047 green darken-1"})
+        })
+    }
   const [buttonPopup, setButtonPopup] = useState(false);
   const [total, settotal] = useState(0);
   const sum = data.map((order)=>order.amount*order.itemPost.body).reduce((prev, curr) => prev +  curr, 0)
@@ -181,15 +181,15 @@ const Cart = () => {
                     data.map(item=>{
                         return(
                         <div class="cart_item">
-                            <img src={item.itemPost.photo} alt = "" />
+                            <img src={item.itemPost?.photo} alt = "" />
                             <div class="cart_info">
-                                <div class="cart_name">{item.itemPost.title}</div>
-                                <div class="cart_price">{item.itemPost.body}</div>
+                                <div class="cart_name">{item.itemPost?.title}</div>
+                                <div class="cart_price">{item.itemPost?.body}</div>
                             </div>
                             
                             <input class="cart_quantity" placeholder={item.amount}
                                 type="number"
-                                onBlur={(e)=>addToCart(item.itemPost._id,e.target.value)}
+                                onBlur={(e)=>addToCart(item.itemPost?._id,e.target.value)}
                             >
 
                             </input>
