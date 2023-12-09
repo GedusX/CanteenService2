@@ -80,13 +80,7 @@ const ProductDescription  = ()=>{
         })
       }).then(res=>res.json())
     .then(result=>{
-      const newData = data.map(data=>{
-          if(data._id==result._id){
-              return result
-          }else{
-              return data
-          }
-      })
+
       // setData(newData)
       M.toast({html: "UnLike Food", classes:"#43a047 green darken-1"})
     }).catch(err=>{
@@ -106,13 +100,7 @@ const ProductDescription  = ()=>{
     }).then(res=>res.json())
     .then(result=>{
                console.log(result)
-      const newData = data.map(item=>{
-          if(item._id==result._id){
-              return result
-          }else{
-              return item
-          }
-      })
+      
       // setData(newData)
       M.toast({html: "Like Food", classes:"#43a047 green darken-1"})
     }).catch(err=>{
@@ -121,10 +109,35 @@ const ProductDescription  = ()=>{
   }
   const [comment,setComment] = useState("")
   const addComment = () => {
-    //TODO
+    if (comment){
+      console.log(comment)  
+      fetch('/comment',{
+        method:"put",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+        },
+        body:JSON.stringify({
+            text:comment,
+            foodId:PostDesc._id
+        })
+    }).then(res=>res.json())
+    .then(result=>{
+      console.log(result)
+      setData(result)
+      M.toast({html: "Comment Posted", classes:"#43a047 green darken-1"})
+    }).catch(err=>{
+      console.log(err)
+    });
 
 
+      setComment("")
+    } else {
+      console.log("please add a comment")
+    } 
   }
+
+
   function ToggleFavorite({Fstate,id}) {
     const [favoriteState, setFavoriteState] = useState(Fstate);
     const toggleState = () => {
@@ -226,17 +239,20 @@ const ProductDescription  = ()=>{
 
       <div className='Comments'>
         <h3>Bình luận</h3>
-        <div>
-        <input 
-          type="text" 
-          style={{width: "50%"}}
-          placeholder='Thêm bình luận một bình luận mới'/>
+        <div>    
+          <input 
+            type="text" 
+            style={{width: "50%",marginLeft:"20px"}}
+            placeholder='Thêm bình luận một bình luận mới'
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
+          />
         <button 
               style={buttonCommentStyle}
               onMouseDown={handleButtonPress}
               onMouseUp={handleButtonRelease}
               onMouseLeave={handleButtonRelease}
-              onClick={() => addComment}
+              onClick={() => addComment()}
             > Thêm bình luận </button>
         </div>
         <div class='box_comment'>
