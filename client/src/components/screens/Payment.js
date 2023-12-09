@@ -5,6 +5,11 @@ import M from 'materialize-css'
 import './Cart.css'
 import Popup from './Popup.js';
 import NumberInputBasic from './NIB.js';
+
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+
+
 const Payment = () => {
 
     const [data,setData]=useState([])
@@ -13,6 +18,7 @@ const Payment = () => {
     // const [time,setTime] = useState("")
     // const [cv,setCv] = useState("")
     const [buttonPopup, setButtonPopup] = useState(false);
+    const [panelPopup, setPanelPopup] = useState(false);
     const [payMode, setPayMode] = useState(0)
     const [getMode, setGetMode] = useState(0)
     const [table, setTable] = useState(1)
@@ -28,12 +34,15 @@ const Payment = () => {
       })
    },[])
    
-   const TablePanel = () =>{
-    <div className="cart_popup">
-            <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/2048px-Flat_tick_icon.svg.png" alt = ""/>
-            <h2>Thành công!</h2>
-            <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
-        </div>
+   const TablePanel = (props) =>{
+    const buttons = Array.from({ length: 40 }, (_, i) => i + 1);
+    return (props.trigger)?(<div className="table_panel">
+            <h2>Vui lòng chọn bàn!</h2>
+            <div className = "table_grid"> {buttons.map((button, index) => (
+        <Button variant="contained" size = "medium" key={index} onClick={() => {setTable(index); props.setTrigger(false)}}>{index}</Button>
+      ))}</div>
+           
+        </div>):""
    }
    const TogglePaymode = (mode) =>{
     setPayMode(mode)
@@ -71,7 +80,8 @@ const Payment = () => {
   return (
     
     <div class="cart_container">
-        <div className='overlay'></div>
+    <TablePanel trigger={panelPopup} setTrigger={setPanelPopup}/>
+
       <div class="cart_checkoutLayout">
           
           <div class="cart_returnCart">
@@ -144,13 +154,11 @@ const Payment = () => {
 
                 </center></>):null}
                 {getMode===0?(<>
-                <div className='table_input'><NumberInputBasic
-                        class = "table_input"
-                        placeholder="Type a number…"
-                        min = {1}
-                        max = {50}
-                        onChange={(event, val) => setTable(val)}/>
-                        </div>
+                <center>
+                    <div className='normal_text'> Nhận món ở</div>
+                    <Button variant="contained" size = "medium" onClick={() => {setPanelPopup(true)}}>{table}</Button>
+
+                </center>
 
                 </>):(<>
                     <h5> Nhận tại quầy: Đến từng quầy hàng và nhận món</h5>
