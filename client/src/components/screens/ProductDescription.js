@@ -175,7 +175,7 @@ const ProductDescription  = ()=>{
           <div class = "amount_like">
             <p >Số lượt yêu thích: {PostDesc.likes?.length}</p>
             {/* Not take the name of postdesc */}
-            <p>Gian hàng: {PostDesc.belongTo}</p>
+            <p>Gian hàng: {PostDesc.belongTo?.name}</p>
           </div>
           <div class = "amount_and_addcart">
             <input class = "amout_food" type = "number" placeholder = "1"/>
@@ -216,7 +216,7 @@ const ProductDescription  = ()=>{
                     <img src = {comment.pic} alt = ""/>
                     
                     <p>
-                    {comment.postedBy}
+                    {comment.postedBy?.name}
                     </p>
                   </div>
                   <div class='right'>
