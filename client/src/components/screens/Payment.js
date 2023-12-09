@@ -106,7 +106,7 @@ const Payment = () => {
       <div class="cart_checkoutLayout">
           
           <div class="cart_returnCart">
-              <a href="/" > Quay Lại</a>
+              <a href="./Cart" > Quay Lại</a>
               <h1>XÁC NHẬN THANH TOÁN</h1>
               <div class="cart_list">
                   {
