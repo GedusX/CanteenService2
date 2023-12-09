@@ -124,6 +124,7 @@ const ProductDescription  = ()=>{
       </div>
     )
   }
+  const [amount,setAmount]=useState(1)
   const addToCart = (id)=>{
     fetch('/addToCart',{
         method:"put",
@@ -133,7 +134,7 @@ const ProductDescription  = ()=>{
         },
         body:JSON.stringify({
             foodId:id,
-            amount:1
+            amount:amount
         })
     }).then(res=>res.json())
     .then(result=>{
@@ -178,7 +179,7 @@ const ProductDescription  = ()=>{
             <p>Gian hàng: {PostDesc.belongTo?.name}</p>
           </div>
           <div class = "amount_and_addcart">
-            <input class = "amout_food" type = "number" placeholder = "1"/>
+            <input class = "amount_food" type = "number" defaultValue={amount} onChange={(e)=>setAmount(e.target.value)} />
             <button
               style={buttonStyle}
               onMouseDown={handleButtonPress}
@@ -213,8 +214,8 @@ const ProductDescription  = ()=>{
                 // </div>
                 <div class='each_comment' key={index}>
                   <div class='left'>
-                    <img src = {comment.pic} alt = ""/>
-                    
+                    <img src = {comment.postedBy.pic}  alt = ""/>
+                    {comment.pic} 
                     <p>
                     {comment.postedBy?.name}
                     </p>

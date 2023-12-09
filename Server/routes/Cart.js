@@ -67,7 +67,7 @@ router.put('/addToCart',requireLogin, async (req,res)=>{
         return CartItem.findOne({ itemPost: req.body.foodId, cartBy: cart_id});
       } else {
         // Item doesn't exist, create a new CartItem
-        if (req.body.amount!=0){
+        if (req.body.amount>0){
           const newItem = new CartItem({
               itemPost: req.body.foodId,
               amount: req.body.amount ? req.body.amount : 1,
@@ -91,7 +91,7 @@ router.put('/addToCart',requireLogin, async (req,res)=>{
     })
     .then(result => {
       if (result && result.amount) {
-          if (req.body.amount == 0){
+          if (req.body.amount <= 0){
               Cart.findByIdAndUpdate(result.cartBy,{
                   $pull:{itemPost: result._id}
               }).exec();
@@ -105,8 +105,8 @@ router.put('/addToCart',requireLogin, async (req,res)=>{
           } else{
               res.status(200).json({ message: 'This item is already exist'});
           }
-      } else if (req.body.amount == 0) {
-          res.status(200).json({ message: 'The amount can not be 0'}); 
+      } else if (req.body.amount <= 0) {
+          res.status(200).json({ message: 'The amount can not be less or equal 0'}); 
       } else {
       console.log(result);
       res.status(200).json({ message: 'Item added to cart successfully' });
