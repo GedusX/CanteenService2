@@ -6,7 +6,7 @@
     margin: auto;
     /* max-width: 90%; */
     transition: transform 1s;
-    background-color: rgb(241, 237, 232);
+    
 
 
 }
@@ -136,20 +136,15 @@
         margin-left: 30px;
     }
     .box_comment{
-        background-color:rgb(163, 163, 163);
-        width: 2000px;
+        
+        
         height: fit-content;
         display: flex;
 
     }
     .frame_comment{
         display: row;
-        width: 920px;
-        height: 100px;
-        background-color:white;
-        margin-bottom: 10px;
-        border-radius: 15px;
-        margin-top: 10px;
+        
     }
     .love_text{
         size: 30px;
@@ -163,6 +158,13 @@
         padding-left: 40px;
         padding-top: 5px;
         align-items: center;
+        width: 920px;
+        height: 100px;
+        background-color:white;
+        border: 2px solid black;
+        margin-bottom: 10px;
+        border-radius: 15px;
+        margin-top: 10px;
 
     }
 

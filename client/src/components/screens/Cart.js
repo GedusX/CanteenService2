@@ -232,6 +232,7 @@ function QuantityInput(props) {
         .then(result=>{
         console.log(result)
             M.toast({html: result.message, classes:"#43a047 green darken-1"})
+            
         }).catch(err=>{
             console.log(err)
             M.toast({html: err, className:"#43a047 green darken-1"})
