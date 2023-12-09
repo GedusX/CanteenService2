@@ -10,3 +10,4 @@ Hướng dẫn sử dụng:
 1. Mở 2 Terminal trỏ đến 2 thư mục client và Server.
 2. gõ lệnh "npm start" ở cả 2 terminal
 3. Vào địa chỉ http://localhost:3000 để sử dụng
+
