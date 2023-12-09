@@ -19,10 +19,6 @@ const Profile  = ()=>{
             M.toast({html: "Email không hợp lệ", classes:"#d32f2f red darken-2"})
             return
         }
-        if (email === initialValues.email) {
-            M.toast({html: "New email is the same as the current email.", classes: "#d32f2f red darken-2"});
-            return;
-        }
         if(!/^\d{10}$/.test(phoneno)) {
             M.toast({html: "Số điện thoại phải có 10 chữ số.", classes:"#d32f2f red darken-2"})
             return
@@ -42,10 +38,19 @@ const Profile  = ()=>{
              })
              .then(res=>res.json())
              .then(result=>{ 
-                localStorage.setItem("user",JSON.stringify(result.user))
-                dispatch({type:"UPDATE",payload:result.user})
-                setInitialValues({ name: result.user.name, email: result.user.email, phoneno: result.user.phoneno });
-                M.toast({html: "Thay đổi thông tin thành công", classes: "#43a047 green darken-1"});
+                console.log(result)
+                if (result.user){
+                    console.log("UserFound")
+                    localStorage.setItem("user",JSON.stringify(result.user))
+                    dispatch({type:"UPDATE",payload:result.user})
+                    setInitialValues({ name: result.user.name, email: result.user.email, phoneno: result.user.phoneno });
+                    M.toast({html: "Thay đổi thông tin thành công", classes: "#43a047 green darken-1"});
+                }else if (result.err){
+                    M.toast({html: result.err, classes: "#43a047 red darken-1"});
+                }
+             })
+             .catch(err=>{
+                console.log(err)
              })
       };
     const [isEditing, setIsEditing] = useState(false);
@@ -65,7 +70,8 @@ const Profile  = ()=>{
     // setName((prevName) => initialValues.name);
     // setEmail((prevEmail) => initialValues.email);
     // setPhoneno((prevPhoneno) => initialValues.phoneno);
-    window.location.reload();
+
+        window.location.reload();
     };
     const [image,setImage] = useState("")
 

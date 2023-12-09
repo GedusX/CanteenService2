@@ -145,11 +145,13 @@ router.put('/changepass',requireLogin,(req,res) => {
 
 
 router.put('/changeinfo',requireLogin,(req,res) => {
-    console.log(req.body)
+    
     const {name,email,phoneno} = req.body;
     const updateObject = {};
     if (email !== null) {
-        updateObject.email = email;
+        updateObject.email = email; 
+    } else {
+        return  res.status(400).json({ error: "Email error" })
     }
     if (name !== null) {
         updateObject.name = name;
@@ -157,23 +159,31 @@ router.put('/changeinfo',requireLogin,(req,res) => {
     if (phoneno !== null) {
         updateObject.phoneno = phoneno;
     }
-    User.findByIdAndUpdate(req.user._id,
-        { $set: updateObject},
-        { new: true } // to return the updated document
-    )
-    .then(updatedUser => {
-        if (!updatedUser) {
-            return res.status(404).json({ error: 'User not found' });
+    User.countDocuments({email: updateObject.email})
+    .then(count=>{
+        console.log(count)
+        if (count === 0){
+            User.findByIdAndUpdate(req.user._id,
+                { $set: updateObject},
+                { new: true } // to return the updated document
+            )
+            .then(updatedUser => {
+                if (!updatedUser) {
+                    return res.status(404).json({ error: 'User not found' });
+                }
+                console.log(`Change infomation for ${req.user._id}`);
+                console.log(updatedUser)
+                const {_id,name,email,followers,following,pic,phoneno} = updatedUser
+                return res.json({user:{_id,name,email,followers,following,pic,phoneno}})
+            })
+            .catch(updateErr => {
+                console.log(updateErr);
+                return res.status(500).json({ error: 'Update failed' });
+            });
+        } else {
+                return res.json({ err: 'Email already exist' });
         }
-        console.log(`Change infomation for ${req.user._id}`);
-        console.log(updatedUser)
-        const {_id,name,email,followers,following,pic,phoneno} = updatedUser
-        res.json({user:{_id,name,email,followers,following,pic,phoneno}})
     })
-    .catch(updateErr => {
-        console.log(updateErr);
-        res.status(500).json({ error: 'Update failed' });
-    });
 });
 
 
