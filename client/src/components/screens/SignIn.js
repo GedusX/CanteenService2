@@ -50,7 +50,7 @@ const SignIn=()=>  {
     console.log(err) 
   })
   }
-
+  const [checked, setChecked] = useState(false);
   return (
     // <div className = "card_contain">
     //   <div className ="card_signin">
@@ -96,7 +96,11 @@ const SignIn=()=>  {
                   </div>
 
                   <div className = "card_forgotpass">
-                    <input type="checkbox" className="checkbox1"/><span>Ghi nhớ tôi</span>
+                    {/* <input type="checkbox" className="checkbox1" id = "mycheckbox" checked={checked} onChange={() => {setChecked(!checked);}}/><span>Ghi nhớ tôi</span>
+                    <label for="mycheckbox"></label> */}
+                    <input type="checkbox" /><span>Ghi nhớ tôi</span>
+
+
 
                     <Link to="/forgotpass">
                       <span style = {{float:"right"}}>Quên mật khẩu</span>

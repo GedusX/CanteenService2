@@ -75,6 +75,9 @@ const Forgotpass=() => {
                       Đổi mật khẩu
                     </button>
                     <Recover trigger={buttonPopup} setTrigger={setButtonPopup}/>
+                    <a href='./SignIn'>
+                      <p style = {{color:'blue', textAlign:'center'}}>Quay lại đăng nhập</p>
+                    </a>
                </div>
          </div>
        

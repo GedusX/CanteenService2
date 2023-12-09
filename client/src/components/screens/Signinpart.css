@@ -37,6 +37,20 @@
   .card_form h1{
     font-size: 3em;
   }
+  .cart_form input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+  }
+  
+  .cart_form input[type="checkbox"]:checked {
+    background-color: #000;
+  }
+  .cart_form label {
+    font-size: 16px;
+    margin-left: 5px;
+  }
   .card_forgotpass{
     display: row;
     font-size: 1em;
