@@ -5,7 +5,7 @@ import M from 'materialize-css'
 import './Cart.css'
 import Popup from './Popup.js';
 import NumberInputBasic from './NIB.js';
-
+import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 
 
@@ -17,6 +17,7 @@ const Payment = () => {
     const [payMode, setPayMode] = useState(0)
     const [getMode, setGetMode] = useState(0)
     const [table, setTable] = useState(1)
+    const navigate = useNavigate()
     useEffect(()=>{
       fetch('/mycart',{
           headers:{
@@ -53,7 +54,25 @@ const Payment = () => {
 		setFormValues({...formValues, [name]:value});
 		//console.log(formValues);
   }
-
+  const submitCart = () => {
+    fetch('/submitcart',{
+        method:"post",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+        },
+    }).then(res=>res.json())
+    .then(result=>{
+    console.log(result)
+        
+        M.toast({html: result.message, classes:"#43a047 green darken-1"})
+        navigate("/")
+    }).catch(err=>{
+        console.log(err)
+        M.toast({html: err, className:"#43a047 green darken-1"})
+        navigate("/")
+})
+}
   const handleSubmit = (e) =>{
     e.preventDefault();
     setFormErrors(validate(formValues));
@@ -234,7 +253,7 @@ const Payment = () => {
                       <div class="cart_totalPrice">{sum} VND</div>
                   </div>
               </div>
-              <button class="cart_buttonCheckout"  type="submit">Thanh toán</button>
+              <button class="cart_buttonCheckout"  type="submit" onClick={()=>{submitCart();setButtonPopup(true)}}>Thanh toán</button>
               <Popup trigger={buttonPopup} setTrigger={setButtonPopup}/>
 
           </div>
