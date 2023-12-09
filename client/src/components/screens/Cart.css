@@ -33,6 +33,28 @@
     font-weight: bold;
     color: #fff;
   }
+  .option_buttonCheckout{
+    width: 45%;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #49D8B9;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin: 5px;
+  }
+  .option_buttonCheckoutdark{
+    width: 45%;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: black;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin: 5px;
+  }
   .cart_checkoutLayout .cart_right_forcart .cart_return .cart_row{
     display: flex;
     justify-content: space-between;
@@ -63,6 +85,13 @@
     flex-direction: row;
   
   }
+
+.table_input{
+  width: 30%;
+  height: 10%;
+  margin: 10px;
+}
+
   .cart_right .payment_method label{
     font-weight: 400;
     color:#fff
