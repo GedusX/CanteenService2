@@ -137,6 +137,28 @@ router.put('/forgetpass',(req,res) => {
     });
 });
 
+router.post('/verify-password', (req, res) => {
+    const { email, password } = req.body;
+    User.findOne({ email: email })
+        .then(user => {
+            bcrypt.compare(password, user.password)
+                .then(doMatch => {
+                    if (doMatch) {
+                        res.json({ isValidPassword: 1 });
+                    } else {
+                        res.json({ isValidPassword: 0 });
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({ error: "Internal server error" });
+                });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ error: "Internal server error" });
+        });
+});
 
 router.put('/changepass',requireLogin,(req,res) => {
     const {password} = req.body;

@@ -14,6 +14,7 @@ import Footer from "./components/screens/Footer";
 import ProductDescription from "./components/screens/ProductDescription";
 // import ShippingInfo from "./components/screens/ShippingInfo";
 import Payment from "./components/screens/Payment";
+import Changepassword from "./components/screens/Changepassword";
 
 import MainCom from "./components/screens/MainCom";
 import UserProfile from "./components/screens/UserProfile";
@@ -78,6 +79,7 @@ function App() {
             <Route path="Footer" element={<><Footer /></>} />
             <Route path="cart" element={<><Cart /></>} />
             <Route path="forgotpass" element={<><Forgotpass/></>} />
+            <Route path="changepassword" element={<><Changepassword/></>} />
             
              {/* <Route path="shippinginfo" element={<><ShippingInfo/></>} /> */}
             {
