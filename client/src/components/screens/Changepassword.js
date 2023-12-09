@@ -63,12 +63,18 @@ const Changepassword = () => {
         ĐỔI MẬT KHẨU
     </h1>
     <div className='change_pass'>
-        <label>Mật khẩu hiện tại</label>
-        <input type="text" onChange={(e) => handleInputChange1(e)} />
-        <label>Mật khẩu mới</label>
-        <input type="text" onChange={(e) => handleInputChange2(e)} />
-        <label>Xác nhận mật khẩu mới</label>
-        <input type="text" onChange={(e) => handleInputChange3(e)} />
+        <div>
+            <label>Mật khẩu hiện tại</label>
+            <input type="text" onChange={(e) => handleInputChange1(e)} />
+        </div>
+        <div>
+            <label>Mật khẩu mới</label>
+            <input type="text" onChange={(e) => handleInputChange2(e)} />
+        </div>
+        <div>
+            <label>Xác nhận mật khẩu mới</label>
+            <input type="text" onChange={(e) => handleInputChange3(e)} />
+        </div>
         <button type="button" class="btn btn-primary" onClick={handleClick}>
             Xác nhận
         </button>
