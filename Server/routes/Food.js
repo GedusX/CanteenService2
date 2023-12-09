@@ -23,29 +23,17 @@ router.get("/allfood",requireLogin,(req,res)=>{
     })
 })
 
-//CourtOwner
-router.get("/getsubpost",requireLogin,(req,res)=>{
-    Post.find({postedBy:{$in:req.user.following}})
-    .populate("postedBy","_id name")
-    .populate("comments.postedBy","_id name")
-    .then(posts=>{
-        res.json({posts})
-    })
-    .catch(err=>{
-        console.log(err)
-    })
-})
 
 //CourtOwner
-router.post('/createpost',requireLogin,(req,res)=>{
-    const {title,body,pic} = req.body 
-    if(!title || !body || !pic){
+router.post('/createfood',requireLogin,(req,res)=>{
+    const {title,price,pic} = req.body 
+    if(!title || !price || !pic){
       return  res.status(422).json({error:"Plase add all the fields"})
     }
     req.user.password = undefined
-    const post = new Post({
+    const post = new Food({
         title,
-        body,
+        price,
         photo:pic,
         postedBy:req.user
     })
@@ -58,14 +46,14 @@ router.post('/createpost',requireLogin,(req,res)=>{
 })
 
 //CourtOwner
-router.get("/mypost",requireLogin,(req,res)=>{
-    Post.find({likes:req.user._id})
-    .populate("postedBy","_id name")
+router.get("/myfood",requireLogin,(req,res)=>{
+    Food.find({likes:req.user._id})
+    .populate("BelongTo","_id name")
     .populate("comments.postedBy","_id name")
     
-    .then(mypost=>{
-        res.json({mypost})
-        console.log({mypost})
+    .then(myfood=>{
+        res.json({myfood})
+        console.log({myfood})
     })
     .catch(err=>{
         console.log(err)
@@ -153,15 +141,15 @@ router.get('/products/:id',requireLogin,(req,res)=>{
 
 
 //Court Owner
-router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
-    Post.findOne({_id:req.params.postId})
-    .populate("postedBy","_id")
-    .exec((err,post)=>{
-        if(err || !post){
+router.delete('/deletefood/:foodId',requireLogin,(req,res)=>{
+    Food.findOne({_id:req.params.foodId})
+    .populate("belongTo","_id")
+    .exec((err,food)=>{
+        if(err || !food){
             return res.status(422).json({error:err})
         }
-        if(post.postedBy._id.toString() === req.user._id.toString()){
-              post.remove()
+        if(food.belongTo._id.toString() === req.user._id.toString()){
+                food.remove()
               .then(result=>{
                   res.json(result)
               }).catch(err=>{

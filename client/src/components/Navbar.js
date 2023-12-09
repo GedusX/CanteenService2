@@ -1,31 +1,21 @@
-import React,{useContext,useRef,useEffect,useState} from 'react'
+import React,{useContext,useState} from 'react'
 import { Outlet, Link,useNavigate } from "react-router-dom";
 import { UserContext} from '../App'
 import M from 'materialize-css'
-import { Button } from '@mui/material';
 import './Navbar.css'
 const Navbar=()=> {
-  const  searchModal = useRef(null)
     const [search,setSearch] = useState('')
-    const [userDetails,setUserDetails] = useState([])
     const {state,dispatch} = useContext(UserContext)
     const navigate=useNavigate();
-
-    useEffect(()=>{
-      M.Modal.init(searchModal.current)
-
-      
-  },[])
   const renderList=()=>{
     if(state){
     return[
-
       <li key='3'><Link to="/cart"><i className="material-icons blue-text text-darken-2 modal-trigger">shopping_cart</i></Link></li>,
-    
       <li key='2'><Link to="/profile"><i className="material-icons blue-text text-darken-2 modal-trigger">person</i></Link></li>,
-      <li key='9' className='text'>Xin chao, {localStorage.getItem('jwt')===null?"Guest":JSON.parse(localStorage.getItem('user')).name}</li>,
+      <li key='9' className='text'>Xin chào, {localStorage.getItem('jwt')===null?"Guest":JSON.parse(localStorage.getItem('user')).name}</li>,
       <li key='4'>
         <button className="btn #c62828 red darken-3 layout"
+        style={{marginLeft:"20px",marginRight:"20px"}}
          onClick={()=>{
            localStorage.clear()
             dispatch({type:"CLEAR"})
@@ -34,7 +24,6 @@ const Navbar=()=> {
          >ĐĂNG XUẤT
          </button>
        </li>
-
     ]
     }
     else
@@ -47,40 +36,7 @@ const Navbar=()=> {
       ]
     }
   }
-  // request
-  // const fetchUsers = (query)=>{
-  //       setSearch(query)
-  //       fetch('/search-users',{
-  //         method:"post",
-  //         headers:{
-  //           "Content-Type":"application/json"
-  //         },
-  //         body:JSON.stringify({
-  //           query
-  //         })
-  //       }).then(res=>res.json())
-  //       .then(results=>{
-  //         console.log(results)
-  //         setUserDetails(results.user)
-  //       })
-  //    }
-
-  const fetchUsers = (query)=>{
-    setSearch(query)
-    fetch('/search-posts',{
-      method:"post",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        query
-      })
-    }).then(res=>res.json())
-    .then(results=>{
-      console.log(results)
-      setUserDetails(results.user)
-    })
- }     
+ 
   return (
     <>
     {localStorage.getItem("jwt")!==null?(
@@ -88,33 +44,10 @@ const Navbar=()=> {
     <div className="nav-wrapper white " >
       <Link to={state?"/home":"signin"} className="brand-logo left"><img className = 'logo' src='https://upload.wikimedia.org/wikipedia/commons/f/f0/HCMCUT.svg'></img></Link>
       <ul id="nav-mobile" className="right">
-      
        {renderList()}
       </ul>
     </div>
  
-    <div id="modal1" className="modal" ref={searchModal} style={{color:"black"}}>
-    <div className="modal-content">
-     
-   <input type="text" placeholder="search food "
-         value={search}
-         onChange={(e)=>fetchUsers(e.target.value)} />
-        
-        {/* Collections */}
-        <ul className="collection">
-               {userDetails.map(item=>{
-                 return <Link to={ "/productdescription/"+item._id} onClick={()=>{
-                   M.Modal.getInstance(searchModal.current).close()
-                   setSearch('')
-                 }}><li className="collection-item">{item.title}</li></Link> 
-               })}
-               
-              </ul>
-    </div>
-    <div className="modal-footer">
-      <button    className="modal-close waves-effect waves-green btn-flat" onClick={()=>setSearch('')}>Close</button>
-    </div>
-  </div>
   </nav>):undefined}
   <Outlet />
     </>
