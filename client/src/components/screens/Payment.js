@@ -5,6 +5,11 @@ import M from 'materialize-css'
 import './Cart.css'
 import Popup from './Popup.js';
 import NumberInputBasic from './NIB.js';
+
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+
+
 const Payment = () => {
 
     const [data,setData]=useState([])
@@ -13,6 +18,7 @@ const Payment = () => {
     // const [time,setTime] = useState("")
     // const [cv,setCv] = useState("")
     const [buttonPopup, setButtonPopup] = useState(false);
+    const [panelPopup, setPanelPopup] = useState(false);
     const [payMode, setPayMode] = useState(0)
     const [getMode, setGetMode] = useState(0)
     const [table, setTable] = useState(1)
@@ -28,7 +34,16 @@ const Payment = () => {
       })
    },[])
    
-
+   const TablePanel = (props) =>{
+    const buttons = Array.from({ length: 40 }, (_, i) => i + 1);
+    return (props.trigger)?(<div className="table_panel">
+            <h2>Vui lòng chọn bàn!</h2>
+            <div className = "table_grid"> {buttons.map((button, index) => (
+        <Button variant="contained" size = "medium" key={index} onClick={() => {setTable(index); props.setTrigger(false)}}>{index}</Button>
+      ))}</div>
+           
+        </div>):""
+   }
    const TogglePaymode = (mode) =>{
     setPayMode(mode)
    }
@@ -63,7 +78,9 @@ const Payment = () => {
 
   const sum = data.map((order)=>order.amount * order.itemPost?.body).reduce((prev, curr) => prev +  curr, 0)
   return (
+    
     <div class="cart_container">
+    <TablePanel trigger={panelPopup} setTrigger={setPanelPopup}/>
 
       <div class="cart_checkoutLayout">
           
@@ -130,14 +147,20 @@ const Payment = () => {
 
 </div></>):null}
               </>):null}
-            <div class = "cart_return">
+            <div>
                 {payMode<3?(<><center>
                 <button className={getMode===0?"option_buttonCheckoutdark":"option_buttonCheckout"} disabled = {getMode===0} onClick={()=>setGetMode(0)}>Nhận tại bàn</button>
                 <button className={getMode===1?"option_buttonCheckoutdark":"option_buttonCheckout"} disabled = {getMode===1} onClick={()=>setGetMode(1)}>Nhận tại quầy</button>
 
                 </center></>):null}
                 {getMode===0?(<>
-                   </>):(<>
+                <center>
+                    <div className='normal_text'> Nhận món ở</div>
+                    <Button variant="contained" size = "medium" onClick={() => {setPanelPopup(true)}}>{table}</Button>
+
+                </center>
+
+                </>):(<>
                     <h5> Nhận tại quầy: Đến từng quầy hàng và nhận món</h5>
                     </>)}
             </div>

@@ -47,7 +47,7 @@ router.get('/mycart', requireLogin, async (req, res) => {
     CartItem.find({ cartBy: cart_id })
     .populate('itemPost')
     .then(result=>{
-      console.log(result)
+      //console.log(result)
       return res.json({result});
     })
   } catch (err) {
@@ -90,7 +90,6 @@ router.put('/addToCart',requireLogin, async (req,res)=>{
       }
     })
     .then(result => {
-      console.log(result.cartBy)
       if (result && result.amount) {
           if (req.body.amount <= 0){
               Cart.findByIdAndUpdate(result.cartBy,{

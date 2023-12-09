@@ -87,8 +87,8 @@
   }
 
 .table_input{
-  width: 30%;
-  height: 10%;
+  width: 50%;
+  height: fit-content;
   margin: 10px;
 }
 
@@ -198,6 +198,43 @@
     color: #333;
   
   }
+
+  .table_panel{
+    width: 800px;
+
+    background: #ededed;
+    border-radius: 6px;
+    border-color: #333;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #333;
+  }
+
+  .table_button{
+    size: 30px;
+    color: #333;
+    background-color: #ededed;
+    font-weight: bold;
+  }
+
+
+  .normal_text{
+    size: 20px;
+    display: inline-flex;
+    
+    
+  }
+  .table_grid{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+  }
   .cart_popup img{
     width: 100px;
     margin-top: -50px;
@@ -249,4 +286,19 @@
     padding: 0 10px;
     box-shadow: 0 10px 20px #5555;
     border-radius: 20px;
+  }
+
+
+  .overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
   }

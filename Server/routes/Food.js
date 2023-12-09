@@ -104,6 +104,7 @@ router.put('/comment',requireLogin,(req,res)=>{
         text:req.body.text,
         postedBy:req.user._id
     }
+   
     Food.findByIdAndUpdate(req.body.foodId,{
         $push:{comments:comment}
     },{
@@ -115,6 +116,7 @@ router.put('/comment',requireLogin,(req,res)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
+            console.log(result)
             res.json(result)
         }
     })
@@ -138,7 +140,7 @@ router.get('/products/:id',requireLogin,(req,res)=>{
     .populate("belongTo","_id name")
     .populate("comments.postedBy","name pic")
     .then(foodinfo=>{
-        console.log(foodinfo)
+        //console.log(foodinfo)
         res.json({foodinfo})
     })
     .catch(err=>{
