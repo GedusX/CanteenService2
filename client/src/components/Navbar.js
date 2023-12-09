@@ -19,7 +19,6 @@ const Navbar=()=> {
   const renderList=()=>{
     if(state){
     return[
-
       <li key='3'><Link to="/cart"><i className="material-icons blue-text text-darken-2 modal-trigger">shopping_cart</i></Link></li>,
       <li key='8'><Link to="/product">Tất cả sản phẩm</Link></li>,
       <li key='2'><Link to="/profile"><i className="material-icons blue-text text-darken-2 modal-trigger">person</i></Link></li>,

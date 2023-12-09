@@ -86,7 +86,7 @@ const Cart = () => {
     }
   const [buttonPopup, setButtonPopup] = useState(false);
   const [total, settotal] = useState(0);
-  const sum = data.map((order)=>order.amount*order.itemPost.body).reduce((prev, curr) => prev +  curr, 0)
+  const sum = data.map((order)=>order.amount*order.itemPost?.body).reduce((prev, curr) => prev +  curr, 0)
 
   return (
 //     <>
@@ -195,7 +195,7 @@ const Cart = () => {
                             </input>
                             
                             
-                            <div class="cart_returnPrice">{item.amount*item.itemPost.body}</div>
+                            <div class="cart_returnPrice">{item.amount* item.itemPost?.body}</div>
                         </div>
                     )
                     })
