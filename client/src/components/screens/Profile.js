@@ -57,12 +57,12 @@ const Profile  = ()=>{
       setName(initialValues.name);
       setEmail(initialValues.email);
       setPhoneno(initialValues.phoneno);
+      setPic(initialValues.pic);
     // setName((prevName) => initialValues.name);
     // setEmail((prevEmail) => initialValues.email);
     // setPhoneno((prevPhoneno) => initialValues.phoneno);
     window.location.reload();
     };
-    const [mypics,setPics] = useState([])
     const [image,setImage] = useState("")
 
     useEffect(() => {
