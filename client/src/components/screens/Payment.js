@@ -66,7 +66,7 @@ const Payment = () => {
     console.log(result)
         setButtonPopup(true)
         M.toast({html: result.message, classes:"#43a047 green darken-1"})
-        navigate("/")
+        
     }).catch(err=>{
         console.log(err)
         M.toast({html: err, className:"#43a047 green darken-1"})
@@ -123,6 +123,7 @@ const ErrorPopup = (props) => {
   useEffect(()=>{
     if (Object.keys(formErrors).length === 0 && isSubmit) {
 			setButtonPopup(true)
+            submitCart()
     } else {
 			setIsSubmit(false);
 		}
@@ -265,7 +266,7 @@ const ErrorPopup = (props) => {
                       <div class="cart_totalPrice">{sum} VND</div>
                   </div>
               </div>
-              <button class="cart_buttonCheckout"  type="submit" onClick={()=>{submitCart();setButtonPopup(true)}}>Thanh toán</button>
+              <button class="cart_buttonCheckout"  type="submit" >Thanh toán</button>
               <Popup trigger={buttonPopup} setTrigger={setButtonPopup}/>
               <ErrorPopup trigger = {errPopup} setTrigger = {setButtonPopup} content = {err}/>
           </div>
