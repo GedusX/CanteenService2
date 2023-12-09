@@ -64,7 +64,7 @@ const Payment = () => {
     }).then(res=>res.json())
     .then(result=>{
     console.log(result)
-        
+        setButtonPopup(true)
         M.toast({html: result.message, classes:"#43a047 green darken-1"})
         navigate("/")
     }).catch(err=>{
@@ -73,6 +73,18 @@ const Payment = () => {
         navigate("/")
 })
 }
+const {err, setErr} = useState("")
+const {errPopup, setErrPopup} = useState(false)
+const ErrorPopup = (props) => {
+        return (props.trigger) ? (
+            <div className="cart_popup">
+                <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flat_cross_icon.svg/768px-Flat_cross_icon.svg.png" alt = ""/>
+                <h2>Lỗi</h2>
+                <p>{props.content}</p>
+                <button type = "button" className = "cart_ok" onClick={()=> props.setTrigger(false)}>OK</button>{props.children}
+            </div>
+        ) : "" ; 
+    }
   const handleSubmit = (e) =>{
     e.preventDefault();
     setFormErrors(validate(formValues));
@@ -255,7 +267,7 @@ const Payment = () => {
               </div>
               <button class="cart_buttonCheckout"  type="submit" onClick={()=>{submitCart();setButtonPopup(true)}}>Thanh toán</button>
               <Popup trigger={buttonPopup} setTrigger={setButtonPopup}/>
-
+              <ErrorPopup trigger = {errPopup} setTrigger = {setButtonPopup} content = {err}/>
           </div>
           </form>
     </div>
