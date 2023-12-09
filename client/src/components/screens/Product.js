@@ -92,7 +92,7 @@ const unlikeFood = (id)=>{
 })
 }
 const addToCart = (id)=>{
-  fetch('/addToCart',{
+  fetch('/quickaddToCart',{
       method:"put",
       headers:{
           "Content-Type":"application/json",

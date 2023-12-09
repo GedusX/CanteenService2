@@ -56,6 +56,52 @@ router.get('/mycart', requireLogin, async (req, res) => {
   }
 });
 
+router.put('/quickaddToCart',requireLogin, async (req,res)=>{
+  var cart_id = await getInUseCartId(req)  
+  console.log(req.body.foodId)
+  CartItem.countDocuments({ itemPost: req.body.foodId, cartBy: cart_id})
+  .then(count => {
+      console.log(count)
+      if (count > 0) {
+        // Item already exists in the cart
+        return CartItem.findOne({ itemPost: req.body.foodId, cartBy: cart_id});
+      } else {
+        // Item doesn't exist, create a new CartItem
+        if (req.body.amount>0){
+          const newItem = new CartItem({
+              itemPost: req.body.foodId,
+              amount: req.body.amount ? req.body.amount : 1,
+              cartBy: cart_id,
+          });
+          return newItem.save()
+              .then(savedItem => {
+              // Update the Cart with the new item
+              return Cart.findByIdAndUpdate(
+                  cart_id,
+                  {
+                  $push: { itemPost: savedItem._id },
+                  },
+                  {
+                  new: true,
+                  }
+              ).exec();
+              });
+        }
+      }
+    })
+    .then(result => {
+      if (result && result.amount) {
+        CartItem.findByIdAndUpdate(result._id,{
+          $set:{amount : req.body.amount + result.amount}
+      }).exec().then(()=>{
+        res.status(200).json({ message: 'Item added to cart successfully' });
+      });
+          
+      }
+    })
+});
+
+
 router.put('/addToCart',requireLogin, async (req,res)=>{
   var cart_id = await getInUseCartId(req)  
   console.log(req.body.foodId)
