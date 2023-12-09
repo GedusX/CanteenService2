@@ -43,6 +43,25 @@ const ProductDescription  = ()=>{
       color: '#FFF',
       marginLeft: '40px'
   };
+  const buttonCommentStyle = {
+    width: '150px',
+    height: '50px',
+    flexShrink: 0,
+    borderRadius: '10px',
+    background: '#F4764E',
+    transition: 'box-shadow 0.3s ease',
+    cursor: 'pointer',
+    boxShadow: isPressed ? '0px 4px 8px rgba(0, 0, 0, 0.4)' : 'none',
+    border: 'none',
+    outline: 'none',
+    fontFamily: 'Montserrat, sans-serif',
+    fontSize: '18px',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: 'normal',
+    color: '#FFF',
+    marginLeft: '40px'
+};
   const handleButtonPress = () => {
     setIsPressed(true);
   };
@@ -100,6 +119,12 @@ const ProductDescription  = ()=>{
     }).catch(err=>{
         console.log(err)
     })
+  }
+  const [comment,setComment] = useState("")
+  const addComment = () => {
+    //TODO
+
+
   }
   function ToggleFavorite({Fstate,id}) {
     const [favoriteState, setFavoriteState] = useState(Fstate);
@@ -202,6 +227,19 @@ const ProductDescription  = ()=>{
 
       <div className='Comments'>
         <h3>Bình luận</h3>
+        <div>
+        <input 
+          type="text" 
+          style={{width: "50%"}}
+          placeholder='Thêm bình luận một bình luận mới'/>
+        <button 
+              style={buttonCommentStyle}
+              onMouseDown={handleButtonPress}
+              onMouseUp={handleButtonRelease}
+              onMouseLeave={handleButtonRelease}
+              onClick={() => addComment}
+            > Thêm bình luận </button>
+        </div>
         <div class='box_comment'>
           <div class='frame_comment'>
               {PostDesc.comments && PostDesc.comments.length > 0 ? (
