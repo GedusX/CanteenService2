@@ -32,7 +32,8 @@ export default function NumberInputBasic() {
   const [value, setValue] = React.useState();
   return (
     <NumberInput
-      aria-label="Demo number input"
+      min = {1}
+      max = {50}
       placeholder="Type a number…"
       onChange={(event, val) => setValue(val)}
     />
@@ -70,6 +71,7 @@ const StyledInputRoot = styled('div')(
   border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
   box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
   display: grid;
+  height: 10px
   grid-template-columns: 1fr 19px;
   grid-template-rows: 1fr 1fr;
   overflow: hidden;

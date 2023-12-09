@@ -28,7 +28,13 @@ const Payment = () => {
       })
    },[])
    
-
+   const TablePanel = () =>{
+    <div className="cart_popup">
+            <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/2048px-Flat_tick_icon.svg.png" alt = ""/>
+            <h2>Thành công!</h2>
+            <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
+        </div>
+   }
    const TogglePaymode = (mode) =>{
     setPayMode(mode)
    }
@@ -63,8 +69,9 @@ const Payment = () => {
 
   const sum = data.map((order)=>order.amount*order.itemPost.body).reduce((prev, curr) => prev +  curr, 0)
   return (
+    
     <div class="cart_container">
-
+        <div className='overlay'></div>
       <div class="cart_checkoutLayout">
           
           <div class="cart_returnCart">
@@ -130,14 +137,22 @@ const Payment = () => {
 
 </div></>):null}
               </>):null}
-            <div class = "cart_return">
+            <div>
                 {payMode<3?(<><center>
                 <button className={getMode===0?"option_buttonCheckoutdark":"option_buttonCheckout"} disabled = {getMode===0} onClick={()=>setGetMode(0)}>Nhận tại bàn</button>
                 <button className={getMode===1?"option_buttonCheckoutdark":"option_buttonCheckout"} disabled = {getMode===1} onClick={()=>setGetMode(1)}>Nhận tại quầy</button>
 
                 </center></>):null}
                 {getMode===0?(<>
-                   </>):(<>
+                <div className='table_input'><NumberInputBasic
+                        class = "table_input"
+                        placeholder="Type a number…"
+                        min = {1}
+                        max = {50}
+                        onChange={(event, val) => setTable(val)}/>
+                        </div>
+
+                </>):(<>
                     <h5> Nhận tại quầy: Đến từng quầy hàng và nhận món</h5>
                     </>)}
             </div>
