@@ -10,6 +10,7 @@ const Profile  = ()=>{
     const [name, setName] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).name : "loading");
     const [email, setEmail] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).email : "loading");
     const [phoneno, setPhoneno] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).phoneno : "loading");
+    const [pic, setPic] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).pic : "https://cvhrma.org/wp-content/uploads/2015/07/default-profile-photo.jpg");
 
     const [initialValues, setInitialValues] = useState({ name: '', email: '', phoneno: '' });
 
@@ -65,21 +66,12 @@ const Profile  = ()=>{
     const [image,setImage] = useState("")
 
     useEffect(() => {
-        // Check if user info exists in local storage and update state
         const userInfo = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : state;
         if (userInfo) {
             setName(userInfo.name);
             setEmail(userInfo.email);
             setPhoneno(userInfo.phoneno);
-        }
-    }, [state]);
-
-    useEffect(() => {
-        const userInfo = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : state;
-        if (userInfo) {
-            setName(userInfo.name);
-            setEmail(userInfo.email);
-            setPhoneno(userInfo.phoneno);
+            setPic(userInfo.pic)
             setInitialValues({ name: userInfo.name, email: userInfo.email, phoneno: userInfo.phoneno });
         }
     }, [state]);
@@ -100,7 +92,7 @@ const Profile  = ()=>{
     }}>
       <div>
         <img  alt="" style={{width:"200px",height:'200px',borderRadius:"100px"}}
-        src={state.pic} />
+        src={pic} />
       </div>
       </div>
       </div>
