@@ -12,6 +12,7 @@ router.get("/allfood",requireLogin,(req,res)=>{
         const foodsWithIsLike = foods.map(food => {
             const foodObject = food.toObject(); // Convert to plain JavaScript object
             foodObject.isLike = food.likes.includes(req.user._id); // Add isLike field
+            foodObject.numLike = food.likes.length;
             return foodObject;
         });
         //console.log(postsWithIsLike)

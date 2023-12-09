@@ -6,7 +6,11 @@
     transition: transform 1s;
   }
   
-  
+  .cart_returnPrice{
+    margin-left: 20px;
+    size: 20px;
+    font-weight: bold;
+  }
   .cart_checkoutLayout{
     display: grid;
     /* align-items: center; */
@@ -91,7 +95,9 @@
   height: fit-content;
   margin: 10px;
 }
-
+.quchange{
+  margin: 10px;
+}
   .cart_right .payment_method label{
     font-weight: 400;
     color:#fff
@@ -227,7 +233,7 @@
   .normal_text{
     size: 20px;
     display: inline-flex;
-    
+    margin-right: 20px;
     
   }
   .table_grid{

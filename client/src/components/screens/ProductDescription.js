@@ -5,7 +5,10 @@ import './ProductDescription.css'
 import M from 'materialize-css'
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import { grey, blue } from '@mui/material/colors';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 const ProductDescription  = ()=>{
   const [PostDesc,setPostDesc] = useState([])
   const {state,dispatch} = useContext(UserContext)
@@ -19,6 +22,9 @@ const ProductDescription  = ()=>{
       .then(result=>{
           console.log(result.foodinfo)
           setPostDesc(result.foodinfo)
+          console.log(PostDesc.likes.includes(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user"))._id:null))
+          
+          
       })
   },[])
 
@@ -82,7 +88,16 @@ const ProductDescription  = ()=>{
     .then(result=>{
 
       // setData(newData)
-      M.toast({html: "UnLike Food", classes:"#43a047 green darken-1"})
+      fetch(`/products/${postid}`,{
+        headers:{
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+        }
+    }).then(res=>res.json())
+    .then(result=>{
+        console.log(result.foodinfo)
+        setPostDesc(result.foodinfo)
+    })
+      M.toast({html: "Đã hủy thích món ăn", classes:"#43a047 green darken-1"})
     }).catch(err=>{
       console.log(err)
   })
@@ -102,7 +117,16 @@ const ProductDescription  = ()=>{
                console.log(result)
       
       // setData(newData)
-      M.toast({html: "Like Food", classes:"#43a047 green darken-1"})
+      fetch(`/products/${postid}`,{
+        headers:{
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+        }
+    }).then(res=>res.json())
+    .then(result=>{
+        console.log(result.foodinfo)
+        setPostDesc(result.foodinfo)
+    })
+      M.toast({html: "Đã thích món ăn", classes:"#43a047 green darken-1"})
     }).catch(err=>{
         console.log(err)
     })
@@ -125,7 +149,17 @@ const ProductDescription  = ()=>{
     .then(result=>{
       console.log(result)
       setData(result)
+      fetch(`/products/${postid}`,{
+        headers:{
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+        }
+    }).then(res=>res.json())
+    .then(result=>{
+        console.log(result.foodinfo)
+        setPostDesc(result.foodinfo)
+    })
       M.toast({html: "Comment Posted", classes:"#43a047 green darken-1"})
+
     }).catch(err=>{
       console.log(err)
     });
@@ -138,27 +172,48 @@ const ProductDescription  = ()=>{
   }
 
 
+  
+  const p1 = createTheme({
+    palette: {
+      bluep: {
+        light: blue[300],
+        main: blue[500],
+        dark: blue[700],
+        darker: blue[900],
+      },
+      greyp:{
+        light: grey[300],
+        main: grey[500],
+        dark: grey[700],
+        darker: grey[900],
+      }
+    },
+  });
+  
+
   function ToggleFavorite({Fstate,id}) {
-    const [favoriteState, setFavoriteState] = useState(Fstate);
+    
     const toggleState = () => {
-      if (favoriteState === true){
+      if (Fstate === true){
         unlikeFood(id)
       }
       else{
         likeFood(id)
       }
-      setFavoriteState(current => !current);
+      
     }
     return(
-      <div
-       onClick={toggleState}
-        >
-        {favoriteState == true ? 
-        (<Favorite style={{marginLeft:"22px" , fontSize: "30px",color: 'red'}}/>)
+      <ThemeProvider theme={p1}>
+      <Button variant="contained" size="large" color = {Fstate == true ? "greyp": "bluep"} onClick = {toggleState}>
+        <div>
+        {Fstate == true ? 
+        (<Favorite style={{marginLeft:"14px" , marginRight: "10px", alignSelf: "center", fontSize: "30px",color: 'red'}}/>)
         : 
-        (<FavoriteBorder style={{marginLeft:"22px" , fontSize: "30px",color: 'red'}}/>)
+        (<FavoriteBorder style={{marginLeft:"14px", marginRight: "10px",alignSelf: "center", fontSize: "30px",color: 'red'}}/>)
         }
-      </div>
+      </div> <div className = "love_text">{Fstate == true ? "ĐÃ THÍCH": "YÊU THÍCH"}</div></Button>
+      
+      </ThemeProvider>
     )
   }
   const [amount,setAmount]=useState(1)
@@ -203,18 +258,11 @@ const ProductDescription  = ()=>{
         <div class="card-content" >
           <h2>{PostDesc.title}</h2>
           <h3>{PostDesc.body} đ</h3>
-          <h2>Size</h2>
-          <div class="Select_size">
-            <button type="button" class="block">S</button>
-            <button type="button" class="block1">M</button>
-            <button type="button" class="block1">L</button>
-          </div>
+          <h5>Bán tại gian hàng: {PostDesc.belongTo?.name}</h5>
+          
 
-          <div class = "amount_like">
-            <p >Số lượt yêu thích: {PostDesc.likes?.length}</p>
-            {/* Not take the name of postdesc */}
-            <p>Gian hàng: {PostDesc.belongTo?.name}</p>
-          </div>
+
+
           <div class = "amount_and_addcart">
             <input class = "amount_food" type = "number" defaultValue={amount} onChange={(e)=>setAmount(e.target.value)} />
             <button
@@ -229,8 +277,15 @@ const ProductDescription  = ()=>{
           </div>
           <div class="Add_favorite">
             {/* <i className="material-icons" style={{color:'red', marginRight : '50px'}}>favorite</i> */}
-            <ToggleFavorite Fstate = {PostDesc.isLike} id = {PostDesc._id}/>
-            <p>Thêm vào yêu thích</p>
+            <ToggleFavorite Fstate = {PostDesc?.likes?.includes(JSON.parse(localStorage.getItem("user"))._id)} id = {PostDesc._id}/>
+            <div class = "amount_like">
+            <p className='amount_text'>{PostDesc.likes?.length}</p>
+            {/* Not take the name of postdesc */}
+            
+          </div>
+
+
+
           </div>
 
           
@@ -243,7 +298,7 @@ const ProductDescription  = ()=>{
           <input 
             type="text" 
             style={{width: "50%",marginLeft:"20px"}}
-            placeholder='Thêm bình luận một bình luận mới'
+            placeholder='Thêm bình luận...'
             onChange={(e) => setComment(e.target.value)}
             value={comment}
           />
@@ -253,7 +308,7 @@ const ProductDescription  = ()=>{
               onMouseUp={handleButtonRelease}
               onMouseLeave={handleButtonRelease}
               onClick={() => addComment()}
-            > Thêm bình luận </button>
+            > Bình luận </button>
         </div>
         <div class='box_comment'>
           <div class='frame_comment'>
@@ -267,13 +322,17 @@ const ProductDescription  = ()=>{
                 // </div>
                 <div class='each_comment' key={index}>
                   <div class='left'>
-                    <img src = {comment.postedBy.pic}  alt = ""/>
-                    {comment.pic} 
-                    <p>
-                    <strong>{comment.postedBy.name}</strong>
-                    </p>
+                  <div>
+                  <img  alt="" style={{width:"75px",height:'75px',borderRadius:"100px"}}
+                    src={comment.postedBy.pic}/>
+                  </div>
+
+                    
                   </div>
                   <div class='right'>
+                  <p>
+                    <strong>{comment.postedBy.name}</strong>
+                    </p>
                     <p>{comment.text}</p>
                   </div>
               </div>

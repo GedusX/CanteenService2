@@ -50,6 +50,15 @@ const Product = () => {
     }).then(res=>res.json())
     .then(result=>{
         console.log(result)
+        fetch('/allfood',{
+          headers:{
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+          }
+        }).then(res=>res.json())
+        .then(result=>{
+          
+          setData(result.foods)
+        })
       M.toast({html: "Like Food", classes:"#43a047 green darken-1"})
     }).catch(err=>{
         console.log(err)
@@ -68,6 +77,15 @@ const unlikeFood = (id)=>{
       })
     }).then(res=>res.json())
   .then(result=>{
+    fetch('/allfood',{
+      headers:{
+        "Authorization":"Bearer "+localStorage.getItem("jwt")
+      }
+    }).then(res=>res.json())
+    .then(result=>{
+      
+      setData(result.foods)
+    })
     M.toast({html: "UnLike Food", classes:"#43a047 green darken-1"})
   }).catch(err=>{
     console.log(err)
@@ -276,19 +294,20 @@ const addToCart = (id)=>{
   function ToggleFavorite({Fstate,id}) {
     const [favoriteState, setFavoriteState] = useState(Fstate);
     const toggleState = () => {
-      if (favoriteState === true){
+      if (Fstate === true){
         unlikeFood(id)
       }
       else{
         likeFood(id)
       }
-      setFavoriteState(current => !current);
+      
     }
+
     return(
       <div
        onClick={toggleState}
         >
-        {favoriteState === true ? 
+        {Fstate === true ? 
         (<Favorite style={{marginLeft:"22px" , fontSize: "30px",color: 'red'}}/>)
         : 
         (<FavoriteBorder style={{marginLeft:"22px" , fontSize: "30px",color: 'red'}}/>)
@@ -397,7 +416,8 @@ const addToCart = (id)=>{
                         marginBottom: "20px",
 
                     }}>
-                       <ToggleFavorite Fstate = {item.isLike} id = {item._id}/>
+                       <ToggleFavorite Fstate = {item?.isLike} id = {item._id}/>
+                       <div className="texting">{item?.numLike}</div>
                       <button className="btn" name="addCart"
                         onClick={() => addToCart(item._id)}
                         >

@@ -155,7 +155,7 @@ const Payment = () => {
                 </center></>):null}
                 {getMode===0?(<>
                 <center>
-                    <div className='normal_text'> Nhận món ở</div>
+                    <div className='normal_text'> Nhận món ở bàn</div>
                     <Button variant="contained" size = "medium" onClick={() => {setPanelPopup(true)}}>{table}</Button>
 
                 </center>
