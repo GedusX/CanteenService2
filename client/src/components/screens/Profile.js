@@ -18,7 +18,11 @@ const Profile  = ()=>{
         if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
             M.toast({html: "Email không hợp lệ", classes:"#d32f2f red darken-2"})
             return
-        }  
+        }
+        if (email === initialValues.email) {
+            M.toast({html: "New email is the same as the current email.", classes: "#d32f2f red darken-2"});
+            return;
+        }
         if(!/^\d{10}$/.test(phoneno)) {
             M.toast({html: "Số điện thoại phải có 10 chữ số.", classes:"#d32f2f red darken-2"})
             return
