@@ -162,7 +162,7 @@ router.put('/changeinfo',requireLogin,(req,res) => {
     User.countDocuments({email: updateObject.email})
     .then(count=>{
         console.log(count)
-        if (count === 0){
+        if (count === 0 || req.user.email === updateObject.email){
             User.findByIdAndUpdate(req.user._id,
                 { $set: updateObject},
                 { new: true } // to return the updated document
