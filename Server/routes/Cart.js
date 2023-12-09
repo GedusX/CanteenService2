@@ -47,7 +47,7 @@ router.get('/mycart', requireLogin, async (req, res) => {
     CartItem.find({ cartBy: cart_id })
     .populate('itemPost')
     .then(result=>{
-      console.log(result)
+      //console.log(result)
       return res.json({result});
     })
   } catch (err) {
@@ -61,7 +61,7 @@ router.put('/addToCart',requireLogin, async (req,res)=>{
   console.log(req.body.foodId)
   CartItem.countDocuments({ itemPost: req.body.foodId, cartBy: cart_id})
   .then(count => {
-       console.log(count)
+      console.log(count)
       if (count > 0) {
         // Item already exists in the cart
         return CartItem.findOne({ itemPost: req.body.foodId, cartBy: cart_id});
@@ -108,7 +108,7 @@ router.put('/addToCart',requireLogin, async (req,res)=>{
       } else if (req.body.amount <= 0) {
           res.status(200).json({ message: 'The amount can not be less or equal 0'}); 
       } else {
-      console.log(result);
+      //console.log(result);
       res.status(200).json({ message: 'Item added to cart successfully' });
       }
     })
@@ -127,7 +127,7 @@ router.post("/submitcart",requireLogin, async (req,res)=>{
     console.log(cart);
 
     if (cart.itemPost === undefined || cart.itemPost.length === 0) {
-      console.log(1);
+     
       return res.status(400).json({ err: 'There is no item in this cart' });
     } else {
       cart.inUse = false;

@@ -30,7 +30,7 @@ const Cart = () => {
                 "Authorization":"Bearer "+localStorage.getItem('jwt')
             },
             body:JSON.stringify({
-                postId:id,
+                foodId:id,
                 amount:amt
             })
         }).then(res=>res.json())
