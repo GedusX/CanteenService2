@@ -1,49 +1,58 @@
 
 import './ChangePassword.css'
 import React,{useState,useContext} from 'react'
-
+import {UserContext} from '../../App'
 import M from 'materialize-css'
-// import {useNavigate} from 'react-router-dom'
-// import { UserContext } from '../../App'
 
 const ChangePassword=() => {
-
+    const {state,dispatch} = useContext(UserContext)
     const [oldPassword,setOldPassword]  = useState("")
     const [newPassword,setNewPassword]  = useState("")
     const [confirmPassword,setConfirmPassword]  = useState("")
 
-    const changeNewPassword = () => {
-        if(newPassword != confirmPassword){
-            M.toast({html: "Mật khẩu mới không trùng với xác nhận mật khẩu mới", classes:"#d32f2f red darken-2"})
-            return
-           } 
-        fetch("/changepass",{
-            method:"put",
-            headers:{
-              "Content-Type":"application/json",
-              "Authorization":"Bearer "+localStorage.getItem("jwt")
-            },
-            body:JSON.stringify({
-              oldPassword,
-              newPassword,
-            })
-          })
-          .then(res=>res.json())
-          .then(result=>{
-            if(result.error){
-                M.toast({html: "Thay đổi mật khẩu thất bại", classes:"#d32f2f red darken-2"})
-            }else if (result.message) {
-                M.toast({html: "Thay đổi mật khẩu thành công", classes: "#43a047 green darken-1"});
-                //setButtonPopup(true);
-              }
-          })
-        //   .catch((err) => {
-        //     console.error("Error:", err);
-        //   });
+    const changeNewPassword = async (e) => {
+        try {
+            let returnedData;
+            const response = await fetch('/verify-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: state.email,
+                    password: oldPassword,
+                }),
+            });
+            const data = await response.json();
+            returnedData = data.isValidPassword;
+            console.log(returnedData);
+            if (returnedData === 0) {
+                M.toast({html: "MẬT KHẨU SAI", classes:"#d32f2f red darken-2"});
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                M.toast({html: "XÁC NHẬN LẠI MẬT KHẨU", classes:"#d32f2f red darken-2"});
+                return;
+            }
+            try{
+              const changePassResponse = await fetch('/changepass', {
+                  method: "put",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "Authorization": "Bearer " + localStorage.getItem("jwt")
+                  },
+                  body: JSON.stringify({
+                      password: newPassword
+                  })
+              });
+              M.toast({html: "ĐỔI MẬT KHẨU THÀNH CÔNG", classes:"#43a047 green darken-1"});
+            }catch (error){
+              M.toast({html: "XẢY RA LỖI", classes:"#d32f2f red darken-2"});
+            }
+          } catch (error) {
+            M.toast({html: "XẢY RA LỖI", classes:"#d32f2f red darken-2"});
+          }
     }
-
-    const [buttonPopup, setButtonPopup] = useState(false);
-
     return (
        <div className="changepass_container">
        <div className="changepass_Layout">
