@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     expireToken:Date,
     pic:{
      type:String,
-     default:"http://res.cloudinary.com/dcyysbj41/image/upload/v1666777119/n5tnxchnqaynj25wrb7n.jpg"
+     default:"https://hcmut.edu.vn/img/nhanDienThuongHieu/01_logobachkhoasang.png"
     },
     followers:[{type:ObjectId,ref:"User"}],
     following:[{type:ObjectId,ref:"User"}],
