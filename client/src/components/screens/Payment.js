@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useContext} from 'react'
+import React,{useState, useEffect} from 'react'
 import M from 'materialize-css'
 
 // import {UserContext} from '../../App'
@@ -7,16 +7,11 @@ import Popup from './Popup.js';
 import NumberInputBasic from './NIB.js';
 
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 
 
 const Payment = () => {
 
     const [data,setData]=useState([])
-    // const {state,dispatch}=useContext(UserContext)
-    // const [cardno,setCardno] = useState("")
-    // const [time,setTime] = useState("")
-    // const [cv,setCv] = useState("")
     const [buttonPopup, setButtonPopup] = useState(false);
     const [panelPopup, setPanelPopup] = useState(false);
     const [payMode, setPayMode] = useState(0)
@@ -47,36 +42,62 @@ const Payment = () => {
    const TogglePaymode = (mode) =>{
     setPayMode(mode)
    }
-   const unlikePost = (id)=>{
-      fetch('/unlike',{
-          method:"put",
-          headers:{
-              "Content-Type":"application/json",
-              "Authorization":"Bearer "+localStorage.getItem("jwt")
-          },
-          body:JSON.stringify({
-              postId:id
-          })
-      }).then(res=>res.json())
-      .then(result=>{
-        //   console.log(result)
-        const newData = (data=>{
-            if(data._id==result._id){
-                return result
-            }else{
-                return data
-                
-            }
-        })
-        setData(newData)
-        console.log(data)
-        M.toast({html: "Remove from Cart", className:"#43a047 green darken-1"})
-      }).catch(err=>{
-        console.log(err)
-    })
+
+  const initialvalues = {name:"", cardno:"",expdate:"",cvv:""}
+  const [formValues, setFormValues] = useState(initialvalues);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  const handleChange = (e) =>{
+  	const{ name, value} = e.target;
+		setFormValues({...formValues, [name]:value});
+		//console.log(formValues);
   }
 
-  const sum = data.map((order)=>order.amount * order.itemPost?.body).reduce((prev, curr) => prev +  curr, 0)
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmit(true);
+  }
+	const validate = (values) =>{
+		const errors = {}    
+		if(!values.name){
+				errors.name = "Nhập tên chủ thẻ!";
+		}
+
+		if(!values.cardno){
+			errors.cardno = "Vui lòng nhập số thẻ";
+		} else if (!/^\d+$/.test(values.cardno)){
+			errors.cardno = "Số thẻ không đúng định dạng";
+		} else if (values.cardno.length < 8 || values.cardno.length > 15 ){
+			errors.cardno = "Số thẻ phải nằm trong khoảng 8-15 chữ số";
+		}
+		
+		if(!values.expdate){
+			errors.expdate = "Vui lòng cung cấp thông tin";
+		} else if (!/^(\d{2})-(\d{2})-(\d{4})$/.test(values.expdate)){
+			errors.expdate = "Ngày phải đúng định dạng dd-mm-yyyy";
+		}
+
+		if(!values.cvv){
+			errors.cvv = "Vui lòng cung cấp thông tin";
+		} else if (!/^\d+$/.test(values.cvv)){
+			errors.cvv = "Số CVV không đúng định dạng";
+		} else if (values.cvv.length !== 3 ){
+			errors.cvv = "Số CVV không đúng định dạng";
+		}
+		return errors;
+}
+
+  useEffect(()=>{
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+			setButtonPopup(true)
+    } else {
+			setIsSubmit(false);
+		}
+  },[formErrors,isSubmit]) 
+
+  const sum = data.map((order)=>order.amount*order.itemPost.body).reduce((prev, curr) => prev +  curr, 0)
   return (
     
     <div class="cart_container">
@@ -92,13 +113,13 @@ const Payment = () => {
                       data.map(item=>{
                           return(
                           <div class="cart_item">
-                              <img src={item.itemPost?.photo} alt = "" />
+                              <img src={item.itemPost.photo} alt = "" />
                               <div class="cart_info">
-                                  <div class="cart_name">{item.itemPost?.title}</div>
-                                  <div class="cart_price">{item.itemPost?.body}</div>
+                                  <div class="cart_name">{item.itemPost.title}</div>
+                                  <div class="cart_price">{item.itemPost.body}</div>
                               </div>
                               <div class="cart_quantity">{item.amount}</div>
-                              <div class="cart_returnPrice">{item.itemPost?.body* item.amount}</div>
+                              <div class="cart_returnPrice">{item.itemPost.body*item.amount}</div>
                           </div>
                       )
                   })
@@ -106,7 +127,7 @@ const Payment = () => {
 
               </div>
           </div>
-
+          <form onSubmit={handleSubmit}>
           <div class="cart_right">
           <center>
           <h1>Hình thức thanh toán</h1>
@@ -128,21 +149,57 @@ const Payment = () => {
 
 <div class="cart_group">
     <label for="name">Tên chủ thẻ</label>
-    <input type="text" name="name" id="name" />
+    <input type="text"
+					 name="name"
+					id="name" 
+					value={formValues.name}
+					onChange={handleChange}
+					/>
+		{formErrors.name?<p  style={{marginLeft:"20px",
+																 marginTop:"0px",
+																 color:"#ff4545"}}
+																 > *{formErrors.name}</p>:null}
 </div>
 
 <div class="cart_group">
-    <label for="phone">Số thẻ</label>
-    <input type="text" name="phone" id="phone" />
+    <label for="cardno">Số thẻ</label>
+    <input type="text" 
+						name="cardno" 
+						id="cardno" 
+						value={formValues.cardno}
+						onChange={handleChange}
+						/>
+						{formErrors.cardno?<p  style={{marginLeft:"10px", 
+																		marginTop:"0px",
+																		color:"#ff4545"}}
+																		> *{formErrors.cardno}</p>:null}
 </div>
 
 <div class="cart_group">
-    <label for="address">Ngày hết hạn</label>
-    <input type="text" name="address" id="address" />
+    <label for="expdate">Ngày hết hạn</label>
+    <input type="text" 
+					name="expdate" 
+					id="expdate" 
+					value={formValues.expdate}
+					onChange={handleChange}
+					/>
+		{formErrors.expdate?<p style={{marginLeft:"10px", 
+																	marginTop:"0px",
+																	color:"#ff4545"}}
+																	> *{formErrors.expdate}</p>:null}
 </div>
 <div class="cart_group">
-    <label for="address">CVV</label>
-    <input type="text" name="address" id="address" />
+    <label for="cvv">CVV</label>
+    <input type="text"
+					name="cvv" 
+					id="cvv" 
+					value={formValues.cvv}
+					onChange={handleChange}
+					 />
+		{formErrors.cvv?<p style={{marginLeft:"10px", 
+															marginTop:"0px",
+															color:"#ff4545"}}
+															> *{formErrors.cvv}</p>:null}
 </div>
 
 </div></>):null}
@@ -157,7 +214,6 @@ const Payment = () => {
                 <center>
                     <div className='normal_text'> Nhận món ở</div>
                     <Button variant="contained" size = "medium" onClick={() => {setPanelPopup(true)}}>{table}</Button>
-
                 </center>
 
                 </>):(<>
@@ -178,12 +234,14 @@ const Payment = () => {
                       <div class="cart_totalPrice">{sum} VND</div>
                   </div>
               </div>
-              <button class="cart_buttonCheckout" onClick={() => setButtonPopup(true)}>Thanh toán</button>
+              <button class="cart_buttonCheckout"  type="submit">Thanh toán</button>
               <Popup trigger={buttonPopup} setTrigger={setButtonPopup}/>
 
           </div>
+          </form>
     </div>
     </div>
+
   )
 }
 
