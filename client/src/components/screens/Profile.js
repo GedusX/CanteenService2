@@ -100,7 +100,7 @@ const Profile  = ()=>{
     }}>
       <div>
         <img  alt="" style={{width:"200px",height:'200px',borderRadius:"100px"}}
-        src="https://images.unsplash.com/photo-1520302723644-46526f5a7c2a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=836&q=80" />
+        src={state.pic} />
       </div>
       </div>
       </div>
