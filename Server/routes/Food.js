@@ -135,6 +135,7 @@ router.post('/search-foods',(req,res)=>{
 
 })
 
+
 router.get('/products/:id',requireLogin,(req,res)=>{
     Food.findOne({_id:req.params.id})
     .populate("belongTo","_id name")

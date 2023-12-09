@@ -239,7 +239,7 @@ function QuantityInput(props) {
   }
   const [buttonPopup, setButtonPopup] = useState(false);
   const [total, settotal] = useState(0);
-  const sum = data.map((order)=>order.amount*order.itemPost.body).reduce((prev, curr) => prev +  curr, 0)
+  const sum = data.map((order)=>order.amount*order.itemPost?.body).reduce((prev, curr) => prev +  curr, 0)
 
   return (
 
@@ -254,10 +254,10 @@ function QuantityInput(props) {
                     data.map(item=>{
                         return(
                         <div class="cart_item">
-                            <img src={item.itemPost.photo} alt = "" />
+                            <img src={item.itemPost?.photo} alt = "" />
                             <div class="cart_info">
-                                <div class="cart_name">{item.itemPost.title}</div>
-                                <div class="cart_price">{item.itemPost.body}</div>
+                                <div class="cart_name">{item.itemPost?.title}</div>
+                                <div class="cart_price">{item.itemPost?.body}</div>
                             </div>
                             
                             <div class='quachange'><QuantityInput item = {item}/></div>
@@ -265,7 +265,7 @@ function QuantityInput(props) {
                             
                             
                             
-                            <div class="cart_returnPrice">{item.amount*item.itemPost.body}</div>
+                            <div class="cart_returnPrice">{item.amount* item.itemPost?.body}</div>
                         </div>
                     )
                     })

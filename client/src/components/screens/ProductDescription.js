@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import { grey, blue } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 const ProductDescription  = ()=>{
+  
   const [PostDesc,setPostDesc] = useState([])
   const {state,dispatch} = useContext(UserContext)
   const {postid}=useParams()
@@ -236,7 +237,7 @@ const ProductDescription  = ()=>{
   })
   }
 
-
+  console.log(PostDesc)
   return (
     <>
     {PostDesc?   
