@@ -27,11 +27,15 @@ const ChangePassword=() => {
             returnedData = data.isValidPassword;
             console.log(returnedData);
             if (returnedData === 0) {
-                M.toast({html: "MẬT KHẨU SAI", classes:"#d32f2f red darken-2"});
+                M.toast({html: "SAI MẬT KHẨU HIỆN TẠI", classes:"#d32f2f red darken-2"});
                 return;
             }
             if (newPassword !== confirmPassword) {
-                M.toast({html: "XÁC NHẬN LẠI MẬT KHẨU", classes:"#d32f2f red darken-2"});
+                M.toast({html: "XÁC NHẬN MẬT KHẨU MỚI SAI", classes:"#d32f2f red darken-2"});
+                return;
+            }
+            if (oldPassword === newPassword) {
+                M.toast({html: "MẬT KHẨU HIỆN TẠI TRÙNG VỚI MẬT KHẨU MỚI", classes:"#d32f2f red darken-2"});
                 return;
             }
             try{
