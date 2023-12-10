@@ -5,6 +5,8 @@ import M from 'materialize-css'
 import {useNavigate} from 'react-router-dom'
 import { UserContext } from '../../App'
 import forlogin from '../Image/forlogin.png'
+
+
 const SignIn=()=>  {
   const {state,dispatch}=useContext(UserContext)
   const [password, setPassword] = useState("")
@@ -50,7 +52,10 @@ const SignIn=()=>  {
     console.log(err) 
   })
   }
-  const [checked, setChecked] = useState(false);
+
+
+  
+
   return (
     // <div className = "card_contain">
     //   <div className ="card_signin">
@@ -96,9 +101,13 @@ const SignIn=()=>  {
                   </div>
 
                   <div className = "card_forgotpass">
-                    {/* <input type="checkbox" className="checkbox1" id = "mycheckbox" checked={checked} onChange={() => {setChecked(!checked);}}/><span>Ghi nhớ tôi</span>
-                    <label for="mycheckbox"></label> */}
-                    <input type="checkbox" /><span>Ghi nhớ tôi</span>
+                    {/* <input type="checkbox" class="checkbox" /><span>Ghi nhớ tôi</span> */}
+                    <label class="container">
+                      <input type="checkbox"/>
+                      <span class="checkmark">Ghi nhớ tôi</span>
+                    </label>
+
+ 
 
 
 

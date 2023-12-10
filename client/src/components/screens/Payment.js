@@ -66,6 +66,7 @@ const Payment = () => {
     console.log(result)
         setButtonPopup(true)
         M.toast({html: result.message, classes:"#43a047 green darken-1"})
+        navigate("/")
         
     }).catch(err=>{
         console.log(err)
@@ -121,7 +122,7 @@ const ErrorPopup = (props) => {
 }
 
   useEffect(()=>{
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
+    if ((Object.keys(formErrors).length === 0 && isSubmit)||(payMode>=2)) {
 			setButtonPopup(true)
             submitCart()
     } else {
@@ -242,7 +243,7 @@ const ErrorPopup = (props) => {
                 <button className={getMode===1?"option_buttonCheckoutdark":"option_buttonCheckout"} disabled = {getMode===1} onClick={()=>setGetMode(1)}>Nhận tại quầy</button>
 
                 </center></>):null}
-                {getMode===0?(<>
+                {getMode===0 && payMode<4?(<>
                 <center>
                     <div className='normal_text'> Nhận món ở bàn</div>
                     <Button variant="contained" size = "medium" onClick={() => {setPanelPopup(true)}}>{table}</Button>

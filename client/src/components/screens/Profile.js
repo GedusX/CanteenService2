@@ -19,6 +19,10 @@ const Profile  = ()=>{
             M.toast({html: "Email không hợp lệ", classes:"#d32f2f red darken-2"})
             return
         }
+        if (email === initialValues.email) {
+            M.toast({html: "Địa chỉ Email mới trùng với địa chỉ Email hiện tại.", classes: "#d32f2f red darken-2"});
+            return;
+        }
         if(!/^\d{10}$/.test(phoneno)) {
             M.toast({html: "Số điện thoại phải có 10 chữ số.", classes:"#d32f2f red darken-2"})
             return
@@ -47,6 +51,9 @@ const Profile  = ()=>{
                     M.toast({html: "Thay đổi thông tin thành công", classes: "#43a047 green darken-1"});
                 }else if (result.err){
                     M.toast({html: result.err, classes: "#43a047 red darken-1"});
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
                 }
              })
              .catch(err=>{
