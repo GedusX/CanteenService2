@@ -219,7 +219,7 @@ const ProductDescription  = ()=>{
   }
   const [amount,setAmount]=useState(1)
   const addToCart = (id)=>{
-    fetch('/addToCart',{
+    fetch('/quickaddToCart',{
         method:"put",
         headers:{
             "Content-Type":"application/json",
@@ -227,7 +227,7 @@ const ProductDescription  = ()=>{
         },
         body:JSON.stringify({
             foodId:id,
-            amount:amount
+            amount: parseInt(amount)
         })
     }).then(res=>res.json())
     .then(result=>{

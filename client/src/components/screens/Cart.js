@@ -266,7 +266,7 @@ function QuantityInput(props) {
                             
                             
                             
-                            <div class="cart_returnPrice">{item.amount* item.itemPost?.body}</div>
+                            <div class="cart_returnPrice">{item.amount* item.itemPost?.body + " đ"}</div>
                         </div>
                     )
                     })
