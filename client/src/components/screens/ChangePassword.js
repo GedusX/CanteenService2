@@ -82,6 +82,9 @@ const ChangePassword=() => {
                     >
                       Đổi mật khẩu
                     </button>
+                    <a href='./Profile'>
+                      <p style = {{color:'blue', textAlign:'center'}}>Quay lại</p>
+                    </a>
                    
                </div>
                

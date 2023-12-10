@@ -200,10 +200,8 @@
   }
 
   /* The container */
- .container {
-  margin-left: 0;
-  float: left;
-  display: block;
+  .card_forgotpass .forremind_container {
+  display: flex;
   position: relative;
   cursor: pointer;
   -webkit-user-select: none;
@@ -213,7 +211,7 @@
 }
 
 /* Hide the browser's default checkbox */
-.card_forgotpass .container input {
+.card_forgotpass .forremind_container input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -223,21 +221,24 @@
 
 /* Create a custom checkbox */
 .card_forgotpass .checkmark {
-
   width: 120px;
   font-size: 1em;
-  text-align: left;
+  float: left;
   color:rgb(0, 0, 0);
+  position: absolute;
+  top: 0;
+  left: 0;
+
   background-color: #ffffff;
 }
 
 /* On mouse-over, add a grey background color */
-.card_forgotpass .container:hover input ~ .checkmark {
+.card_forgotpass .forremind_container:hover input ~ .checkmark {
   background-color: #ffffff;
 }
 
 /* When the checkbox is checked, add a blue background */
-.card_forgotpass .container input:checked ~ .checkmark {
+.card_forgotpass .forremind_container input:checked ~ .checkmark {
   background-color: #ffffff;
 }
 
@@ -249,14 +250,14 @@
 }
 
 /* Show the checkmark when checked */
-.card_forgotpass .container input:checked ~ .checkmark:after {
+.card_forgotpass .forremind_container input:checked ~ .checkmark:after {
   display: block;
 }
 
 /* Style the checkmark/indicator */
-.card_forgotpass .container .checkmark:after {
+.card_forgotpass .forremind_container .checkmark:after {
 
-  border:solid rgb(0, 0, 0);
+  border: solid white;
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);

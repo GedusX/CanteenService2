@@ -102,7 +102,7 @@ const SignIn=()=>  {
 
                   <div className = "card_forgotpass">
                     {/* <input type="checkbox" class="checkbox" /><span>Ghi nhớ tôi</span> */}
-                    <label class="container">
+                    <label class="forremind_container">
                       <input type="checkbox"/>
                       <span class="checkmark">Ghi nhớ tôi</span>
                     </label>
