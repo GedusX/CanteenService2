@@ -19,8 +19,6 @@ const userSchema = new mongoose.Schema({
      type:String,
      default:"https://hcmut.edu.vn/img/nhanDienThuongHieu/01_logobachkhoasang.png"
     },
-    followers:[{type:ObjectId,ref:"User"}],
-    following:[{type:ObjectId,ref:"User"}],
     addCart:[{type:ObjectId,ref:"Cart"}],
     address:{
         type:String,

@@ -94,9 +94,10 @@ router.put('/quickaddToCart',requireLogin, async (req,res)=>{
         CartItem.findByIdAndUpdate(result._id,{
           $set:{amount : req.body.amount + result.amount}
       }).exec().then(()=>{
+        res.status(200).json({ message: `Item amount increased by ${req.body.amount}` });
+      });  
+      } else {
         res.status(200).json({ message: 'Item added to cart successfully' });
-      });
-          
       }
     })
 });
