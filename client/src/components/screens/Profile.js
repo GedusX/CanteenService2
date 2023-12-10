@@ -19,10 +19,6 @@ const Profile  = ()=>{
             M.toast({html: "Email không hợp lệ", classes:"#d32f2f red darken-2"})
             return
         }
-        if (email === initialValues.email) {
-            M.toast({html: "Địa chỉ Email mới trùng với địa chỉ Email hiện tại.", classes: "#d32f2f red darken-2"});
-            return;
-        }
         if(!/^\d{10}$/.test(phoneno)) {
             M.toast({html: "Số điện thoại phải có 10 chữ số.", classes:"#d32f2f red darken-2"})
             return
