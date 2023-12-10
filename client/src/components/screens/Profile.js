@@ -40,7 +40,7 @@ const Profile  = ()=>{
              .then(result=>{ 
                 console.log(result)
                 if (result.user){
-                    console.log("UserFound")
+                    console.log(result.user)
                     localStorage.setItem("user",JSON.stringify(result.user))
                     dispatch({type:"UPDATE",payload:result.user})
                     setInitialValues({ name: result.user.name, email: result.user.email, phoneno: result.user.phoneno });
